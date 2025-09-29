@@ -5,6 +5,7 @@ import { HiMiniHeart } from "react-icons/hi2";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
+import { RxCross2 } from "react-icons/rx";
 import { useAuth } from "../../../hook/AuthContext";
 import { getJobs } from "../../../services/apiAllJobs";
 import {
@@ -167,8 +168,27 @@ const ModalContent = styled.div`
     padding: 2rem;
     border-radius: var(--radius-lg);
     max-width: 500px;
-    width: 90%;
+    width: 90rem;
+    max-height: 500px;
+    height: 25rem;
     text-align: center;
+    position: relative;
+`;
+
+const CloseButton = styled.button`
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-grey-600);
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: var(--color-grey-900);
+    }
 `;
 
 const ModalTitle = styled.h2`
@@ -185,8 +205,17 @@ const ModalDescription = styled.p`
 
 const ModalButtons = styled.div`
     display: flex;
-    justify-content: center;
-    gap: 1rem;
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 1rem; 
+    margin-top: 1.5rem;
+`;
+
+// دکمه‌ها رو پهن‌تر نشون بده
+const WideButton = styled(Button)`
+    width: 100%;
+    font-size: 1%.5;
+    padding: 0.9rem 1.2rem;
 `;
 
 // ================= Main Component =================
@@ -366,15 +395,18 @@ export default function AllJobs() {
             </JobsContainer>
 
             {isHomePage && <Footer />}
-
             {modalData && (
                 <ModalOverlay>
                     <ModalContent>
+                        <CloseButton onClick={() => setModalData(null)}>
+                            <RxCross2 />
+                        </CloseButton>
+
                         <ModalTitle>{modalData.title}</ModalTitle>
                         <ModalDescription>
                             {modalData.description}
                         </ModalDescription>
-                        <ModalButtons>
+                        {/* <ModalButtons>
                             {!user?.id ? (
                                 <>
                                     <Link to="/login">
@@ -398,6 +430,32 @@ export default function AllJobs() {
                                 <Button onClick={() => setModalData(null)}>
                                     Close
                                 </Button>
+                            )}
+                        </ModalButtons> */}
+                        <ModalButtons>
+                            {!user?.id ? (
+                                <>
+                                    <Link to="/login">
+                                        <WideButton
+                                            variation="secondary"
+                                            size="medium"
+                                        >
+                                            Log in
+                                        </WideButton>
+                                    </Link>
+                                    <Link to="/createAccount">
+                                        <WideButton
+                                            variation="primary"
+                                            size="medium"
+                                        >
+                                            Sign up
+                                        </WideButton>
+                                    </Link>
+                                </>
+                            ) : (
+                                <WideButton onClick={() => setModalData(null)}>
+                                    Close
+                                </WideButton>
                             )}
                         </ModalButtons>
                     </ModalContent>
