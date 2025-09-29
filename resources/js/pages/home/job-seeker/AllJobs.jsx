@@ -39,6 +39,8 @@ const JobList = styled.div`
 `;
 
 const JobsCard = styled.div`
+    min-width: 450px;
+    min-height: 250px;
     display: flex;
     flex-direction: column;
     background: var(--color-grey-0);
@@ -46,16 +48,57 @@ const JobsCard = styled.div`
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-grey-300);
     position: relative;
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
         transform: translateY(-5px);
         box-shadow: var(--shadow-md);
 
-        .hover-buttons {
+        .hover-overlay {
             opacity: 1;
             pointer-events: auto;
         }
+    }
+`;
+
+const HoverOverlay = styled.div`
+    position: absolute;
+    bottom: 0; 
+    left: 0;
+    width: 100%;
+    height: 50%; 
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: center;
+    gap: 0.5rem;
+    padding: var(--space-16);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(25px);
+    border-top: 1px solid var(--color-grey-200);
+`;
+
+const FancyButton = styled(Button)`
+    min-width: 140px;
+    font-size: var(--font-sm);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    padding: var(--space-12) var(--space-20);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: var(--shadow-sm);
     }
 `;
 
@@ -205,13 +248,12 @@ const ModalDescription = styled.p`
 
 const ModalButtons = styled.div`
     display: flex;
-    flex-direction: column; 
-    align-items: stretch; 
-    gap: 1rem; 
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
     margin-top: 1.5rem;
 `;
 
-// دکمه‌ها رو پهن‌تر نشون بده
 const WideButton = styled(Button)`
     width: 100%;
     font-size: 1%.5;
@@ -375,20 +417,23 @@ export default function AllJobs() {
                                 onClick={() => toggleFavorite(job)}
                             />
 
-                            <StyledLinkButtons className="hover-buttons">
-                                <Link to={`jobDetails/${job.id}`}>
-                                    <Button variation="secondary" size="medium">
+                       
+                            <HoverOverlay className="hover-overlay">
+                                <Link
+                                    to={`jobDetails/${job.id}`}
+                                    style={{ width: "100%" }}
+                                >
+                                    <FancyButton variation="secondary">
                                         Learn More
-                                    </Button>
+                                    </FancyButton>
                                 </Link>
-                                <Button
+                                <FancyButton
                                     variation="primary"
-                                    size="medium"
                                     onClick={() => handleApplyNow(job)}
                                 >
                                     Apply Now
-                                </Button>
-                            </StyledLinkButtons>
+                                </FancyButton>
+                            </HoverOverlay>
                         </JobsCard>
                     ))}
                 </JobList>
