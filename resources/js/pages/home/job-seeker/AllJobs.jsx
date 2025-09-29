@@ -19,7 +19,7 @@ import JobsHeader from "../../JobsHeader";
 
 // ================= Styled Components =================
 const AllJobsWrapper = styled.div`
-    background-color: #f8f9fa;
+    /* background-color: #f8f9fa; */
     min-height: 100vh;
 `;
 
@@ -64,13 +64,13 @@ const JobsCard = styled.div`
 
 const HoverOverlay = styled.div`
     position: absolute;
-    bottom: 0; 
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 50%; 
+    height: 50%;
     display: flex;
     flex-direction: row;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     gap: 0.5rem;
     padding: var(--space-16);
@@ -417,7 +417,6 @@ export default function AllJobs() {
                                 onClick={() => toggleFavorite(job)}
                             />
 
-                       
                             <HoverOverlay className="hover-overlay">
                                 <Link
                                     to={`jobDetails/${job.id}`}

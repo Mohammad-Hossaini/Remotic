@@ -30,6 +30,7 @@ import LoginPage from "./pages/LoginPage";
 import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import EmployerAppLayout from "./ui/EmployerAppLayout";
+import SearchBar from "./pages/SearchBar";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -59,6 +60,7 @@ export default function App() {
                         />
                         <Route path="/home" element={<Home />} />
                         <Route path="/welcome" element={<Welcome />} />
+                        <Route path="/searchBar" element={<SearchBar />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route
