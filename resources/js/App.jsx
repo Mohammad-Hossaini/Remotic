@@ -9,7 +9,6 @@ import EmployerPrivateRoute from "./features/authintication/EmployerPrivateRoute
 import JobseekerPrivateRoute from "./features/authintication/JobseekerPrivateRoute";
 
 import Application from "./pages/application/Application";
-import Applicant from "./pages/home/employer/Applicant";
 import EmployerDashboard from "./pages/home/employer/EmployerDashboard";
 import PostedJobs from "./pages/home/employer/PostedJobs";
 import PostedNewJobs from "./pages/home/employer/PostedNewJobs";
@@ -27,10 +26,10 @@ import BackGroundInfo from "./pages/background information/BackGroundInfo";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import Home from "./pages/home/Home";
 import LoginPage from "./pages/LoginPage";
+import SearchBar from "./pages/SearchBar";
 import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import EmployerAppLayout from "./ui/EmployerAppLayout";
-import SearchBar from "./pages/SearchBar";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -135,7 +134,7 @@ export default function App() {
                                 path="application"
                                 element={<Application />}
                             />
-                            <Route path="applicant" element={<Applicant />} />
+                            {/* <Route path="applicant" element={<Applicant />} /> */}
                             <Route path="postedJobs" element={<PostedJobs />} />
                             <Route
                                 path="postedNewJobs"
