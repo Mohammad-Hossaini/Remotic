@@ -1,8 +1,10 @@
 import { BsBriefcase } from "react-icons/bs";
 import { HiOutlineHome } from "react-icons/hi2";
 import { IoFolderOpenOutline } from "react-icons/io5";
+import { LuBriefcaseBusiness } from "react-icons/lu";
 import { TbMessage2Share } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
+
 import styled from "styled-components";
 
 const NavList = styled.ul`
@@ -83,7 +85,7 @@ function MainNav() {
                 </li>
                 <li>
                     <StyledNavLink to={postedJobsPath}>
-                        <BsBriefcase />
+                        <LuBriefcaseBusiness />
                         <span>Posted jobs</span>
                     </StyledNavLink>
                 </li>

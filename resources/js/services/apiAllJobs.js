@@ -9,7 +9,7 @@ export async function getJobs() {
 
     const data = await res.json();
     if (!res.ok) {
-        console.log("Server Error:", data);
+        // console.log("Server Error:", data);
         throw new Error(data.message || "Failed to fetch jobs");
     }
     return data;
@@ -38,7 +38,7 @@ export async function userPostedJobs() {
     }
 
     const data = await res.json();
-    console.log("Fetched jobs data:", data);
+    // console.log("Fetched jobs data:", data);
     return data;
 }
 
