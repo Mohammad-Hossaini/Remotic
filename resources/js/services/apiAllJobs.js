@@ -17,31 +17,30 @@ export async function getJobs() {
 
 // Get A user specific job
 export async function userPostedJobs() {
-  const storedUser = JSON.parse(sessionStorage.getItem("authUser"));
-  const token = storedUser?.token;
+    const storedUser = JSON.parse(sessionStorage.getItem("authUser"));
+    const token = storedUser?.token;
 
-  if (!token) throw new Error("User not authenticated. Please log in first");
+    if (!token) throw new Error("User not authenticated. Please log in first");
 
-  const res = await fetch(`${BASE_URL}/employer/jobs`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+    const res = await fetch(`${BASE_URL}/employer/jobs`, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
 
-  // Check if response is OK before parsing
-  if (!res.ok) {
-    const errorText = await res.text(); // in case backend returns HTML
-    console.error("Server Error: ", errorText);
-    throw new Error(`Failed to get jobs! Status: ${res.status}`);
-  }
+    // Check if response is OK before parsing
+    if (!res.ok) {
+        const errorText = await res.text(); // in case backend returns HTML
+        console.error("Server Error: ", errorText);
+        throw new Error(`Failed to get jobs! Status: ${res.status}`);
+    }
 
-  const data = await res.json();
-  console.log("Fetched jobs data:", data);
-  return data;
+    const data = await res.json();
+    console.log("Fetched jobs data:", data);
+    return data;
 }
-
 
 /**
  * Create a new job
@@ -78,4 +77,28 @@ export async function createJob(newJob) {
         console.error("Error creating job:", error);
         throw error;
     }
+}
+
+// Update a job (Employer only)
+export async function updateJob(jobId, jobData) {
+    const storedUser = JSON.parse(sessionStorage.getItem("authUser"));
+    const token = storedUser?.token;
+
+    if (!token) throw new Error("User not authenticated. Please log in first");
+    const res = await fetch(`${BASE_URL}/jobs/${jobId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(jobData),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+        console.log("Server Error:", data);
+        throw new Error(data.message || "Failed to update job");
+    }
+    return data;
 }

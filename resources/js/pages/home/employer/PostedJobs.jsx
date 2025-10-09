@@ -1,12 +1,15 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
+import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { userPostedJobs } from "../../../services/apiAllJobs";
+import JobModal from "../../../ui/JobModal";
 import "./PostedJobs.css";
 export default function PostedJobs() {
     const queryClient = useQueryClient();
+    const [editOpenId, setEditOpenId] = useState(null);
 
     // Fetch all jobs posted by current employer
     const {
@@ -17,7 +20,7 @@ export default function PostedJobs() {
         queryKey: ["postedJobs"],
         queryFn: userPostedJobs,
     });
-
+    console.log(jobs);
     // Loading & Error states
     if (isLoading) return <p className="loading">Loading your jobs...</p>;
     if (isError)
@@ -77,13 +80,22 @@ export default function PostedJobs() {
 
                         {/* RIGHT */}
                         <div className="right">
+                            <JobModal
+                                open={editOpenId === job.id}
+                                onOpenChange={(val) =>
+                                    setEditOpenId(val ? job.id : null)
+                                }
+                                job={job}
+                            />
+
                             <button
                                 className="iconBtn editBtn"
-                                onClick={() => handleEdit(job)}
+                                onClick={() => setEditOpenId(job.id)}
                                 title="Edit Job"
                             >
                                 <FiEdit />
                             </button>
+
                             <button
                                 className="iconBtn deleteBtn"
                                 onClick={() => handleDelete(job.id)}
