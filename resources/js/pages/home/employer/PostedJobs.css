@@ -100,13 +100,8 @@
     font-size: 2rem;
     color: #b91c1c;
     cursor: pointer;
-    transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.deleteIcon:hover {
-    transform: scale(1.1);
-    color: #ef4444;
-}
 
 .loading,
 .error,
@@ -116,3 +111,32 @@
     font-size: 1.4rem;
     color: var(--color-grey-600);
 }
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.iconBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-size: 1.8rem;
+}
+
+.editBtn {
+    color: #2563eb;
+}
+
+.deleteBtn {
+    color: #ef4444;
+}
+
+

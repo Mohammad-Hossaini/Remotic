@@ -1,12 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { Toaster } from "react-hot-toast";
-import { HiOutlineBriefcase } from "react-icons/hi";
-import "./PostedJobs.css";
-
-import { HiOutlineTrash } from "react-icons/hi2";
+import { FiEdit } from "react-icons/fi";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { userPostedJobs } from "../../../services/apiAllJobs";
-
+import "./PostedJobs.css";
 export default function PostedJobs() {
     const queryClient = useQueryClient();
 
@@ -79,11 +77,20 @@ export default function PostedJobs() {
 
                         {/* RIGHT */}
                         <div className="right">
-                            <HiOutlineBriefcase className="jobIcon" />
-                            <HiOutlineTrash
-                                className="deleteIcon"
-                                // onClick={() => removeJob(job.id)}
-                            />
+                            <button
+                                className="iconBtn editBtn"
+                                onClick={() => handleEdit(job)}
+                                title="Edit Job"
+                            >
+                                <FiEdit />
+                            </button>
+                            <button
+                                className="iconBtn deleteBtn"
+                                onClick={() => handleDelete(job.id)}
+                                title="Delete Job"
+                            >
+                                <RiDeleteBin6Line />
+                            </button>
                         </div>
                     </div>
                 ))
