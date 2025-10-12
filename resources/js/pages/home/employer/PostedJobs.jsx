@@ -1,17 +1,19 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { userPostedJobs } from "../../../services/apiAllJobs";
+import { deleteJob, userPostedJobs } from "../../../services/apiAllJobs";
+import DeleteConfirmModal from "../../../ui/DeleteConfirmModal";
 import JobModal from "../../../ui/JobModal";
 import "./PostedJobs.css";
+
 export default function PostedJobs() {
     const queryClient = useQueryClient();
     const [editOpenId, setEditOpenId] = useState(null);
-
-    // Fetch all jobs posted by current employer
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [jobToDelete, setJobToDelete] = useState(null);
     const {
         data: jobs = [],
         isLoading,
@@ -20,7 +22,33 @@ export default function PostedJobs() {
         queryKey: ["postedJobs"],
         queryFn: userPostedJobs,
     });
-    // console.log(jobs);
+
+    // ✅ Delete mutation
+    const { mutate: removeJob, isLoading: isDeleting } = useMutation({
+        mutationFn: deleteJob,
+        onSuccess: () => {
+            toast.success("Job deleted successfully!");
+            queryClient.invalidateQueries(["postedJobs"]);
+            setDeleteModalOpen(false);
+        },
+        onError: (err) => {
+            toast.error(err.message || "Failed to delete job");
+        },
+    });
+
+    // ✅ Open confirmation modal
+    function handleDelete(jobId) {
+        setJobToDelete(jobId);
+        setDeleteModalOpen(true);
+    }
+
+    // ✅ Confirm deletion
+    function confirmDelete() {
+        if (jobToDelete) {
+            removeJob(jobToDelete);
+        }
+    }
+
     // Loading & Error states
     if (isLoading) return <p className="loading">Loading your jobs...</p>;
     if (isError)
@@ -100,6 +128,7 @@ export default function PostedJobs() {
                                 className="iconBtn deleteBtn"
                                 onClick={() => handleDelete(job.id)}
                                 title="Delete Job"
+                                disabled={isDeleting}
                             >
                                 <RiDeleteBin6Line />
                             </button>
@@ -107,6 +136,13 @@ export default function PostedJobs() {
                     </div>
                 ))
             )}
+
+            {/* ✅ Delete Confirmation Modal */}
+            <DeleteConfirmModal
+                open={deleteModalOpen}
+                onOpenChange={setDeleteModalOpen}
+                onConfirm={confirmDelete}
+            />
         </div>
     );
 }

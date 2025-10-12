@@ -102,3 +102,30 @@ export async function updateJob(jobId, jobData) {
     }
     return data;
 }
+
+// Delete a job (Employer only)
+export async function deleteJob(jobId) {
+    const storedUser = JSON.parse(sessionStorage.getItem("authUser"));
+    const token = storedUser?.token;
+
+    if (!token) throw new Error("User not authenticated. Please log in first");
+
+    const res = await fetch(`${BASE_URL}/jobs/${jobId}`, {
+        method: "DELETE",
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    const data = await res.json().catch(() => ({})); // Handle empty response
+
+    if (!res.ok) {
+        console.error("Server Error:", data);
+        throw new Error(
+            data.message || `Failed to delete job (status: ${res.status})`
+        );
+    }
+
+    return true;
+}

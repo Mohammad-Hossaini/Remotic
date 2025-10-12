@@ -4,174 +4,148 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { CiWarning } from "react-icons/ci";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { applyForJob } from "../services/application";
+import Spinner from "./Spinner";
 
-// ==== Animations ====
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translate(-50%, -48%) scale(0.95); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-`;
-
-// ==== Styled Components ====
+// ===== Styled Components =====
 const DialogOverlay = styled(RadixDialog.Overlay)`
-    background-color: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.5);
     position: fixed;
     inset: 0;
-    backdrop-filter: blur(2px);
 `;
 
 const DialogContent = styled(RadixDialog.Content)`
-    background-color: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 92vw;
-    max-width: 520px;
-    padding: 30px 28px;
-    animation: ${fadeIn} 0.25s ease-out;
-`;
-
-const DialogTitle = styled(RadixDialog.Title)`
-    font-size: 20px;
-    font-weight: 600;
-    color: #111;
-`;
-
-const DialogDescription = styled(RadixDialog.Description)`
-    margin: 8px 0 22px;
-    font-size: 15px;
-    color: #555;
-`;
-
-const Fieldset = styled.fieldset`
+    width: 90vw;
+    max-width: 600px;
+    height: auto;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 18px;
-    border: none;
+    overflow: hidden;
 `;
 
-const Label = styled.label`
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-`;
+const Header = styled.div`
+    position: relative;
+    padding: 2rem;
+    border-bottom: 1px solid #ced4da;
+    flex-shrink: 0;
 
-const Input = styled.input`
-    padding: 10px 12px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: 1.6px solid ${(props) => (props.error ? "#ef4444" : "#d1d5db")};
-    transition: all 0.2s ease;
-    background-color: #fff;
-
-    &:hover {
-        border-color: #9ca3af;
-    }
-    &:focus {
-        outline: none;
-        border-color: #16a34a;
-        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
-    }
-`;
-
-const Textarea = styled.textarea`
-    padding: 10px 12px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: 1.6px solid ${(props) => (props.error ? "#ef4444" : "#d1d5db")};
-    resize: vertical;
-    min-height: 110px;
-    transition: all 0.2s ease;
-
-    &:hover {
-        border-color: #9ca3af;
-    }
-    &:focus {
-        outline: none;
-        border-color: #16a34a;
-        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
-    }
-`;
-
-const StyledWarning = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.35rem;
-    font-size: 1.35rem;
-    color: #b91c1c;
-
-    svg {
-        font-size: 1.5rem;
-        flex-shrink: 0;
-    }
-`;
-
-const FileName = styled.span`
-    font-size: 13px;
-    color: #444;
-    margin-top: 4px;
-`;
-
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 25px;
-`;
-
-const Button = styled.button`
-    all: unset;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    padding: 1px 18px;
-    font-size: 15px;
-    font-weight: 500;
-    height: 42px;
-    background-color: #16a34a;
-    color: white;
-    transition: all 0.25s ease;
-
-    &:hover {
-        background-color: #15803d;
-        transform: translateY(-1px);
-    }
-
-    &:disabled {
-        opacity: 0.65;
-        cursor: not-allowed;
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
     }
 `;
 
 const IconButton = styled.button`
     all: unset;
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 1rem;
+    right: 1rem;
     border-radius: 50%;
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f3f4f6;
-    color: #111;
     cursor: pointer;
-    transition: all 0.2s;
+`;
 
-    &:hover {
-        background-color: #e5e7eb;
+const Body = styled.div`
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    label {
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+
+    textarea,
+    input {
+        padding: 0.8rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ced4da;
+        font-size: 1.4rem;
+        width: 100%;
+    }
+
+    textarea {
+        min-height: 6rem;
+        resize: vertical;
     }
 `;
 
-// ==== Main Component ====
+const Footer = styled.div`
+    flex-shrink: 0;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #ced4da;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.4rem;
+        border-radius: var(--radius-lg);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-width: 100px;
+        font-weight: 600;
+    }
+
+    .cancel {
+        background-color: var(--color-grey-200, #e5e7eb);
+        color: var(--color-grey-700, #374151);
+
+        &:hover {
+            background-color: var(--color-grey-300, #d1d5db);
+        }
+    }
+
+    .apply {
+        background-color: var(--color-primary, #16a34a);
+        color: #fff;
+
+        &:hover {
+            background-color: var(--color-primary-dark, #15803d);
+        }
+
+        &:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+    }
+`;
+
+const StyledWarning = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.4rem;
+    color: #b91c1c;
+`;
+
+const FileName = styled.span`
+    font-size: 1.3rem;
+    color: #555;
+`;
+
+// ===== Main Component =====
 export default function JobApplyDialog({ open, onOpenChange, jobId }) {
     const {
         register,
@@ -181,6 +155,7 @@ export default function JobApplyDialog({ open, onOpenChange, jobId }) {
     } = useForm();
 
     const [fileName, setFileName] = useState("");
+
     const onSubmit = async (values) => {
         try {
             const formData = new FormData();
@@ -208,32 +183,43 @@ export default function JobApplyDialog({ open, onOpenChange, jobId }) {
                 <RadixDialog.Portal>
                     <DialogOverlay />
                     <DialogContent>
-                        <DialogTitle>Apply for Job</DialogTitle>
-                        <DialogDescription>
-                            Please upload your resume and write a short cover
-                            letter.
-                        </DialogDescription>
+                        <Header>
+                            <h2>Apply for Job</h2>
+                            <RadixDialog.Close asChild>
+                                <IconButton aria-label="Close">
+                                    <Cross2Icon
+                                        style={{
+                                            width: "28px",
+                                            height: "28px",
+                                        }}
+                                    />
+                                </IconButton>
+                            </RadixDialog.Close>
+                        </Header>
 
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            {/* Cover Letter */}
-                            <Fieldset>
-                                <Label htmlFor="cover_letter">
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                flex: "1 1 auto",
+                                minHeight: 0,
+                            }}
+                        >
+                            <Body>
+                                <label htmlFor="cover_letter">
                                     Cover Letter
-                                </Label>
-                                <Textarea
+                                </label>
+                                <textarea
                                     id="cover_letter"
                                     placeholder="Write a short cover letter..."
                                     {...register("cover_letter")}
-                                    error={errors.cover_letter}
                                 />
-                            </Fieldset>
 
-                            {/* Resume Upload */}
-                            <Fieldset>
-                                <Label htmlFor="resume_path">
+                                <label htmlFor="resume_path">
                                     Upload Resume (PDF/DOC)
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     id="resume_path"
                                     type="file"
                                     accept=".pdf,.doc,.docx"
@@ -244,33 +230,38 @@ export default function JobApplyDialog({ open, onOpenChange, jobId }) {
                                                 e.target.files[0]?.name || ""
                                             ),
                                     })}
-                                    error={errors.resume_path}
                                 />
                                 {fileName && <FileName>📄 {fileName}</FileName>}
                                 {errors.resume_path && (
                                     <StyledWarning>
                                         <CiWarning />
-                                        <span>
-                                            {errors.resume_path.message}
-                                        </span>
+                                        {errors.resume_path.message}
                                     </StyledWarning>
                                 )}
-                            </Fieldset>
+                            </Body>
 
-                            <ButtonContainer>
-                                <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting
-                                        ? "Submitting..."
-                                        : "Submit Application"}
-                                </Button>
-                            </ButtonContainer>
+                            <Footer>
+                                <button
+                                    type="button"
+                                    className="cancel"
+                                    onClick={() => onOpenChange(false)}
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    className="apply"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? (
+                                        <Spinner size="18px" color="#fff" />
+                                    ) : (
+                                        "Submit"
+                                    )}
+                                </button>
+                            </Footer>
                         </form>
-
-                        <RadixDialog.Close asChild>
-                            <IconButton aria-label="Close">
-                                <Cross2Icon />
-                            </IconButton>
-                        </RadixDialog.Close>
                     </DialogContent>
                 </RadixDialog.Portal>
             </RadixDialog.Root>

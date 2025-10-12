@@ -1,9 +1,9 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { FiEdit2 } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 
+import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import styled from "styled-components";
 import { useAuth } from "../hook/AuthContext";
@@ -255,7 +255,7 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
 
                     <ButtonContainer>
                         <ChooseButton onClick={handleChooseClick}>
-                            <FiEdit2 />
+                            <MdEdit />
                         </ChooseButton>
                         <DeleteButton onClick={handleDelete}>
                             <RiDeleteBin6Line />
