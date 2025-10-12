@@ -43,10 +43,10 @@ class JobController extends Controller
     /**
      * Employer: Create a new job
      */
-    public function store(Request $request)
+   public function store(Request $request)
     {
+        // ✅ Validate only other fields (no need for company_id)
         $validator = Validator::make($request->all(), [
-            'company_id'   => 'required|exists:companies,id',
             'title'        => 'required|string|max:255',
             'description'  => 'required|string',
             'requirements' => 'nullable|string',
@@ -62,9 +62,15 @@ class JobController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        $user = $request->user();
+
+        // ✅ Automatically get the user's company_id if exists
+        $companyId = $user->company ? $user->company->id : null;
+
+        // 🧱 Create the job with automatic company assignment
         $job = Job::create([
-            'company_id'  => $request->company_id,
-            'user_id'     => $request->user()->id,
+            'company_id'  => $companyId,           // automatically filled
+            'user_id'     => $user->id,
             'title'       => $request->title,
             'description' => $request->description,
             'requirements'=> $request->requirements,
@@ -76,8 +82,15 @@ class JobController extends Controller
             'deadline'    => $request->deadline,
         ]);
 
-        return response()->json($job, 201);
+        // Load the company relationship
+        $job->load('company');
+
+        return response()->json([
+            'message' => 'Job created successfully.',
+            'job' => $job,
+        ], 201);
     }
+
 
     /**
      * Employer: Update their own job (including status)
@@ -108,10 +121,16 @@ class JobController extends Controller
         }
 
         $job->update($request->only([
-            'title', 'description', 'salary_min', 'salary_max', 'job_type', 'location', 'status'
+            'title', 'description',  'requirements' , 'salary_min', 'salary_max', 'job_type', 'location', 'status', 'deadline',
         ]));
 
-        return response()->json($job);
+         // Load the company relationship
+        $job->load('company');
+
+        return response()->json([
+            'message' => 'Job Updated successfully.',
+            'job' => $job,
+        ], 200);
     }
 
     /**

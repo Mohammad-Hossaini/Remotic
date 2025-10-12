@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id'); // MUST match companies.id
+            $table->unsignedBigInteger('company_id')->nullable(); // MUST match companies.id
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->string('title');
             $table->text('description');
