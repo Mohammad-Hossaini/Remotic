@@ -171,7 +171,11 @@ export default function JobsHeader({
 
     const isHomePage = location.pathname === "/";
     const isLoginPage = location.pathname === "/login";
-    const isRegisterPage = location.pathname === "/createAccount";
+    // const isRegisterPage = location.pathname === "/createAccount";
+
+    const isRegisterPage = location.pathname
+        .toLowerCase()
+        .includes("createaccount");
     const isDashboard = location.pathname.includes("/app");
     const isJobDetailsPage = location.pathname.includes("/jobDetails");
 
@@ -193,7 +197,9 @@ export default function JobsHeader({
         <HeaderWrapper>
             <TopRow>
                 <SearchWrapper>
-                    {isHomePage && <StyledH2>Remote Work Hub</StyledH2>}
+                    {(isHomePage || isLoginPage || isRegisterPage) && (
+                        <StyledH2>Remote Work Hub</StyledH2>
+                    )}
                     {showFiltersSection && (
                         <>
                             <SearchBar

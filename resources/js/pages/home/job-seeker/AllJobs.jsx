@@ -62,6 +62,26 @@ const JobsCard = styled.div`
     }
 `;
 
+// const HoverOverlay = styled.div`
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 50%;
+//     display: flex;
+//     flex-direction: row;
+//     align-items: center;
+//     justify-content: center;
+//     gap: 0.5rem;
+//     padding: var(--space-16);
+//     pointer-events: none;
+//     opacity: 0;
+//     transition: opacity 0.3s ease;
+//     background: rgba(255, 255, 255, 0.4);
+//     backdrop-filter: blur(25px);
+//     border-top: 1px solid var(--color-grey-200);
+// `;
+
 const HoverOverlay = styled.div`
     position: absolute;
     bottom: 0;
@@ -69,17 +89,16 @@ const HoverOverlay = styled.div`
     width: 100%;
     height: 50%;
     display: flex;
-    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    justify-content: center; /* Center the button(s) */
+    gap: 1rem; /* Space between buttons if there are two */
     padding: var(--space-16);
-    pointer-events: none;
     opacity: 0;
     transition: opacity 0.3s ease;
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(25px);
     border-top: 1px solid var(--color-grey-200);
+    pointer-events: all; /* Make overlay clickable */
 `;
 
 const FancyButton = styled(Button)`
@@ -88,6 +107,21 @@ const FancyButton = styled(Button)`
     font-weight: 600;
     border-radius: var(--radius-sm);
     padding: var(--space-12) var(--space-20);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+`;
+
+const EmpButton = styled(Button)`
+    width: 140px;
+    font-size: var(--font-sm);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    /* padding: var(--space-12) var(--space-20); */
     box-shadow: var(--shadow-sm);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 
@@ -245,11 +279,12 @@ export default function AllJobs() {
     const [savedJobIds, setSavedJobIds] = useState([]);
 
     const { user } = useAuth();
+    console.log("User in AllJobs:", user?.role);
+
     const location = useLocation();
     const queryClient = useQueryClient();
     const isHomePage = location.pathname === "/";
 
-    // 📦 دریافت لیست مشاغل
     const {
         data: jobs,
         isLoading,
@@ -290,7 +325,9 @@ export default function AllJobs() {
                 toast.success("Job added to favorites");
             }
 
-            queryClient.invalidateQueries(["myFavorites", user?.id]);
+            queryClient.invalidateQueries({
+                queryKey: ["myFavorites", user?.id],
+            });
         } catch (err) {
             console.error(err);
             toast.error(err.message || "Failed to update favorite");
@@ -382,26 +419,51 @@ export default function AllJobs() {
                                 </JobText>
                             </JobTop>
 
-                            <HeartIcon
-                                active={savedJobIds.includes(job.id)}
-                                onClick={() => toggleFavorite(job)}
-                            />
-
+                            {user?.role === "job_seeker" && (
+                                <HeartIcon
+                                    active={savedJobIds.includes(job.id)}
+                                    onClick={() => toggleFavorite(job)}
+                                />
+                            )}
                             <HoverOverlay className="hover-overlay">
                                 <Link
                                     to={`jobDetails/${job.id}`}
-                                    style={{ width: "100%" }}
+                                    style={{
+                                        flex:
+                                            !user?.role ||
+                                            user?.role === "job_seeker"
+                                                ? "1"
+                                                : "unset",
+                                    }}
                                 >
-                                    <FancyButton variation="secondary">
+                                    <FancyButton
+                                        variation={
+                                            !user?.role ||
+                                            user?.role === "job_seeker"
+                                                ? "secondary"
+                                                : "primary"
+                                        }
+                                        style={{
+                                            width:
+                                                !user?.role ||
+                                                user?.role === "job_seeker"
+                                                    ? "100%"
+                                                    : "140px",
+                                        }}
+                                    >
                                         Learn More
                                     </FancyButton>
                                 </Link>
-                                <FancyButton
-                                    variation="primary"
-                                    onClick={() => handleApplyNow(job)}
-                                >
-                                    Apply Now
-                                </FancyButton>
+
+                                {(user?.role === "job_seeker" ||
+                                    !user?.role) && (
+                                    <FancyButton
+                                        variation="primary"
+                                        onClick={() => handleApplyNow(job)}
+                                    >
+                                        Apply Now
+                                    </FancyButton>
+                                )}
                             </HoverOverlay>
                         </JobsCard>
                     ))}

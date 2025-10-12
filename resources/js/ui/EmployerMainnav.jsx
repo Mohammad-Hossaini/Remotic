@@ -1,9 +1,10 @@
 import { BsBriefcase } from "react-icons/bs";
-import { FaRegUser } from "react-icons/fa6";
 import { HiOutlineHome } from "react-icons/hi2";
 import { IoFolderOpenOutline } from "react-icons/io5";
+import { LuBriefcaseBusiness } from "react-icons/lu";
 import { TbMessage2Share } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
+
 import styled from "styled-components";
 
 const NavList = styled.ul`
@@ -64,7 +65,8 @@ function MainNav() {
             : `${basePath}/jobSeekerDashboard`;
     const allJobsPath = `${basePath}/allJobs`;
     const messagesPath = `${basePath}/messages`;
-    const applicationPath = `${basePath}/application`; // Dynamic application route
+    const applicationPath = `${basePath}/application`;
+    const postedJobsPath = `${basePath}/postedJobs`;
 
     return (
         <nav>
@@ -82,6 +84,12 @@ function MainNav() {
                     </StyledNavLink>
                 </li>
                 <li>
+                    <StyledNavLink to={postedJobsPath}>
+                        <LuBriefcaseBusiness />
+                        <span>Posted jobs</span>
+                    </StyledNavLink>
+                </li>
+                <li>
                     <StyledNavLink to={applicationPath}>
                         <IoFolderOpenOutline />
                         <span>Application</span>
@@ -93,12 +101,6 @@ function MainNav() {
                         <span>Messages</span>
                     </StyledNavLink>
                 </li>
-                {/* <li>
-                    <StyledNavLink to={profilePath}>
-                        <FaRegUser />
-                        <span>Profile</span>
-                    </StyledNavLink>
-                </li> */}
             </NavList>
         </nav>
     );

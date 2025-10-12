@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { CiWarning } from "react-icons/ci";
 import styled from "styled-components";
 import { useAuth } from "../hook/AuthContext";
-import { createJob } from "../services/apiAllJobs";
+import { createJob, updateJob } from "../services/apiAllJobs";
 import Spinner from "./Spinner";
 
 // ===== Styled Components =====
@@ -30,6 +30,32 @@ const DialogContent = styled(RadixDialog.Content)`
     display: flex;
     flex-direction: column;
     overflow: hidden;
+`;
+
+const Header = styled.div`
+    position: relative;
+    padding: 2rem;
+    border-bottom: 1px solid #ced4da;
+    flex-shrink: 0;
+
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+`;
+
+const IconButton = styled.button`
+    all: unset;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border-radius: 50%;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 `;
 
 const Body = styled.div`
@@ -58,18 +84,6 @@ const Body = styled.div`
     textarea {
         min-height: 6rem;
         resize: vertical;
-    }
-`;
-
-const Header = styled.div`
-    position: relative;
-    padding: 2rem;
-    border-bottom: 1px solid #ced4da;
-    flex-shrink: 0;
-
-    h2 {
-        font-size: 1.8rem;
-        font-weight: 600;
     }
 `;
 
@@ -114,20 +128,6 @@ const Footer = styled.div`
     }
 `;
 
-const IconButton = styled.button`
-    all: unset;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    border-radius: 50%;
-    height: 25px;
-    width: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-`;
-
 const StyledWarning = styled.div`
     display: flex;
     align-items: center;
@@ -136,28 +136,44 @@ const StyledWarning = styled.div`
     color: #b91c1c;
 `;
 
-export default function JobModal({ open, onOpenChange }) {
+// ===== Component =====
+export default function JobModal({ open, onOpenChange, job }) {
     const { user } = useAuth();
     const queryClient = useQueryClient();
+
+    const isEditMode = Boolean(job);
 
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm();
+    } = useForm({
+        defaultValues: job || {},
+    });
 
+    // Create or Update mutation
     const mutation = useMutation({
-        mutationFn: createJob,
+        mutationFn: async (data) => {
+            if (isEditMode) return updateJob(job.id, data);
+            return createJob(data);
+        },
         onSuccess: () => {
             queryClient.invalidateQueries(["jobs"]);
-            toast.success("Job created successfully ✅");
+            queryClient.invalidateQueries(["postedJobs"]);
+            toast.success(
+                isEditMode
+                    ? "Job updated successfully!"
+                    : "Job created successfully!"
+            );
+            console.log("Deadline value:", job.deadline);
+
             reset();
             onOpenChange(false);
         },
         onError: (err) => {
             console.error(err);
-            toast.error(err.message || "Failed to create job ❌");
+            toast.error(err.message || "Failed to save job!");
         },
     });
 
@@ -185,7 +201,7 @@ export default function JobModal({ open, onOpenChange }) {
                 <DialogOverlay />
                 <DialogContent>
                     <Header>
-                        <h2>Add New Job</h2>
+                        <h2>{isEditMode ? "Edit Job" : "Add New Job"}</h2>
                         <RadixDialog.Close asChild>
                             <IconButton aria-label="Close">
                                 <Cross2Icon
@@ -240,11 +256,6 @@ export default function JobModal({ open, onOpenChange }) {
                                     required: "Salary min required",
                                 })}
                             />
-                            {errors.salary_min && (
-                                <StyledWarning>
-                                    <CiWarning /> {errors.salary_min.message}
-                                </StyledWarning>
-                            )}
 
                             <label>Salary Max</label>
                             <input
@@ -253,11 +264,6 @@ export default function JobModal({ open, onOpenChange }) {
                                     required: "Salary max required",
                                 })}
                             />
-                            {errors.salary_max && (
-                                <StyledWarning>
-                                    <CiWarning /> {errors.salary_max.message}
-                                </StyledWarning>
-                            )}
 
                             <label>Job Type</label>
                             <select
@@ -272,11 +278,6 @@ export default function JobModal({ open, onOpenChange }) {
                                 <option value="internship">Internship</option>
                                 <option value="remote">Remote</option>
                             </select>
-                            {errors.job_type && (
-                                <StyledWarning>
-                                    <CiWarning /> {errors.job_type.message}
-                                </StyledWarning>
-                            )}
 
                             <label>Location</label>
                             <input
@@ -284,11 +285,6 @@ export default function JobModal({ open, onOpenChange }) {
                                     required: "Location is required",
                                 })}
                             />
-                            {errors.location && (
-                                <StyledWarning>
-                                    <CiWarning /> {errors.location.message}
-                                </StyledWarning>
-                            )}
 
                             <label>Status</label>
                             <select {...register("status")}>
@@ -304,6 +300,7 @@ export default function JobModal({ open, onOpenChange }) {
                                 {...register("deadline")}
                             />
                         </Body>
+
                         <Footer>
                             <button
                                 type="button"
@@ -320,6 +317,8 @@ export default function JobModal({ open, onOpenChange }) {
                             >
                                 {mutation.isLoading ? (
                                     <Spinner size="18px" color="#fff" />
+                                ) : isEditMode ? (
+                                    "Save Changes"
                                 ) : (
                                     "Save Job"
                                 )}

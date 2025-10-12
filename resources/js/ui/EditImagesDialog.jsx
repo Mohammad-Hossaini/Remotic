@@ -1,8 +1,9 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { FaEdit } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
+
+import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import styled from "styled-components";
 import { useAuth } from "../hook/AuthContext";
@@ -18,7 +19,8 @@ const Content = styled(RadixDialog.Content)`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 48rem;
+    width: 70rem;
+    height: 30rem;
     background: var(--color-grey-900);
     padding: 2rem;
     border-radius: var(--radius-md);
@@ -37,7 +39,7 @@ const TitleLine = styled.div`
 
 const ImagePreview = styled.img`
     width: 100%;
-    max-height: 12rem;
+    height: 22rem;
     object-fit: cover;
     border: 1px solid var(--color-grey-200);
 `;
@@ -51,6 +53,7 @@ const ButtonContainer = styled.div`
 
 const ChooseButton = styled.button`
     display: flex;
+    font-size: 2.4rem;
     align-items: center;
     gap: 0.3rem;
     color: #fff;
@@ -62,7 +65,7 @@ const ChooseButton = styled.button`
 `;
 const Header = styled.div`
     position: relative;
-    padding: 0 0 1rem 0;
+    padding: 0 0 2rem 0;
     margin: -2rem -2rem 1rem -2rem;
     border-bottom: 1px solid var(--color-grey-0);
     display: flex;
@@ -73,7 +76,7 @@ const Header = styled.div`
 // Title
 const StyledH2 = styled.h2`
     color: var(--color-grey-0);
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     line-height: 1.02;
     font-weight: 400;
     padding-top: 1rem;
@@ -89,11 +92,12 @@ const CloseButton = styled(RadixDialog.Close)`
     background: transparent;
     color: var(--color-grey-0);
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 2.4rem;
 `;
 
 const DeleteButton = styled.button`
     color: #fff;
+    font-size: 2.4rem;
     padding: 0.5rem 1rem;
     border-radius: var(--radius-xxl);
     cursor: pointer;
@@ -105,7 +109,9 @@ const DeleteButton = styled.button`
 
 export default function EditImagesDialog({ trigger, onBgUpdate }) {
     const { user, setUser } = useAuth();
-    const [previewImage, setPreviewImage] = useState("/background_images/default-bg.jpg");
+    const [previewImage, setPreviewImage] = useState(
+        "/background_images/default-bg.jpg"
+    );
     const fileInputRef = useRef(null);
 
     if (!user) return null;
@@ -172,8 +178,6 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
         try {
             const profileId = user?.data?.user?.profile?.id;
             if (!profileId) throw new Error("Profile ID not found");
-
-            // DELETE request بدون body
             const res = await fetch(
                 `http://127.0.0.1:8000/api/profiles/${profileId}/background-image`,
                 {
@@ -187,7 +191,6 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
             if (!res.ok && res.status !== 404)
                 throw new Error("Failed to delete background image");
 
-            // 🔹 آپدیت Context به‌صورت دستی
             setUser((prevUser) => ({
                 ...prevUser,
                 data: {
@@ -196,13 +199,12 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
                         ...prevUser.data.user,
                         profile: {
                             ...prevUser.data.user.profile,
-                            background_image: null, // مقدار پیش‌فرض
+                            background_image: null,
                         },
                     },
                 },
             }));
 
-            // ذخیره در sessionStorage
             const updatedUser = {
                 ...user,
                 data: {
@@ -218,7 +220,6 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
             };
             sessionStorage.setItem("authUser", JSON.stringify(updatedUser));
 
-            // پیش‌نمایش پیش‌فرض
             setPreviewImage("/background_images/default-bg.jpg");
             if (onBgUpdate) onBgUpdate("/background_images/default-bg.jpg");
 
@@ -254,7 +255,7 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
 
                     <ButtonContainer>
                         <ChooseButton onClick={handleChooseClick}>
-                            <FaEdit />
+                            <MdEdit />
                         </ChooseButton>
                         <DeleteButton onClick={handleDelete}>
                             <RiDeleteBin6Line />

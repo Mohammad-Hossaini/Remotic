@@ -2,9 +2,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     align-items: center;
-    /* padding: var(--space-12) var(--space-24); */
     background-color: var(--color-grey-0);
-    /* border-bottom: 1px solid var(--color-grey-50); */
     gap: var(--space-16);
 }
 
@@ -69,6 +67,7 @@
     font-size: var(--font-lg);
     cursor: pointer;
     transition: color 0.3s ease, transform 0.2s ease;
+    color: var(--color-grey-500);
 }
 
 .Icon:hover {
@@ -103,7 +102,7 @@
 .avatar-wrapper {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
+    gap: var(--space-12);
     cursor: pointer;
     padding: 0.4rem 0.8rem;
     border-radius: var(--radius-sm);
@@ -116,7 +115,7 @@
 
 .avatar-img {
     width: 3rem;
-    height:3rem;
+    height: 3rem;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--color-grey-500);
@@ -129,6 +128,6 @@
 }
 
 .avatar-caret {
-    font-size: 1.4rem;
+    font-size: 2rem;
     color: var(--color-grey-600);
 }
