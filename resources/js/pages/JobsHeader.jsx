@@ -175,7 +175,7 @@ export default function JobsHeader({
 
     const isRegisterPage = location.pathname
         .toLowerCase()
-        .includes("createaccount");
+        .includes("register-job-seeker");
     const isDashboard = location.pathname.includes("/app");
     const isJobDetailsPage = location.pathname.includes("/jobDetails");
 
@@ -216,7 +216,9 @@ export default function JobsHeader({
                 {showAuthButtons && (
                     <Buttons>
                         <LoginBtn to="/login">Log in</LoginBtn>
-                        <SignUpBtn to="/welcome">Sign up →</SignUpBtn>
+                        {!isRegisterPage && (
+                            <SignUpBtn to="/welcome">Sign up →</SignUpBtn>
+                        )}
                     </Buttons>
                 )}
             </TopRow>
