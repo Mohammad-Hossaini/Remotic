@@ -62,26 +62,6 @@ const JobsCard = styled.div`
     }
 `;
 
-// const HoverOverlay = styled.div`
-//     position: absolute;
-//     bottom: 0;
-//     left: 0;
-//     width: 100%;
-//     height: 50%;
-//     display: flex;
-//     flex-direction: row;
-//     align-items: center;
-//     justify-content: center;
-//     gap: 0.5rem;
-//     padding: var(--space-16);
-//     pointer-events: none;
-//     opacity: 0;
-//     transition: opacity 0.3s ease;
-//     background: rgba(255, 255, 255, 0.4);
-//     backdrop-filter: blur(25px);
-//     border-top: 1px solid var(--color-grey-200);
-// `;
-
 const HoverOverlay = styled.div`
     position: absolute;
     bottom: 0;
@@ -90,15 +70,15 @@ const HoverOverlay = styled.div`
     height: 50%;
     display: flex;
     align-items: center;
-    justify-content: center; /* Center the button(s) */
-    gap: 1rem; /* Space between buttons if there are two */
+    justify-content: center;
+    gap: 1rem;
     padding: var(--space-16);
     opacity: 0;
     transition: opacity 0.3s ease;
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(25px);
     border-top: 1px solid var(--color-grey-200);
-    pointer-events: all; /* Make overlay clickable */
+    pointer-events: all;
 `;
 
 const FancyButton = styled(Button)`
@@ -121,7 +101,6 @@ const EmpButton = styled(Button)`
     font-size: var(--font-sm);
     font-weight: 600;
     border-radius: var(--radius-sm);
-    /* padding: var(--space-12) var(--space-20); */
     box-shadow: var(--shadow-sm);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 

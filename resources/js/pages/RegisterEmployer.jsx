@@ -9,58 +9,65 @@ import Spinner from "../ui/Spinner";
 import Footer from "./Footer";
 import JobsHeader from "./JobsHeader";
 
-/* --- استایل‌های پایه (مثل فورم کارمند) --- */
-const PageWrapper = styled.div`
+const RegisterWrapper = styled.div`
     display: flex;
     justify-content: center;
-    padding: 5rem 2rem 5rem;
+    align-items: center;
+    padding: var(--space-48) var(--space-16);
     background-color: var(--color-grey-30);
     min-height: 100vh;
 `;
 
-const Card = styled.div`
-    background-color: var(--color-grey-0);
-    padding: 3.5rem 3rem;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
-    width: 60rem;
-    max-width: 95%;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+const RegisterCard = styled.div`
+    background: var(--color-grey-0);
+    border-radius: var(--radius-xl);
+    padding: var(--space-40);
+    width: 100%;
+    max-width: 60rem;
+    box-shadow: var(--shadow-sm);
 `;
 
 const Title = styled.h2`
-    font-size: 2.4rem;
-    font-weight: 700;
     text-align: center;
+    font-size: var(--font-xl);
     color: var(--color-grey-900);
+    margin-bottom: var(--space-12);
+`;
+
+const SubText = styled.p`
+    text-align: center;
+    color: var(--color-grey-600);
+    margin-bottom: var(--space-32);
 `;
 
 const FormGrid = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    width: 100%;
+    gap: var(--space-16);
+    margin-bottom: var(--space-24);
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 const InputGroup = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.4rem;
 `;
 
 const Label = styled.label`
+    font-size: var(--font-sm);
     font-weight: 600;
-    font-size: 1.2rem;
     color: var(--color-grey-900);
 `;
 
 const Input = styled.input`
     padding: 1rem 1.4rem;
-    font-size: 1.1rem;
     border: 1px solid var(--color-grey-300);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
+    font-size: var(--font-sm);
     outline: none;
     &:focus {
         border-color: var(--color-primary);
@@ -69,47 +76,13 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
     padding: 1rem 1.4rem;
-    font-size: 1.1rem;
     border: 1px solid var(--color-grey-300);
-    border-radius: var(--radius-sm);
-    outline: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-sm);
     resize: vertical;
+    outline: none;
     &:focus {
         border-color: var(--color-primary);
-    }
-`;
-
-const StyledButtons = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
-`;
-
-const RegisterButton = styled.button`
-    background-color: var(--color-primary);
-    color: #fff;
-    padding: 1rem 2rem;
-    border-radius: var(--radius-xxl);
-    font-weight: 500;
-    font-size: 1.1rem;
-    border: none;
-    cursor: pointer;
-    &:hover {
-        background-color: var(--color-primary-dark);
-    }
-`;
-
-const CancelButton = styled.button`
-    background-color: var(--color-grey-200);
-    color: var(--color-grey-700);
-    padding: 1rem 2rem;
-    border-radius: var(--radius-xxl);
-    font-weight: 500;
-    font-size: 1.1rem;
-    border: none;
-    cursor: pointer;
-    &:hover {
-        background-color: var(--color-grey-300);
     }
 `;
 
@@ -118,7 +91,26 @@ const ErrorMessage = styled.span`
     align-items: center;
     gap: 0.4rem;
     color: var(--color-error);
-    font-size: 1rem;
+    font-size: var(--font-xs);
+`;
+
+const Button = styled.button`
+    width: 100%;
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+    padding: var(--space-12);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    font-size: var(--font-base);
+    transition: 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        background-color: var(--color-primary-dark);
+    }
 `;
 
 export default function RegisterEmployer() {
@@ -128,10 +120,8 @@ export default function RegisterEmployer() {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm();
-    const password = watch("password");
 
     const { mutate, isLoading } = useMutation(createNewUser, {
         onSuccess: () => {
@@ -142,16 +132,18 @@ export default function RegisterEmployer() {
         onError: (err) => toast.error(err.message),
     });
 
-    const onSubmit = (data) => {
-        mutate({ ...data, role: "employer" });
-    };
+    const onSubmit = (data) => mutate({ ...data, role: "employer" });
 
     return (
         <>
             <JobsHeader />
-            <PageWrapper>
-                <Card>
-                    <Title>Create Account — Employer</Title>
+            <RegisterWrapper>
+                <RegisterCard>
+                    <Title>Create your Employer Account</Title>
+                    <SubText>
+                        Join thousands of companies posting jobs and finding
+                        talent.
+                    </SubText>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <FormGrid>
@@ -159,7 +151,7 @@ export default function RegisterEmployer() {
                                 <Label>Full Name</Label>
                                 <Input
                                     {...register("fullName", {
-                                        required: "Required",
+                                        required: "Full name is required",
                                     })}
                                 />
                                 {errors.fullName && (
@@ -171,10 +163,59 @@ export default function RegisterEmployer() {
                             </InputGroup>
 
                             <InputGroup>
+                                <Label>Email</Label>
+                                <Input
+                                    type="email"
+                                    {...register("email", {
+                                        required: "Email is required",
+                                    })}
+                                />
+                                {errors.email && (
+                                    <ErrorMessage>
+                                        <TiWarningOutline />{" "}
+                                        {errors.email.message}
+                                    </ErrorMessage>
+                                )}
+                            </InputGroup>
+
+                            <InputGroup>
+                                <Label>Password</Label>
+                                <Input
+                                    type="password"
+                                    {...register("password", {
+                                        required: "Password is required",
+                                    })}
+                                />
+                                {errors.password && (
+                                    <ErrorMessage>
+                                        <TiWarningOutline />{" "}
+                                        {errors.password.message}
+                                    </ErrorMessage>
+                                )}
+                            </InputGroup>
+
+                            <InputGroup>
+                                <Label>Confirm Password</Label>
+                                <Input
+                                    type="password"
+                                    {...register("confirmPassword", {
+                                        required:
+                                            "Confirm password is required",
+                                    })}
+                                />
+                                {errors.confirmPassword && (
+                                    <ErrorMessage>
+                                        <TiWarningOutline />{" "}
+                                        {errors.confirmPassword.message}
+                                    </ErrorMessage>
+                                )}
+                            </InputGroup>
+
+                            <InputGroup>
                                 <Label>Company Name</Label>
                                 <Input
                                     {...register("companyName", {
-                                        required: "Required",
+                                        required: "Company name is required",
                                     })}
                                 />
                                 {errors.companyName && (
@@ -187,100 +228,39 @@ export default function RegisterEmployer() {
 
                             <InputGroup>
                                 <Label>Company Website</Label>
-                                <Input
-                                    type="url"
-                                    placeholder="https://example.com"
-                                    {...register("website")}
-                                />
+                                <Input type="url" {...register("website")} />
                             </InputGroup>
 
                             <InputGroup>
-                                <Label>Email</Label>
-                                <Input
-                                    type="email"
-                                    {...register("email", {
-                                        required: "Required",
-                                    })}
-                                />
+                                <Label>Industry</Label>
+                                <Input {...register("industry")} />
                             </InputGroup>
 
                             <InputGroup>
-                                <Label>Password</Label>
-                                <Input
-                                    type="password"
-                                    {...register("password", {
-                                        required: "Required",
-                                    })}
-                                />
+                                <Label>Company Logo</Label>
+                                <Input type="file" {...register("logo")} />
                             </InputGroup>
 
-                            {/* <InputGroup>
-                                <Label>Confirm Password</Label>
-                                <Input
-                                    type="password"
-                                    {...register("confirmPassword", {
-                                        required: "Required",
-                                        validate: (v) =>
-                                            v === password ||
-                                            "Passwords do not match",
-                                    })}
-                                />
-                            </InputGroup> */}
-                            <InputGroup>
-                                <Label>Confirm Password</Label>
-                                <Input
-                                    type="password"
-                                    {...register("confirmPassword", {
-                                        required:
-                                            "Password and Confirm passsword must match",
-                                    })}
-                                />
-                            </InputGroup>
-
-                            <InputGroup>
-                                <Label>Phone</Label>
-                                <Input
-                                    type="tel"
-                                    {...register("phone", {
-                                        required: "Required",
-                                    })}
-                                />
-                            </InputGroup>
-
-                            <InputGroup>
-                                <Label>Company Size</Label>
-                                <Input
-                                    type="number"
-                                    placeholder="e.g. 50"
-                                    {...register("companySize", {
-                                        required: "Required",
-                                    })}
-                                />
-                            </InputGroup>
-
-                            <InputGroup style={{ gridColumn: "1 / span 2" }}>
+                            <InputGroup style={{ gridColumn: "1 / -1" }}>
                                 <Label>Company Description</Label>
                                 <TextArea
                                     rows="3"
                                     {...register("description")}
-                                    placeholder="Describe your company, mission, and what you do..."
+                                    placeholder="Describe your company..."
                                 />
                             </InputGroup>
                         </FormGrid>
 
-                        <StyledButtons>
-                            <CancelButton type="reset">Cancel</CancelButton>
-                            <RegisterButton type="submit">
-                                {isLoading ? (
-                                    <Spinner size="18px" color="#fff" />
-                                ) : (
-                                    "Sign Up"
-                                )}
-                            </RegisterButton>
-                        </StyledButtons>
+                        <Button type="submit">
+                            {isLoading ? (
+                                <Spinner size="18px" color="#fff" />
+                            ) : (
+                                "Create Account"
+                            )}
+                        </Button>
                     </form>
-                </Card>
-            </PageWrapper>
+                </RegisterCard>
+            </RegisterWrapper>
             <Footer />
         </>
     );

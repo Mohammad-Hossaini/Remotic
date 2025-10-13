@@ -22,38 +22,72 @@ class CompanyController extends Controller
     }
 
     // Create company (Employer only)
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'name'        => 'required|string|max:255',
+    //         'industry'    => 'nullable|string|max:255',
+    //         'location'    => 'nullable|string|max:255',
+    //         'description' => 'nullable|string',
+    //         'website'     => 'nullable|url',
+    //         'logo'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    //     ]);
+
+    //     $logoPath = null;
+    //     if ($request->hasFile('logo')) {
+    //         $file = $request->file('logo');
+    //         $filename = time() . '_' . $file->getClientOriginalName();
+    //         $file->move(public_path('logos'), $filename);
+    //         $logoPath = 'logos/' . $filename;
+    //     }
+
+    //     $company = Company::create([
+    //         'user_id'     => Auth::id(),
+    //         'name'        => $request->name,
+    //         'industry'    => $request->industry,
+    //         'location'    => $request->location,
+    //         'description' => $request->description,
+    //         'website'     => $request->website,
+    //         'logo'        => $logoPath,
+    //     ]);
+
+    //     $company->load('user');
+    //     return response()->json($company, 201);
+    // }
     public function store(Request $request)
-    {
-        $request->validate([
-            'name'        => 'required|string|max:255',
-            'industry'    => 'nullable|string|max:255',
-            'location'    => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'website'     => 'nullable|url',
-            'logo'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+{
+    $request->validate([
+        'user_id'     => 'nullable|exists:users,id',
+        'name'        => 'required|string|max:255',
+        'industry'    => 'nullable|string|max:255',
+        'location'    => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'website'     => 'nullable|url',
+        'logo'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        $logoPath = null;
-        if ($request->hasFile('logo')) {
-            $file = $request->file('logo');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('logos'), $filename);
-            $logoPath = 'logos/' . $filename;
-        }
-
-        $company = Company::create([
-            'user_id'     => Auth::id(),
-            'name'        => $request->name,
-            'industry'    => $request->industry,
-            'location'    => $request->location,
-            'description' => $request->description,
-            'website'     => $request->website,
-            'logo'        => $logoPath,
-        ]);
-
-        $company->load('user');
-        return response()->json($company, 201);
+    $logoPath = null;
+    if ($request->hasFile('logo')) {
+        $file = $request->file('logo');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('logos'), $filename);
+        $logoPath = 'logos/' . $filename;
     }
+
+    $company = Company::create([
+        'user_id'     => $request->user_id ?? Auth::id(), // ✅ حالا اگر user_id ارسال شده بود، استفاده می‌شود
+        'name'        => $request->name,
+        'industry'    => $request->industry,
+        'location'    => $request->location,
+        'description' => $request->description,
+        'website'     => $request->website,
+        'logo'        => $logoPath,
+    ]);
+
+    $company->load('user');
+    return response()->json($company, 201);
+}
+
 
     // Update company (owner only)
     public function update(Request $request, $id)

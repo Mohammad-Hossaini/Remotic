@@ -45,6 +45,14 @@ function SignUpPage() {
                         }`}
                         onClick={() => setSelectedRole("job_seeker")}
                     >
+                        {/* checkbox top-right */}
+                        <input
+                            type="checkbox"
+                            className="role-checkbox"
+                            checked={selectedRole === "job_seeker"}
+                            readOnly
+                        />
+
                         <div className="content">
                             <div className="job-seeker-profiles">
                                 <img
@@ -77,6 +85,14 @@ function SignUpPage() {
                         }`}
                         onClick={() => setSelectedRole("employer")}
                     >
+                        {/* checkbox top-right */}
+                        <input
+                            type="checkbox"
+                            className="role-checkbox"
+                            checked={selectedRole === "employer"}
+                            readOnly
+                        />
+
                         <div className="content">
                             <div className="job-seeker-profiles">
                                 <img
@@ -102,7 +118,7 @@ function SignUpPage() {
                         </div>
                     </label>
 
-                    <div className="checkbox-container">
+                    {/* <div className="checkbox-container">
                         <input
                             type="checkbox"
                             id="terms"
@@ -112,7 +128,7 @@ function SignUpPage() {
                         <label htmlFor="terms">
                             I agree to the <a href="#">Terms & Conditions</a>
                         </label>
-                    </div>
+                    </div> */}
 
                     <button type="submit" className="cont-button">
                         Continue

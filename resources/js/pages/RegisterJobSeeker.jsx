@@ -104,6 +104,9 @@ const Button = styled.button`
     font-weight: 600;
     font-size: var(--font-base);
     transition: 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &:hover {
         background-color: var(--color-primary-dark);
