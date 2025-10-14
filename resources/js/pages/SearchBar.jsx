@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-const SearchBar = () => {
-    return (
-        <div>
-            <h1>Seachbar page!</h1>
-        </div>
-    );
-};
-
-export default SearchBar;
-=======
 import "./searchBar.css";
 
 export default function SearchBar({
@@ -82,4 +71,3 @@ export default function SearchBar({
         </div>
     );
 }
->>>>>>> main

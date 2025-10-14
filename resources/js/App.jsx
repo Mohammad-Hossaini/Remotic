@@ -33,7 +33,6 @@ import SignUpPage from "./pages/SignUpPage";
 import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import EmployerAppLayout from "./ui/EmployerAppLayout";
-import SearchBar from "./pages/SearchBar";
 
 const queryClient = new QueryClient({
     defaultOptions: {

@@ -5,11 +5,6 @@ import { HiMiniHeart } from "react-icons/hi2";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-<<<<<<< HEAD
-
-import { RxCross2 } from "react-icons/rx";
-=======
->>>>>>> main
 import { useAuth } from "../../../hook/AuthContext";
 import { getJobs } from "../../../services/apiAllJobs";
 import {
@@ -25,10 +20,6 @@ import SearchBar from "../../SearchBar";
 
 // ================= Styled Components =================
 const AllJobsWrapper = styled.div`
-<<<<<<< HEAD
-    /* background-color: #f8f9fa; */
-=======
->>>>>>> main
     min-height: 100vh;
 `;
 
@@ -48,11 +39,7 @@ const JobList = styled.div`
 `;
 
 const JobsCard = styled.div`
-<<<<<<< HEAD
-    min-width: 450px;
-=======
     min-width: 320px;
->>>>>>> main
     min-height: 250px;
     display: flex;
     flex-direction: column;
@@ -82,28 +69,16 @@ const HoverOverlay = styled.div`
     width: 100%;
     height: 50%;
     display: flex;
-<<<<<<< HEAD
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: var(--space-16);
-    pointer-events: none;
-=======
     align-items: center;
     justify-content: center;
     gap: 1rem;
     padding: var(--space-16);
->>>>>>> main
     opacity: 0;
     transition: opacity 0.3s ease;
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(25px);
     border-top: 1px solid var(--color-grey-200);
-<<<<<<< HEAD
-=======
     pointer-events: all;
->>>>>>> main
 `;
 
 const FancyButton = styled(Button)`
@@ -119,12 +94,6 @@ const FancyButton = styled(Button)`
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
     }
-<<<<<<< HEAD
-
-    &:active {
-        transform: translateY(0);
-        box-shadow: var(--shadow-sm);
-=======
 `;
 
 const EmpButton = styled(Button)`
@@ -138,7 +107,6 @@ const EmpButton = styled(Button)`
     &:hover {
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
->>>>>>> main
     }
 `;
 
@@ -238,14 +206,8 @@ const ModalContent = styled.div`
     padding: 2rem;
     border-radius: var(--radius-lg);
     max-width: 500px;
-<<<<<<< HEAD
-    width: 90rem;
-    max-height: 500px;
-    height: 25rem;
-=======
     width: 90%;
     max-height: 500px;
->>>>>>> main
     text-align: center;
     position: relative;
 `;
@@ -259,14 +221,6 @@ const CloseButton = styled.button`
     font-size: 2rem;
     color: var(--color-grey-600);
     cursor: pointer;
-<<<<<<< HEAD
-    transition: color 0.2s ease;
-
-    &:hover {
-        color: var(--color-grey-900);
-    }
-=======
->>>>>>> main
 `;
 
 const ModalTitle = styled.h2`
@@ -284,21 +238,13 @@ const ModalDescription = styled.p`
 const ModalButtons = styled.div`
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
-    align-items: stretch;
-=======
->>>>>>> main
     gap: 1rem;
     margin-top: 1.5rem;
 `;
 
 const WideButton = styled(Button)`
     width: 100%;
-<<<<<<< HEAD
-    font-size: 1%.5;
-=======
     font-size: 1.2rem;
->>>>>>> main
     padding: 0.9rem 1.2rem;
 `;
 
@@ -452,28 +398,6 @@ export default function AllJobs() {
                                 </JobText>
                             </JobTop>
 
-<<<<<<< HEAD
-                            <HeartIcon
-                                active={savedJobIds.includes(job.id)}
-                                onClick={() => toggleFavorite(job)}
-                            />
-
-                            <HoverOverlay className="hover-overlay">
-                                <Link
-                                    to={`jobDetails/${job.id}`}
-                                    style={{ width: "100%" }}
-                                >
-                                    <FancyButton variation="secondary">
-                                        Learn More
-                                    </FancyButton>
-                                </Link>
-                                <FancyButton
-                                    variation="primary"
-                                    onClick={() => handleApplyNow(job)}
-                                >
-                                    Apply Now
-                                </FancyButton>
-=======
                             {user?.role === "job_seeker" && (
                                 <HeartIcon
                                     active={savedJobIds.includes(job.id)}
@@ -519,84 +443,22 @@ export default function AllJobs() {
                                         Apply Now
                                     </FancyButton>
                                 )}
->>>>>>> main
                             </HoverOverlay>
                         </JobsCard>
                     ))}
                 </JobList>
             </JobsContainer>
 
-<<<<<<< HEAD
-            {isHomePage && <Footer />}
-=======
->>>>>>> main
             {modalData && (
                 <ModalOverlay>
                     <ModalContent>
                         <CloseButton onClick={() => setModalData(null)}>
                             <RxCross2 />
                         </CloseButton>
-<<<<<<< HEAD
-
-=======
->>>>>>> main
                         <ModalTitle>{modalData.title}</ModalTitle>
                         <ModalDescription>
                             {modalData.description}
                         </ModalDescription>
-<<<<<<< HEAD
-                        {/* <ModalButtons>
-                            {!user?.id ? (
-                                <>
-                                    <Link to="/login">
-                                        <Button
-                                            variation="secondary"
-                                            size="medium"
-                                        >
-                                            Log in
-                                        </Button>
-                                    </Link>
-                                    <Link to="/createAccount">
-                                        <Button
-                                            variation="primary"
-                                            size="medium"
-                                        >
-                                            Sign up
-                                        </Button>
-                                    </Link>
-                                </>
-                            ) : (
-                                <Button onClick={() => setModalData(null)}>
-                                    Close
-                                </Button>
-                            )}
-                        </ModalButtons> */}
-                        <ModalButtons>
-                            {!user?.id ? (
-                                <>
-                                    <Link to="/login">
-                                        <WideButton
-                                            variation="secondary"
-                                            size="medium"
-                                        >
-                                            Log in
-                                        </WideButton>
-                                    </Link>
-                                    <Link to="/createAccount">
-                                        <WideButton
-                                            variation="primary"
-                                            size="medium"
-                                        >
-                                            Sign up
-                                        </WideButton>
-                                    </Link>
-                                </>
-                            ) : (
-                                <WideButton onClick={() => setModalData(null)}>
-                                    Close
-                                </WideButton>
-                            )}
-=======
                         <ModalButtons>
                             <Link to="/login">
                                 <WideButton variation="secondary">
@@ -608,7 +470,6 @@ export default function AllJobs() {
                                     Sign up
                                 </WideButton>
                             </Link>
->>>>>>> main
                         </ModalButtons>
                     </ModalContent>
                 </ModalOverlay>
