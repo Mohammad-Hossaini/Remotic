@@ -1,4 +1,5 @@
 import { FcGoogle } from "react-icons/fc";
+import { SlEnvolope } from "react-icons/sl";
 
 import { Link } from "react-router-dom";
 import "./Welcome.css";
@@ -13,7 +14,10 @@ function Welcome() {
                     <div className="loginButtons">
                         <Link to="/app">
                             <button className="Btn">
-                                <FcGoogle className="btn-icon" />
+                                <span>
+                                    {" "}
+                                    <FcGoogle className="btn-icon google" />
+                                </span>
                                 Continue with Google
                             </button>
                         </Link>
@@ -24,9 +28,21 @@ function Welcome() {
                             Continue with Microsoft
                         </button>
 
+                        {/* <Link to="/sign-up">
+                            <button className="Btn">
+                                {" "}
+                                <SlEnvolope /> Sign in with Email
+                            </button>
+                        </Link> */}
                         <Link to="/sign-up">
-                            <button className="Btn">Sign in with Email</button>
+                            <button className="Btn">
+                                <span className="email-icon">
+                                    <SlEnvolope />
+                                </span>
+                                Sign in with Email
+                            </button>
                         </Link>
+
                         <p>
                             {" "}
                             By clicking contenue to join or sign in, you agree
