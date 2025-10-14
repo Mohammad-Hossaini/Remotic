@@ -1,347 +1,270 @@
-// components/DialogDemo.jsx
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { CiWarning } from "react-icons/ci";
 import styled from "styled-components";
+import { applyForJob } from "../services/application";
+import Spinner from "./Spinner";
 
-import { useAuth } from "../hook/AuthContext";
-import { storeApplicant } from "../services/apiStoreApplicants";
-
+// ===== Styled Components =====
 const DialogOverlay = styled(RadixDialog.Overlay)`
-    background-color: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     position: fixed;
     inset: 0;
 `;
 
-// Warning Message
-const StyledWarning = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-top: 0.4rem;
-    font-size: 1.4rem;
-    color: #b91c1c;
-
-    svg {
-        font-size: 1.6rem;
-        flex-shrink: 0;
-    }
-`;
-
-// Content
 const DialogContent = styled(RadixDialog.Content)`
-    background-color: white;
-    border-radius: 6px;
+    background: #fff;
+    border-radius: 1rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 90vw;
-    max-width: 500px;
-    max-height: 85vh;
-    padding: 25px;
+    max-width: 600px;
+    height: auto;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow: hidden;
 `;
 
-const DialogTitle = styled(RadixDialog.Title)`
-    margin: 0;
-    font-size: 17px;
-    font-weight: 500;
-    color: #111;
-`;
+const Header = styled.div`
+    position: relative;
+    padding: 2rem;
+    border-bottom: 1px solid #ced4da;
+    flex-shrink: 0;
 
-const DialogDescription = styled(RadixDialog.Description)`
-    margin: 10px 0 20px;
-    font-size: 15px;
-    color: #555;
-`;
-
-const Button = styled.button`
-    all: unset;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-    padding: 0 15px;
-    font-size: 15px;
-    font-weight: 500;
-    height: 35px;
-    background-color: ${(props) =>
-        props.color === "violet"
-            ? "#8b5cf6"
-            : props.color === "green"
-            ? "#22c55e"
-            : "#ccc"};
-    color: white;
-
-    &:hover {
-        opacity: 0.9;
+    h2 {
+        font-size: 1.8rem;
+        font-weight: 600;
     }
 `;
 
 const IconButton = styled.button`
     all: unset;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 1rem;
+    right: 1rem;
     border-radius: 50%;
     height: 25px;
     width: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f0f0f0;
-    color: #111;
     cursor: pointer;
 `;
 
-// Fields
-const Fieldset = styled.fieldset`
+const Body = styled.div`
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    margin-bottom: 15px;
-    border: none;
+    gap: 1rem;
+
+    label {
+        font-weight: 600;
+        font-size: 1.4rem;
+    }
+
+    textarea,
+    input {
+        padding: 0.8rem;
+        border-radius: 0.5rem;
+        border: 1px solid #ced4da;
+        font-size: 1.4rem;
+        width: 100%;
+    }
+
+    textarea {
+        min-height: 6rem;
+        resize: vertical;
+    }
 `;
 
-const Label = styled.label`
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-`;
-
-const Input = styled.input`
-    padding: 8px 10px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: 1px solid ${(props) => (props.error ? "red" : "#ccc")};
-`;
-
-const Select = styled.select`
-    padding: 8px 10px;
-    font-size: 14px;
-    border-radius: 4px;
-    border: 1px solid ${(props) => (props.error ? "red" : "#ccc")};
-`;
-
-const ButtonContainer = styled.div`
+const Footer = styled.div`
+    flex-shrink: 0;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #ced4da;
     display: flex;
-    justify-content: flex-end;
-    margin-top: 15px;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.4rem;
+        border-radius: var(--radius-lg);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-width: 100px;
+        font-weight: 600;
+    }
+
+    .cancel {
+        background-color: var(--color-grey-200, #e5e7eb);
+        color: var(--color-grey-700, #374151);
+
+        &:hover {
+            background-color: var(--color-grey-300, #d1d5db);
+        }
+    }
+
+    .apply {
+        background-color: var(--color-primary, #16a34a);
+        color: #fff;
+
+        &:hover {
+            background-color: var(--color-primary-dark, #15803d);
+        }
+
+        &:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+    }
 `;
 
-export default function DialogDemo({ open, onOpenChange, jobId }) {
-    const { user } = useAuth();
-    const queryClient = useQueryClient();
+const StyledWarning = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.4rem;
+    color: #b91c1c;
+`;
 
+const FileName = styled.span`
+    font-size: 1.3rem;
+    color: #555;
+`;
+
+// ===== Main Component =====
+export default function JobApplyDialog({ open, onOpenChange, jobId }) {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
         reset,
     } = useForm();
 
-    const [submitError, setSubmitError] = useState(null);
+    const [fileName, setFileName] = useState("");
 
-    const mutation = useMutation({
-        mutationFn: (payload) => storeApplicant(payload),
-        onSuccess: () => {
-            reset();
+    const onSubmit = async (values) => {
+        try {
+            const formData = new FormData();
+            formData.append("cover_letter", values.cover_letter);
+            if (values.resume_path[0])
+                formData.append("resume_path", values.resume_path[0]);
+
+            const response = await applyForJob(jobId, formData);
+            toast.success(
+                response.message || "Application submitted successfully!"
+            );
             onOpenChange(false);
-            setTimeout(() => {
-                toast.success("Application submitted successfully!");
-            }, 100); // 100ms delay
-            queryClient.invalidateQueries(["appliedJobs", user?.id]);
-        },
-
-        onError: (err) => {
-            setSubmitError(err.message || "Failed to submit application");
-            toast.error(err.message || "Failed to submit application");
-        },
-    });
-
-    const onSubmit = (formData) => {
-        setSubmitError(null);
-
-        if (!user?.id) {
-            setSubmitError("You must be logged in to apply.");
-            toast.error("Please login first.");
-            return;
+            reset();
+            setFileName("");
+        } catch (err) {
+            console.error(err);
+            toast.error(err.message || "Failed to apply");
         }
-        if (!jobId) {
-            setSubmitError("Job id not found.");
-            return;
-        }
-
-        const payload = {
-            userId: String(user.id),
-            jobId: String(jobId),
-            appliedAt: new Date().toISOString(),
-            status: "Under Review",
-            form: {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                email: formData.email,
-                mobile: formData.mobile,
-                countryCode: formData.countryCode,
-            },
-        };
-
-        mutation.mutate(payload);
     };
 
     return (
-        <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
-            <RadixDialog.Trigger asChild></RadixDialog.Trigger>
-            <RadixDialog.Portal>
-                <DialogOverlay />
-                <DialogContent>
-                    <DialogTitle>Apply for Job</DialogTitle>
-                    <DialogDescription>
-                        Fill in your details and submit your application.
-                    </DialogDescription>
+        <>
+            <Toaster position="top-right" reverseOrder={false} />
+            <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
+                <RadixDialog.Portal>
+                    <DialogOverlay />
+                    <DialogContent>
+                        <Header>
+                            <h2>Apply for Job</h2>
+                            <RadixDialog.Close asChild>
+                                <IconButton aria-label="Close">
+                                    <Cross2Icon
+                                        style={{
+                                            width: "28px",
+                                            height: "28px",
+                                        }}
+                                    />
+                                </IconButton>
+                            </RadixDialog.Close>
+                        </Header>
 
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        {/* First Name */}
-                        <Fieldset>
-                            <Label htmlFor="firstName">First Name</Label>
-                            <Input
-                                id="firstName"
-                                {...register("firstName", {
-                                    required: "First name is required",
-                                })}
-                                error={errors.firstName}
-                                placeholder="Your first name"
-                            />
-                            {errors.firstName && (
-                                <StyledWarning>
-                                    <CiWarning />
-                                    <span>{errors.firstName.message}</span>
-                                </StyledWarning>
-                            )}
-                        </Fieldset>
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                flex: "1 1 auto",
+                                minHeight: 0,
+                            }}
+                        >
+                            <Body>
+                                <label htmlFor="cover_letter">
+                                    Cover Letter
+                                </label>
+                                <textarea
+                                    id="cover_letter"
+                                    placeholder="Write a short cover letter..."
+                                    {...register("cover_letter")}
+                                />
 
-                        {/* Last Name */}
-                        <Fieldset>
-                            <Label htmlFor="lastName">Last Name</Label>
-                            <Input
-                                id="lastName"
-                                {...register("lastName", {
-                                    required: "Last name is required",
-                                })}
-                                error={errors.lastName}
-                                placeholder="Your last name"
-                            />
-                            {errors.lastName && (
-                                <StyledWarning>
-                                    <CiWarning />
-                                    <span>{errors.lastName.message}</span>
-                                </StyledWarning>
-                            )}
-                        </Fieldset>
+                                <label htmlFor="resume_path">
+                                    Upload Resume (PDF/DOC)
+                                </label>
+                                <input
+                                    id="resume_path"
+                                    type="file"
+                                    accept=".pdf,.doc,.docx"
+                                    {...register("resume_path", {
+                                        required: "Please upload your resume",
+                                        onChange: (e) =>
+                                            setFileName(
+                                                e.target.files[0]?.name || ""
+                                            ),
+                                    })}
+                                />
+                                {fileName && <FileName>📄 {fileName}</FileName>}
+                                {errors.resume_path && (
+                                    <StyledWarning>
+                                        <CiWarning />
+                                        {errors.resume_path.message}
+                                    </StyledWarning>
+                                )}
+                            </Body>
 
-                        {/* Country Code */}
-                        <Fieldset>
-                            <Label htmlFor="countryCode">Country Code</Label>
-                            <Select
-                                id="countryCode"
-                                {...register("countryCode", {
-                                    required: "Country code is required",
-                                })}
-                                error={errors.countryCode}
-                            >
-                                <option value="">Select code</option>
-                                <option value="+1">+1 (USA)</option>
-                                <option value="+44">+44 (UK)</option>
-                                <option value="+91">+91 (India)</option>
-                                <option value="+61">+61 (Australia)</option>
-                                <option value="+93">+93 (Afghanistan)</option>
-                            </Select>
-                            {errors.countryCode && (
-                                <StyledWarning>
-                                    <CiWarning />
-                                    <span>{errors.countryCode.message}</span>
-                                </StyledWarning>
-                            )}
-                        </Fieldset>
+                            <Footer>
+                                <button
+                                    type="button"
+                                    className="cancel"
+                                    onClick={() => onOpenChange(false)}
+                                >
+                                    Cancel
+                                </button>
 
-                        {/* Mobile */}
-                        <Fieldset>
-                            <Label htmlFor="mobile">Mobile Phone Number</Label>
-                            <Input
-                                id="mobile"
-                                {...register("mobile", {
-                                    required: "Mobile number is required",
-                                })}
-                                error={errors.mobile}
-                                placeholder="Your phone number"
-                            />
-                            {errors.mobile && (
-                                <StyledWarning>
-                                    <CiWarning />
-                                    <span>{errors.mobile.message}</span>
-                                </StyledWarning>
-                            )}
-                        </Fieldset>
-
-                        {/* Email */}
-                        <Fieldset>
-                            <Label htmlFor="email">Email Address</Label>
-                            <Input
-                                id="email"
-                                {...register("email", {
-                                    required: "Email is required",
-                                    pattern: {
-                                        value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
-                                        message: "Enter a valid email",
-                                    },
-                                })}
-                                error={errors.email}
-                                placeholder="Your email address"
-                            />
-                            {errors.email && (
-                                <StyledWarning>
-                                    <CiWarning />
-                                    <span>{errors.email.message}</span>
-                                </StyledWarning>
-                            )}
-                        </Fieldset>
-
-                        {submitError && (
-                            <StyledWarning>
-                                <CiWarning />
-                                <span>{submitError}</span>
-                            </StyledWarning>
-                        )}
-
-                        <ButtonContainer>
-                            <Button
-                                color="green"
-                                type="submit"
-                                disabled={mutation.isLoading}
-                            >
-                                {mutation.isLoading
-                                    ? "Submitting..."
-                                    : "Submit Application"}
-                            </Button>
-                        </ButtonContainer>
-                    </form>
-
-                    <RadixDialog.Close asChild>
-                        <IconButton aria-label="Close">
-                            <Cross2Icon />
-                        </IconButton>
-                    </RadixDialog.Close>
-                </DialogContent>
-            </RadixDialog.Portal>
-        </RadixDialog.Root>
+                                <button
+                                    type="submit"
+                                    className="apply"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? (
+                                        <Spinner size="18px" color="#fff" />
+                                    ) : (
+                                        "Submit"
+                                    )}
+                                </button>
+                            </Footer>
+                        </form>
+                    </DialogContent>
+                </RadixDialog.Portal>
+            </RadixDialog.Root>
+        </>
     );
 }

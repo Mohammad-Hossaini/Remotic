@@ -1,25 +1,34 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { HiMiniHeart } from "react-icons/hi2";
+import { RxCross2 } from "react-icons/rx";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+<<<<<<< HEAD
 
 import { RxCross2 } from "react-icons/rx";
+=======
+>>>>>>> main
 import { useAuth } from "../../../hook/AuthContext";
 import { getJobs } from "../../../services/apiAllJobs";
 import {
-    deleteSavedJob,
-    getSavedJobsByUser,
-    putSavedJobs,
-} from "../../../services/apiGetSavedJobs";
+    addFavoriteJob,
+    getMyFavorites,
+    removeFavoriteJob,
+} from "../../../services/apiFavorites";
 import Button from "../../../ui/Button";
+import DialogDemo from "../../../ui/DialogDemo";
 import Footer from "../../Footer";
 import JobsHeader from "../../JobsHeader";
+import SearchBar from "../../SearchBar";
 
 // ================= Styled Components =================
 const AllJobsWrapper = styled.div`
+<<<<<<< HEAD
     /* background-color: #f8f9fa; */
+=======
+>>>>>>> main
     min-height: 100vh;
 `;
 
@@ -34,12 +43,16 @@ const JobsContainer = styled.div`
 const JobList = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.6rem;
+    gap: 2.5rem;
     padding-top: 1rem;
 `;
 
 const JobsCard = styled.div`
+<<<<<<< HEAD
     min-width: 450px;
+=======
+    min-width: 320px;
+>>>>>>> main
     min-height: 250px;
     display: flex;
     flex-direction: column;
@@ -69,17 +82,28 @@ const HoverOverlay = styled.div`
     width: 100%;
     height: 50%;
     display: flex;
+<<<<<<< HEAD
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     padding: var(--space-16);
     pointer-events: none;
+=======
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: var(--space-16);
+>>>>>>> main
     opacity: 0;
     transition: opacity 0.3s ease;
     background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(25px);
     border-top: 1px solid var(--color-grey-200);
+<<<<<<< HEAD
+=======
+    pointer-events: all;
+>>>>>>> main
 `;
 
 const FancyButton = styled(Button)`
@@ -95,10 +119,26 @@ const FancyButton = styled(Button)`
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
     }
+<<<<<<< HEAD
 
     &:active {
         transform: translateY(0);
         box-shadow: var(--shadow-sm);
+=======
+`;
+
+const EmpButton = styled(Button)`
+    width: 140px;
+    font-size: var(--font-sm);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+>>>>>>> main
     }
 `;
 
@@ -127,6 +167,7 @@ const JobTitle = styled.h3`
     font-weight: 600;
     color: var(--color-grey-900);
     margin-bottom: 0.4rem;
+    margin-top: 1rem;
 `;
 
 const JobPosition = styled.p`
@@ -171,28 +212,14 @@ const JobDescription = styled.p`
     line-height: 1.4;
 `;
 
-const StyledLinkButtons = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1.2rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-`;
-
 const HeartIcon = styled(HiMiniHeart)`
     cursor: pointer;
     font-size: 2rem;
-    color: ${(props) => (props.active ? "#2b8a3e" : "var(--color-grey-400)")};
+    color: ${(props) => (props.active ? "red" : "gray")};
     position: absolute;
     top: 1rem;
     right: 1rem;
-
-    &:hover {
-        color: #2b8a3e;
-    }
+    transition: color 0.3s ease;
 `;
 
 // ================= Modal =================
@@ -211,9 +238,14 @@ const ModalContent = styled.div`
     padding: 2rem;
     border-radius: var(--radius-lg);
     max-width: 500px;
+<<<<<<< HEAD
     width: 90rem;
     max-height: 500px;
     height: 25rem;
+=======
+    width: 90%;
+    max-height: 500px;
+>>>>>>> main
     text-align: center;
     position: relative;
 `;
@@ -227,11 +259,14 @@ const CloseButton = styled.button`
     font-size: 2rem;
     color: var(--color-grey-600);
     cursor: pointer;
+<<<<<<< HEAD
     transition: color 0.2s ease;
 
     &:hover {
         color: var(--color-grey-900);
     }
+=======
+>>>>>>> main
 `;
 
 const ModalTitle = styled.h2`
@@ -249,28 +284,38 @@ const ModalDescription = styled.p`
 const ModalButtons = styled.div`
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     align-items: stretch;
+=======
+>>>>>>> main
     gap: 1rem;
     margin-top: 1.5rem;
 `;
 
 const WideButton = styled(Button)`
     width: 100%;
+<<<<<<< HEAD
     font-size: 1%.5;
+=======
+    font-size: 1.2rem;
+>>>>>>> main
     padding: 0.9rem 1.2rem;
 `;
 
 // ================= Main Component =================
 export default function AllJobs() {
+    const [currentJob, setCurrentJob] = useState(null);
+    const [applyModalOpen, setApplyModalOpen] = useState(false);
+    const [modalData, setModalData] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [locationFilter, setLocationFilter] = useState("");
     const [savedJobIds, setSavedJobIds] = useState([]);
-    const [modalData, setModalData] = useState(null);
 
-    const queryClient = useQueryClient();
     const { user } = useAuth();
-    const location = useLocation();
+    console.log("User in AllJobs:", user?.role);
 
+    const location = useLocation();
+    const queryClient = useQueryClient();
     const isHomePage = location.pathname === "/";
 
     const {
@@ -281,37 +326,16 @@ export default function AllJobs() {
         queryKey: ["jobs"],
         queryFn: getJobs,
     });
-    console.log("All jobs from API:", jobs);
 
     useEffect(() => {
-        if (!user?.id) return;
-        getSavedJobsByUser(user.id)
-            .then((saved) => setSavedJobIds(saved.map((s) => s.jobId)))
+        if (!user?.token) return;
+        getMyFavorites(user.token)
+            .then((favorites) => setSavedJobIds(favorites.map((f) => f.job.id)))
             .catch(console.error);
     }, [user]);
 
-    const saveJobMutation = useMutation({
-        mutationFn: putSavedJobs,
-        onSuccess: (_, variables) => {
-            setSavedJobIds((prev) => [...prev, variables.id]);
-            toast.success("Job saved successfully!");
-            queryClient.invalidateQueries(["savedJobs", user?.id]);
-        },
-        onError: (err) => toast.error(err.message),
-    });
-
-    const deleteJobMutation = useMutation({
-        mutationFn: deleteSavedJob,
-        onSuccess: (_, savedJobId) => {
-            setSavedJobIds((prev) => prev.filter((id) => id !== savedJobId));
-            toast.success("Job removed from saved!");
-            queryClient.invalidateQueries(["savedJobs", user?.id]);
-        },
-        onError: (err) => toast.error(err.message),
-    });
-
-    const toggleFavorite = (job) => {
-        if (!user?.id) {
+    const toggleFavorite = async (job) => {
+        if (!user?.token) {
             setModalData({
                 type: "save",
                 title: "Save this job with an account",
@@ -320,13 +344,27 @@ export default function AllJobs() {
             });
             return;
         }
-        if (!savedJobIds.includes(job.id))
-            saveJobMutation.mutate({ ...job, userId: user?.id });
-        else
-            getSavedJobsByUser(user.id).then((saved) => {
-                const savedEntry = saved.find((s) => s.jobId === job.id);
-                if (savedEntry) deleteJobMutation.mutate(savedEntry.id);
+
+        try {
+            const isFavorite = savedJobIds.includes(job.id);
+
+            if (isFavorite) {
+                await removeFavoriteJob(job.id, user.token);
+                setSavedJobIds((prev) => prev.filter((id) => id !== job.id));
+                toast.success("Job removed from favorites");
+            } else {
+                await addFavoriteJob(job.id, user.token);
+                setSavedJobIds((prev) => [...prev, job.id]);
+                toast.success("Job added to favorites");
+            }
+
+            queryClient.invalidateQueries({
+                queryKey: ["myFavorites", user?.id],
             });
+        } catch (err) {
+            console.error(err);
+            toast.error(err.message || "Failed to update favorite");
+        }
     };
 
     const handleApplyNow = (job) => {
@@ -337,27 +375,18 @@ export default function AllJobs() {
                 description:
                     "Build your profile, apply to this job, and track your application status with a free account.",
             });
-            return;
+        } else {
+            setApplyModalOpen(true);
+            setCurrentJob(job);
         }
     };
 
     if (isLoading) return <p>Loading jobs...</p>;
     if (error) return <p>Failed to load jobs 😢</p>;
 
-    const filteredJobs = jobs
-        ?.filter((job) =>
-            searchTerm === ""
-                ? true
-                : job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                  job.company?.name
-                      .toLowerCase()
-                      .includes(searchTerm.toLowerCase())
-        )
-        .sort(
-            (a, b) =>
-                new Date(b.created_at).getTime() -
-                new Date(a.created_at).getTime()
-        );
+    const filteredJobs = jobs?.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
 
     return (
         <AllJobsWrapper>
@@ -367,6 +396,17 @@ export default function AllJobs() {
                 locationFilter={locationFilter}
                 setLocationFilter={setLocationFilter}
             />
+            {isHomePage && (
+                <SearchBar
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    locationFilter={locationFilter}
+                    setLocationFilter={setLocationFilter}
+                    onApply={() =>
+                        console.log("Searching:", searchTerm, locationFilter)
+                    }
+                />
+            )}
 
             <JobsContainer>
                 <JobList>
@@ -378,7 +418,7 @@ export default function AllJobs() {
                                         job.company?.logo ||
                                         "/company-images/image(6).jfif"
                                     }
-                                    alt={job.company?.name || "Company Logo"}
+                                    alt={job.company?.name || "Company"}
                                 />
                                 <JobText>
                                     <JobTitle>{job.title}</JobTitle>
@@ -387,7 +427,7 @@ export default function AllJobs() {
                                     </JobPosition>
                                     <JobInfo>
                                         <CompanyName>
-                                            {job.job_type || "Unknown Company"}
+                                            {job.job_type}
                                         </CompanyName>
                                         <Location>{job.location}</Location>
                                         <Salary>
@@ -412,6 +452,7 @@ export default function AllJobs() {
                                 </JobText>
                             </JobTop>
 
+<<<<<<< HEAD
                             <HeartIcon
                                 active={savedJobIds.includes(job.id)}
                                 onClick={() => toggleFavorite(job)}
@@ -432,24 +473,78 @@ export default function AllJobs() {
                                 >
                                     Apply Now
                                 </FancyButton>
+=======
+                            {user?.role === "job_seeker" && (
+                                <HeartIcon
+                                    active={savedJobIds.includes(job.id)}
+                                    onClick={() => toggleFavorite(job)}
+                                />
+                            )}
+                            <HoverOverlay className="hover-overlay">
+                                <Link
+                                    to={`jobDetails/${job.id}`}
+                                    style={{
+                                        flex:
+                                            !user?.role ||
+                                            user?.role === "job_seeker"
+                                                ? "1"
+                                                : "unset",
+                                    }}
+                                >
+                                    <FancyButton
+                                        variation={
+                                            !user?.role ||
+                                            user?.role === "job_seeker"
+                                                ? "secondary"
+                                                : "primary"
+                                        }
+                                        style={{
+                                            width:
+                                                !user?.role ||
+                                                user?.role === "job_seeker"
+                                                    ? "100%"
+                                                    : "140px",
+                                        }}
+                                    >
+                                        Learn More
+                                    </FancyButton>
+                                </Link>
+
+                                {(user?.role === "job_seeker" ||
+                                    !user?.role) && (
+                                    <FancyButton
+                                        variation="primary"
+                                        onClick={() => handleApplyNow(job)}
+                                    >
+                                        Apply Now
+                                    </FancyButton>
+                                )}
+>>>>>>> main
                             </HoverOverlay>
                         </JobsCard>
                     ))}
                 </JobList>
             </JobsContainer>
 
+<<<<<<< HEAD
             {isHomePage && <Footer />}
+=======
+>>>>>>> main
             {modalData && (
                 <ModalOverlay>
                     <ModalContent>
                         <CloseButton onClick={() => setModalData(null)}>
                             <RxCross2 />
                         </CloseButton>
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
                         <ModalTitle>{modalData.title}</ModalTitle>
                         <ModalDescription>
                             {modalData.description}
                         </ModalDescription>
+<<<<<<< HEAD
                         {/* <ModalButtons>
                             {!user?.id ? (
                                 <>
@@ -501,10 +596,33 @@ export default function AllJobs() {
                                     Close
                                 </WideButton>
                             )}
+=======
+                        <ModalButtons>
+                            <Link to="/login">
+                                <WideButton variation="secondary">
+                                    Log in
+                                </WideButton>
+                            </Link>
+                            <Link to="/createAccount">
+                                <WideButton variation="primary">
+                                    Sign up
+                                </WideButton>
+                            </Link>
+>>>>>>> main
                         </ModalButtons>
                     </ModalContent>
                 </ModalOverlay>
             )}
+
+            {applyModalOpen && currentJob && (
+                <DialogDemo
+                    open={applyModalOpen}
+                    onOpenChange={setApplyModalOpen}
+                    jobId={currentJob.id}
+                />
+            )}
+
+            {isHomePage && <Footer />}
         </AllJobsWrapper>
     );
 }

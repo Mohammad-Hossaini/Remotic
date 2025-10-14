@@ -9,7 +9,6 @@ import EmployerPrivateRoute from "./features/authintication/EmployerPrivateRoute
 import JobseekerPrivateRoute from "./features/authintication/JobseekerPrivateRoute";
 
 import Application from "./pages/application/Application";
-import Applicant from "./pages/home/employer/Applicant";
 import EmployerDashboard from "./pages/home/employer/EmployerDashboard";
 import PostedJobs from "./pages/home/employer/PostedJobs";
 import PostedNewJobs from "./pages/home/employer/PostedNewJobs";
@@ -27,6 +26,10 @@ import BackGroundInfo from "./pages/background information/BackGroundInfo";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import Home from "./pages/home/Home";
 import LoginPage from "./pages/LoginPage";
+import RegisterEmployer from "./pages/RegisterEmployer";
+import RegisterJobSeeker from "./pages/RegisterJobSeeker";
+import SearchBar from "./pages/SearchBar";
+import SignUpPage from "./pages/SignUpPage";
 import GlobalStyles from "./styles/GlobalStyles";
 import AppLayout from "./ui/AppLayout";
 import EmployerAppLayout from "./ui/EmployerAppLayout";
@@ -63,6 +66,15 @@ export default function App() {
                         <Route path="/searchBar" element={<SearchBar />} />
                         <Route path="/settings" element={<Settings />} />
                         <Route path="/login" element={<LoginPage />} />
+                        <Route path="/sign-up" element={<SignUpPage />} />
+                        <Route
+                            path="/register-job-seeker"
+                            element={<RegisterJobSeeker />}
+                        />
+                        <Route
+                            path="/register-employer"
+                            element={<RegisterEmployer />}
+                        />
                         <Route
                             path="/createAccount"
                             element={<CreateAccountPage />}
@@ -135,7 +147,7 @@ export default function App() {
                                 path="application"
                                 element={<Application />}
                             />
-                            <Route path="applicant" element={<Applicant />} />
+                            {/* <Route path="applicant" element={<Applicant />} /> */}
                             <Route path="postedJobs" element={<PostedJobs />} />
                             <Route
                                 path="postedNewJobs"

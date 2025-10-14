@@ -34,6 +34,8 @@
       "location": "magahza   Barchi  Kabul  Afghanistan",
       "companyLogo": null,
       "contactPerson": "Mohammad",
+<<<<<<< HEAD
+=======
       "role": "employer"
     },
     {
@@ -43,57 +45,43 @@
       "email": "mohammad@gmail.com",
       "phone": "078 15 98 774",
       "password": "12345678",
+>>>>>>> 2317c7131d7503d78c0c55aeaffdb2073dd67157
       "role": "employer",
-      "skills": [
-        "PostgreSQL",
-        "MySQL",
-        "REST API",
-        "GraphQL",
-        "Git",
-        "GitHub",
-        "Docker",
-        "Kubernetes",
-        "AWS",
-        "Tailwind CSS",
-        "Bootstrap",
-        "Sass"
-      ],
-      "experience": "1 years",
-      "description": "Front-End Developer | HTML, CSS, JavaScript, React, SQL | Building Responsive & Interactive Web Experiences | Passionate About User-Centric Design & Database Management",
-      "location": "Kabul, Afghanistan",
-      "views": 1245,
-      "country": "Afghanistan",
-      "province": "Kabul",
-      "city": "Kabul",
-      "street": "Street 23",
-      "birthday": "1995-06-15",
-      "gender": "Female",
-      "projects": 12,
-      "posts": 140,
-      "comments": 43,
-      "Work_Experience": [
-        {
-          "jobTitle": "",
-          "company": "",
-          "from": "",
-          "to": "",
-          "jobLevel": ""
-        }
-      ],
-      "Educations": [
-        {
-          "school": "",
-          "educationalAttainment": "",
-          "from": "",
-          "to": "",
-          "description": ""
-        }
-      ],
-      "mobile": "",
-      "profilePhoto": "",
-      "bg_image": ""
+      "profilePhoto": "/profile/default.jpg"
     },
     {
+<<<<<<< HEAD
+      "id": "ecbb",
+      "email": "",
+      "password": "",
+      "firstName": "",
+      "lastName": "",
+      "phone": "",
+      "description": "",
+      "resume": null,
+      "skills": "",
+      "experience": "",
+      "companyName": "",
+      "website": "",
+      "location": "",
+      "companyLogo": null,
+      "contactPerson": "",
+      "role": ""
+    },
+    {
+      "id": "2646",
+      "email": "mohammad@gmail.com",
+      "password": "12345678",
+      "firstName": "mohammad",
+      "lastName": "sirath",
+      "phone": "0797295355",
+      "description": "I am a react developer | js developer",
+      "resume": null,
+      "skills": "HTML, CSS, JS, REACT",
+      "experience": "1 years",
+      "companyName": "",
+      "website": "",
+=======
       "id": "604c",
       "firstName": "Ali Aqa",
       "lastName": "Mohammadi",
@@ -127,6 +115,7 @@
       ],
       "mobile": "",
       "token": "42c43qhrm0p",
+>>>>>>> 2317c7131d7503d78c0c55aeaffdb2073dd67157
       "location": "",
       "companyLogo": null,
       "contactPerson": "",
@@ -153,13 +142,12 @@
   ],
   "jobs": [
     {
-      "id": "job001",
+      "id": "1",
       "companyLogo": "/company-images/image(1).jfif",
       "title": "Frontend Developer",
       "position": "React.js Specialist",
       "location": "Kabul",
       "type": "Full Time",
-      "postedAt": "Active a day ago",
       "experience": "2+ years",
       "companyName": "Microsoft",
       "jobSummary": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea voluptas totam in nobis libero magnam quas dolorum odit non.",
@@ -297,62 +285,72 @@
         "Cypress",
         "JavaScript"
       ]
-    }
-  ],
-  "appliedJobs": [
-    {
-      "id": "b826",
-      "userId": "604c",
-      "jobId": "8",
-      "appliedAt": "2025-09-16T05:04:42.175Z",
-      "status": "Under Review",
-      "form": {
-        "firstName": "Gareth",
-        "lastName": "Herring",
-        "email": "juxedyboqy@mailinator.com",
-        "mobile": "781598774",
-        "countryCode": "+91"
-      }
     },
     {
-      "id": "1064",
-      "userId": "1",
-      "jobId": "job001",
-      "appliedAt": "2025-09-21T15:10:15.788Z",
-      "status": "Under Review",
-      "form": {
-        "firstName": "Joseph",
-        "lastName": "Mccormick",
-        "email": "nodaloqu@mailinator.com",
-        "mobile": "+1 (671) 748-9166",
-        "countryCode": "+93"
-      }
+      "id": "e647",
+      "title": "test",
+      "position": "test",
+      "location": "test",
+      "type": "full time",
+      "experience": "2",
+      "companyName": "test",
+      "companyLogo": "",
+      "salary": "",
+      "jobSummary": "",
+      "qualification": "",
+      "skills": [
+        ""
+      ]
     }
   ],
   "savedJobs": [
     {
-      "id": "save001",
-      "userId": "dfb5",
-      "jobId": "job003",
-      "savedAt": "2025-09-15T12:00:00Z"
+      "id": "1",
+      "companyLogo": "/company-images/image(1).jfif",
+      "title": "Frontend Developer",
+      "position": "React.js Specialist",
+      "location": "Kabul",
+      "type": "Full Time",
+      "experience": "2+ years",
+      "companyName": "Microsoft",
+      "jobSummary": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea voluptas totam in nobis libero magnam quas dolorum odit non.",
+      "qualification": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis voluptas at dolores molestias veniam aliquam vero autem provident, optio blanditiis facere! Laboriosam reprehenderit, fugiat assumenda deserunt inventore vitae non praesentium.",
+      "salary": "700 USD/month",
+      "skills": [
+        "CSS",
+        "HTML",
+        "C++"
+      ],
+      "isFavorite": false
+    }
+  ],
+  "appliedJobs": [
+    {
+      "id": "4c8cf52bcc73a",
+      "firstName": "Katelyn",
+      "lastName": "Harmon",
+      "countryCode": "+91",
+      "mobile": "+1 (824) 489-7939",
+      "email": "bywop@mailinator.com",
+      "jobId": "1"
     },
     {
-      "id": "2fbd",
-      "userId": "2",
-      "jobId": "2",
-      "savedAt": "2025-09-23T10:40:32.040Z"
+      "id": "442a3318c5ed28",
+      "firstName": "Tana",
+      "lastName": "Winters",
+      "countryCode": "+44",
+      "mobile": "+1 (275) 499-6521",
+      "email": "hypylyqoq@mailinator.com",
+      "jobId": "7"
     },
     {
-      "id": "6b89",
-      "userId": "1",
-      "jobId": "2",
-      "savedAt": "2025-09-23T13:24:22.258Z"
-    },
-    {
-      "id": "2beb",
-      "userId": "1",
-      "jobId": "3",
-      "savedAt": "2025-09-23T13:24:25.242Z"
+      "id": "378a6e01ca49a8",
+      "firstName": "Angelica",
+      "lastName": "Daniel",
+      "countryCode": "+1",
+      "mobile": "+1 (196) 831-7526",
+      "email": "tygydy@mailinator.com",
+      "jobId": "3"
     }
   ]
 }

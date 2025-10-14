@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import { loginUser } from "../features/authintication/apiLogin";
 import { useAuth } from "../hook/AuthContext";
+import Spinner from "../ui/Spinner";
 import Footer from "./Footer";
 import JobsHeader from "./JobsHeader";
 
@@ -96,7 +97,6 @@ const Warning = styled.div`
     color: var(--color-error);
 `;
 
-/* Login Button */
 const Button = styled.button`
     margin-top: 1rem;
     padding: 1rem 1.8rem;
@@ -108,6 +108,10 @@ const Button = styled.button`
     font-weight: 500;
     cursor: pointer;
     transition: 0.2s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
         background-color: var(--color-primary-dark);
@@ -223,12 +227,17 @@ export default function LoginPage() {
                         </InputGroup>
 
                         <Button type="submit" disabled={loading}>
-                            {loading ? "Logging in..." : "Login"}
+                            {/* {loading ? "Logging in..." : "Login"} */}
+                            {loading ? (
+                                <Spinner size="18px" color="#fff" />
+                            ) : (
+                                "Login"
+                            )}
                         </Button>
 
                         <CreateAccount>
                             Don’t have an account?
-                            <a onClick={() => navigate("/login/createAccount")}>
+                            <a onClick={() => navigate("/sign-up")}>
                                 Create Account
                             </a>
                         </CreateAccount>

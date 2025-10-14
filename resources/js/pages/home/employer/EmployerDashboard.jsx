@@ -1,5 +1,7 @@
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useAuth } from "../../../hook/AuthContext";
+import { getJobs } from "../../../services/apiAllJobs";
 import JobApplicantsChart from "../../../ui/BarChart";
 import JobModal from "../../../ui/JobModal";
 import ApplicationStatus from "../../../ui/PieChart";
@@ -8,8 +10,9 @@ import "./EmployerDashboard.css";
 function EmployerDashboard() {
     const [openModal, setOpenModal] = useState(false);
     const { user } = useAuth();
-    console.log("User Data : ",user);
+    // console.log("User Data : ", user);
     // console.log(user.user.company?.company_name);
+  
 
     return (
         <div className="employer-section">

@@ -24,7 +24,7 @@ function Welcome() {
                             Continue with Microsoft
                         </button>
 
-                        <Link to="/createAccount">
+                        <Link to="/sign-up">
                             <button className="Btn">Sign in with Email</button>
                         </Link>
                         <p>

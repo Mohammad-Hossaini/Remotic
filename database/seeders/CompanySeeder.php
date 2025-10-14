@@ -17,9 +17,10 @@ class CompanySeeder extends Seeder
             [
                 'user_id' => 2,
                 'name' => 'TechVision Ltd.',
+                'industry' => 'Hardware',
+                'location' => 'Kabul, Afghanistan',
                 'description' => 'A leading IT company specializing in cloud and AI solutions.',
                 'website' => 'https://techvision.com',
-                'location' => 'Kabul, Afghanistan',
             ],
         ];
 

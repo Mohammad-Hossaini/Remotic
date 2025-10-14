@@ -1,31 +1,196 @@
-import { MdTask, MdUpcoming } from "react-icons/md";
-import { PiUsersThreeFill } from "react-icons/pi";
-
 import {
     HiOutlineBookmark,
     HiOutlineBriefcase,
     HiOutlineClipboardList,
     HiOutlineUserGroup,
 } from "react-icons/hi";
+import { MdTask, MdUpcoming } from "react-icons/md";
+import { PiUsersThreeFill } from "react-icons/pi";
+import styled from "styled-components";
 import { useAuth } from "../../../hook/AuthContext";
-import "./JobSeekerDashboard.css";
 
-function JobSeekerDashboard() {
+// ===== Styled Components =====
+const DashboardContainer = styled.div`
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-family: "Inter", sans-serif;
+`;
+
+const MessageBox = styled.div`
+    background: linear-gradient(90deg, #e6f2ef, #f3f4f6);
+    padding: 2.5rem 3rem;
+    border-radius: var(--radius-xl);
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+`;
+
+const WelcomeMessage = styled.h1`
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--color-grey-900);
+    margin-bottom: 0.8rem;
+
+    span {
+        color: var(--color-primary);
+    }
+`;
+
+const DateText = styled.p`
+    font-size: 1.6rem;
+    color: var(--color-grey-600);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+`;
+
+const StatisticsBox = styled.div`
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+
+    .box {
+        flex: 1 1 220px;
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .icon {
+            font-size: 2.2rem;
+            color: var(--color-primary);
+        }
+
+        .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-grey-900);
+        }
+
+        .name {
+            font-size: 1.4rem;
+            color: var(--color-grey-600);
+        }
+    }
+`;
+
+const ActiveBox = styled.div`
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+
+    .recentProjects,
+    .rightSide {
+        flex: 1 1 300px;
+        background: #fff;
+        padding: 1.8rem;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+
+        h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-grey-900);
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+
+            li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .status {
+                    padding: 0.2rem 0.6rem;
+                    border-radius: var(--radius-sm);
+                    font-size: 1.2rem;
+                    font-weight: 600;
+
+                    &.in-progress {
+                        background-color: #fef9c3;
+                        color: #b45309;
+                    }
+                    &.completed {
+                        background-color: #dcfce7;
+                        color: #15803d;
+                    }
+                    &.pending {
+                        background-color: #fee2e2;
+                        color: #b91c1c;
+                    }
+                }
+
+                .avatar {
+                    display: inline-flex;
+                    width: 28px;
+                    height: 28px;
+                    background-color: var(--color-primary);
+                    color: #fff;
+                    border-radius: 50%;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    .rightSide {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+`;
+
+// Utility function for ordinal suffix
+const getOrdinal = (n) => {
+    const s = ["th", "st", "nd", "rd"];
+    const v = n % 100;
+    return s[(v - 20) % 10] || s[v] || s[0];
+};
+
+export default function JobSeekerDashboard() {
     const { user } = useAuth();
-    console.log(user);
+
+    // Dynamic date
+    const now = new Date();
+    const dayName = now.toLocaleDateString("en-US", { weekday: "long" });
+    const dayNumber = now.getDate();
+    const monthName = now.toLocaleDateString("en-US", { month: "long" });
+    const year = now.getFullYear();
+    const formattedDate = `${dayName}, ${dayNumber}${getOrdinal(
+        dayNumber
+    )} of ${monthName}, ${year}`;
+
     return (
-        <div className="dashboardContainer">
+        <DashboardContainer>
             {/* Welcome Section */}
-            <div className="messageBox">
-                <h1 className="welcomeMessage">
-                    Welcome back, {user?.data?.user?.name || user?.user?.name}
+            <MessageBox>
+                <WelcomeMessage>
+                    Welcome back,{" "}
+                    <span>
+                        {user?.data?.user?.profile?.first_name ||
+                            user?.user?.name}{" "}
+                        {user?.data?.user?.profile?.last_name}
+                    </span>{" "}
                     👋
-                </h1>
-                <p>Today is July 23, 2025</p>
-            </div>
+                </WelcomeMessage>
+                <DateText>Today is {formattedDate}</DateText>
+            </MessageBox>
 
             {/* Statistics Section */}
-            <div className="statisticsBox">
+            <StatisticsBox>
                 <div className="box projects">
                     <HiOutlineBriefcase className="icon" />
                     <div>
@@ -33,7 +198,6 @@ function JobSeekerDashboard() {
                         <p className="name">Projects</p>
                     </div>
                 </div>
-
                 <div className="box jobSaved">
                     <HiOutlineBookmark className="icon" />
                     <div>
@@ -41,7 +205,6 @@ function JobSeekerDashboard() {
                         <p className="name">Job Saved</p>
                     </div>
                 </div>
-
                 <div className="box totalJobs">
                     <HiOutlineClipboardList className="icon" />
                     <div>
@@ -49,7 +212,6 @@ function JobSeekerDashboard() {
                         <p className="name">Total Jobs</p>
                     </div>
                 </div>
-
                 <div className="box recent">
                     <HiOutlineUserGroup className="icon" />
                     <div>
@@ -57,11 +219,11 @@ function JobSeekerDashboard() {
                         <p className="name">Recent Tasks</p>
                     </div>
                 </div>
-            </div>
+            </StatisticsBox>
 
             {/* Active Section */}
-            <div className="activeBox">
-                {/* Left Side - Recent Projects */}
+            <ActiveBox>
+                {/* Recent Projects */}
                 <div className="recentProjects">
                     <h3>
                         <MdTask /> Recent Projects
@@ -123,9 +285,7 @@ function JobSeekerDashboard() {
                         </ul>
                     </div>
                 </div>
-            </div>
-        </div>
+            </ActiveBox>
+        </DashboardContainer>
     );
 }
-
-export default JobSeekerDashboard;

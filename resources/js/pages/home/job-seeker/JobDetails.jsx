@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaPaperPlane } from "react-icons/fa"; // ✅ Apply icon
 import { useParams } from "react-router-dom";
-import DialogDemo from "../../../ui/DialogDemo";
 
 import "./JobDetails.css";
 
@@ -21,7 +19,7 @@ function JobDetails() {
                 if (!response.ok) throw new Error("Failed to fetch job");
 
                 const data = await response.json();
-                setJob(data); 
+                setJob(data);
             } catch (err) {
                 console.error(err);
                 setError("Error fetching job");
@@ -57,22 +55,6 @@ function JobDetails() {
 
                     <div className="headerButtons">
                         <button className="btn-secondary">VIEW COMPANY</button>
-
-                        {/* Button to open modal */}
-                        <button
-                            className="btn-primary"
-                            onClick={() => setIsModalOpen(true)}
-                        >
-                            <FaPaperPlane className="btnIcon" />
-                            APPLY FOR THIS JOB
-                        </button>
-
-                        {/* Render the modal here and pass jobId */}
-                        <DialogDemo
-                            open={isModalOpen}
-                            onOpenChange={setIsModalOpen}
-                            jobId={job?.id}
-                        />
                     </div>
                 </div>
                 <div className="jobDetailsHeaderRight"></div>

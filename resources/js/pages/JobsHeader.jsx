@@ -9,7 +9,8 @@ import { useAuth } from "../hook/AuthContext";
 const HeaderWrapper = styled.div`
     max-width: 120rem;
     text-align: center;
-    margin: 1rem auto;
+    margin: 0 auto;
+    margin-top: 1rem;
 `;
 
 const TopRow = styled.div`
@@ -170,7 +171,11 @@ export default function JobsHeader({
 
     const isHomePage = location.pathname === "/";
     const isLoginPage = location.pathname === "/login";
-    const isRegisterPage = location.pathname === "/createAccount";
+    // const isRegisterPage = location.pathname === "/createAccount";
+
+    const isRegisterPage =
+        location.pathname.toLowerCase().includes("register-job-seeker") ||
+        location.pathname.toLowerCase().includes("/register-employer");
     const isDashboard = location.pathname.includes("/app");
     const isJobDetailsPage = location.pathname.includes("/jobDetails");
 
@@ -179,7 +184,7 @@ export default function JobsHeader({
 
     // Show filters/search only on Home or Dashboard pages (not Home → JobDetails)
     const showFiltersSection =
-        (isHomePage || isDashboard) && !(isJobDetailsPage && !isHomePage);
+        isDashboard && !(isJobDetailsPage && !isHomePage);
 
     // Show login/signup buttons on Home, Login, Register, or Home → JobDetails
     const showAuthButtons =
@@ -192,8 +197,9 @@ export default function JobsHeader({
         <HeaderWrapper>
             <TopRow>
                 <SearchWrapper>
-                    <StyledH2>Remote Work Hub</StyledH2>
-
+                    {(isHomePage || isLoginPage || isRegisterPage) && (
+                        <StyledH2>Remote Work Hub</StyledH2>
+                    )}
                     {showFiltersSection && (
                         <>
                             <SearchBar
@@ -210,6 +216,7 @@ export default function JobsHeader({
                 {showAuthButtons && (
                     <Buttons>
                         <LoginBtn to="/login">Log in</LoginBtn>
+
                         <SignUpBtn to="/welcome">Sign up →</SignUpBtn>
                     </Buttons>
                 )}

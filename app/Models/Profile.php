@@ -18,6 +18,8 @@ class Profile extends Model
         'resume',
         'education',
         'skills',
+        'profile_image',
+        'background_image',
     ];
 
     // A profile belongs to one user
