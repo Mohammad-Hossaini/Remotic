@@ -119,6 +119,7 @@ const JobTop = styled.div`
 const JobImg = styled.img`
     width: 70px;
     height: 70px;
+    border-radius: 50%;
     object-fit: cover;
     border-radius: var(--radius-md);
     flex-shrink: 0;

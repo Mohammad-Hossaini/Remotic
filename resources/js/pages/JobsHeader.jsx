@@ -144,6 +144,17 @@ const CaretIcon = styled(RxCaretDown)`
     color: var(--color-grey-500);
 `;
 
+const StyledHome = styled(Link)`
+    text-decoration: none;
+    color: var(--color-grey-700);
+    font-size: 1.4rem;
+    margin-right: 1.2rem;
+    margin-left: 10rem;
+    &:hover {
+        color: var(--color-primary);
+    }
+`;
+
 // ================= JobsHeader Component =================
 export default function JobsHeader({
     searchTerm,
@@ -200,6 +211,7 @@ export default function JobsHeader({
                     {(isHomePage || isLoginPage || isRegisterPage) && (
                         <StyledH2>Remote Work Hub</StyledH2>
                     )}
+                    <StyledHome to="/home">Home</StyledHome>
                     {showFiltersSection && (
                         <>
                             <SearchBar
