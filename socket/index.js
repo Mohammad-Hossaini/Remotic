@@ -48,9 +48,16 @@ io.on("connection", (socket) => {
         socket.emit("testResponse", `Received your message: "${msg}"`);
     });
 
-    socket.on("postedJob", (msg) => {
-        console.log(`🟢 Job posted by ${socket.user?.name}:`, msg);
-        socket.emit("getResponse", `✅ Server received: "${msg}"`);
+    socket.on("postedJob", (jobInfo) => {
+        console.log(
+            `🟢 ${socket.user?.name} posted a new job: "${jobInfo.jobTitle}" from ${jobInfo.companyName}`
+        );
+
+        // ارسال پاسخ به همان کاربر
+        socket.emit(
+            "getResponse",
+            `✅ Job "${jobInfo.title}" received successfully!`
+        );
     });
 
     socket.on("logout", () => {

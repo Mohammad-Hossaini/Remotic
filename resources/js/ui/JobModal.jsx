@@ -155,7 +155,7 @@ export default function JobModal({ open, onOpenChange, job }) {
         defaultValues: job || {},
     });
 
-    // 🔹 اتصال سوکت هنگام بارگذاری
+    // 🔹 اتصال سوکت
     useEffect(() => {
         if (!user?.token) return;
 
@@ -168,14 +168,14 @@ export default function JobModal({ open, onOpenChange, job }) {
             toast.success(data);
         });
 
-        setSocket(newSocket); // 🔹 ذخیره در state
+        setSocket(newSocket);
 
         return () => {
             newSocket.disconnect();
         };
     }, [user?.token]);
 
-    // 🔹 Mutation ذخیره شغل
+    // 🔹 Mutation ایجاد یا ویرایش شغل
     const mutation = useMutation({
         mutationFn: async (data) => {
             if (isEditMode) return updateJob(job.id, data);
@@ -199,6 +199,7 @@ export default function JobModal({ open, onOpenChange, job }) {
     });
 
     // 🔹 تابع ثبت فرم
+    // console.log(user?.data?.user?.name);
     const onSubmit = (data) => {
         const jobData = {
             company_id: user?.data?.user?.company?.id,
@@ -215,10 +216,21 @@ export default function JobModal({ open, onOpenChange, job }) {
 
         mutation.mutate(jobData);
 
-        // ✅ ارسال ایونت بعد از ثبت موفق
         if (socket) {
-            socket.emit("postedJob", "Employer posted a new job");
-            console.log("📤 postedJob emitted!");
+            const payload = {
+                employerName: user?.data?.user?.name,
+                companyName:
+                    user?.data?.user?.company?.name || "Unknown Company",
+                jobTitle: data.title,
+                location: data.location,
+                jobType: data.job_type,
+                salaryRange: `${data.salary_min} - ${data.salary_max}`,
+                deadline: data.deadline,
+                createdAt: new Date().toISOString(),
+            };
+
+            socket.emit("postedJob", payload);
+            console.log("📤 postedJob emitted:", payload);
         } else {
             console.warn("⚠️ No socket connection!");
         }
