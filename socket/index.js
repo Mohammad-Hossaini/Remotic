@@ -56,8 +56,11 @@ io.on("connection", (socket) => {
         // ارسال پاسخ به همان کاربر
         socket.emit(
             "getResponse",
-            `✅ Job "${jobInfo.title}" received successfully!`
+            `✅ Job "${jobInfo.jobTitle}" received successfully!`
         );
+
+        // 🔹 اگر بخواهی برای سایر کاربران هم بفرستی:
+        socket.broadcast.emit("newJobPosted", jobInfo);
     });
 
     socket.on("logout", () => {

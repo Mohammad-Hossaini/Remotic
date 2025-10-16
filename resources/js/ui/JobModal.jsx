@@ -165,7 +165,7 @@ export default function JobModal({ open, onOpenChange, job }) {
 
         newSocket.on("getResponse", (data) => {
             console.log("📩 Server says:", data);
-            toast.success(data);
+            // toast.success(data);
         });
 
         setSocket(newSocket);
