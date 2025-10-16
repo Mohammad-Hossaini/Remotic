@@ -1,22 +1,23 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { IoIosMoon, IoMdNotifications } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { io } from "socket.io-client";
 import styled from "styled-components";
-import ProfileDialog from "../../ui/ProfileDialog";
-
-import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../hook/AuthContext";
 import { getUserById } from "../../services/apiUsers";
+import ProfileDialog from "../../ui/ProfileDialog";
 import "./Navbar.css";
 
-// Styled components
+// ===== Styled Components =====
 const Overlay = styled(RadixDialog.Overlay)`
     background: rgba(0, 0, 0, 0.2);
     position: fixed;
     inset: 0;
 `;
+
 const Content = styled(RadixDialog.Content)`
     position: fixed;
     top: 60px;
@@ -32,6 +33,7 @@ const Content = styled(RadixDialog.Content)`
     gap: 0.5rem;
     z-index: 1000;
 `;
+
 const NotificationItem = styled.div`
     padding: 0.4rem 0.3rem;
     border-radius: var(--radius-sm);
@@ -39,7 +41,7 @@ const NotificationItem = styled.div`
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 1rem;
-    color: var(--color-grey-200);
+    color: var(--color-grey-400);
     &:hover {
         background-color: var(--color-grey-200);
     }
@@ -75,13 +77,45 @@ const Badge = styled.span`
 
 function Navbar() {
     const BASE_URL = "http://127.0.0.1:8000/";
-    const [notifications, setNotifications] = useState([
-        { id: 1, text: "New applicant applied for Frontend Developer" },
-        { id: 2, text: "Your job posting has been approved" },
-    ]);
-
     const { user } = useAuth();
+    console.log(user?.role);
+    const [socket, setSocket] = useState(null);
+    const [notifications, setNotifications] = useState([]);
 
+    // ===== Socket.io connection =====
+    useEffect(() => {
+        if (!user?.token) return;
+
+        const newSocket = io("http://localhost:5000", {
+            auth: { token: user.token },
+            reconnection: true,
+        });
+
+        newSocket.on("connect", () => {
+            console.log("✅ Socket connected, id:", newSocket.id);
+        });
+
+        newSocket.on("newJobPosted", (data) => {
+            console.log("📩 Server says:", data);
+            setNotifications((prev) => [
+                ...prev,
+                {
+                    id: Date.now(),
+                    text: `${data.companyName} posted "${data.jobTitle}"`,
+                    time: new Date(),
+                },
+            ]);
+        });
+
+        setSocket(newSocket);
+
+        return () => {
+            newSocket.disconnect();
+            console.log("🔌 Socket disconnected");
+        };
+    }, [user?.token]);
+
+    // ===== Fetch full user info =====
     const { data: fullUser } = useQuery(
         ["user", user?.id],
         () => getUserById(user.id),
@@ -115,9 +149,10 @@ function Navbar() {
                         <RadixDialog.Trigger asChild>
                             <NotificationWrapper>
                                 <IoMdNotifications className="Icon" />
-                                {notifications.length > 0 && (
-                                    <Badge>{notifications.length}</Badge>
-                                )}
+                                {user?.role === "job_seeker" &&
+                                    notifications.length > 0 && (
+                                        <Badge>{notifications.length}</Badge>
+                                    )}
                             </NotificationWrapper>
                         </RadixDialog.Trigger>
                         <RadixDialog.Portal>
