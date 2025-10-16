@@ -1,24 +1,57 @@
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 import { useAuth } from "../../../hook/AuthContext";
-import { getJobs } from "../../../services/apiAllJobs";
 import JobApplicantsChart from "../../../ui/BarChart";
 import JobModal from "../../../ui/JobModal";
 import ApplicationStatus from "../../../ui/PieChart";
 import "./EmployerDashboard.css";
-
 function EmployerDashboard() {
     const [openModal, setOpenModal] = useState(false);
     const { user } = useAuth();
     // console.log("User Data : ", user);
     // console.log(user.user.company?.company_name);
-  
+
+    // 🔹 Socket state
+    const [socket, setSocket] = useState(null);
+
+    // 🔹 اتصال به سوکت بعد از دریافت user.token
+    useEffect(() => {
+        if (!user?.token) return;
+
+        const newSocket = io("http://localhost:5000", {
+            auth: { token: user.token },
+        });
+
+        // 🔹 دریافت پیام تست از سرور
+        newSocket.on("testResponse", (msg) => {
+            console.log("📩 Server says:", msg);
+        });
+
+        setSocket(newSocket);
+
+        return () => {
+            newSocket.disconnect();
+        };
+    }, [user?.token]);
+
+    // 🔹 ایونت کلیک باتن تست
+    const handleTest = () => {
+        if (!socket) return;
+        socket.emit("testButtonClicked", "Test button clicked"); // 🔹 ارسال پیام به سرور
+    };
 
     return (
         <div className="employer-section">
             <div className="employer-container">
                 {/* 🔹 Post Job Button */}
                 <div className="dashboard-actions">
+                    <button
+                        className="post-job-btn"
+                        style={{ marginRight: "1.8rem" }}
+                        onClick={handleTest}
+                    >
+                        Test
+                    </button>
                     <button
                         className="post-job-btn"
                         onClick={() => setOpenModal(true)} // ✅ open modal

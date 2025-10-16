@@ -1,38 +1,29 @@
 import { Server } from "socket.io";
+
 const io = new Server(5000, {
-    cors: {
-        origin: "http://127.0.0.1:8000",
-    },
+    cors: { origin: "http://127.0.0.1:8000" },
 });
 
-// ======================
-// 🔒 Middleware Authentication
-// ======================
+// Middleware Authentication
 io.use(async (socket, next) => {
     const token = socket.handshake.auth.token;
     if (!token) return next(new Error("No token provided"));
 
     try {
         const res = await fetch("http://127.0.0.1:8000/api/user", {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
         });
 
         if (!res.ok) throw new Error("Authentication failed");
-
         const data = await res.json();
-        socket.user = data; // اطلاعات کاربر
-        socket.token = token; // توکن در سوکت ذخیره می‌شود
+        socket.user = data;
+        socket.token = token;
         next();
     } catch (err) {
         next(new Error("Authentication failed"));
     }
 });
 
-// ======================
-// 👥 مدیریت کاربران آنلاین
-// ======================
 let onlineUsers = [];
 
 const addNewUser = (token, socketId) => {
@@ -48,14 +39,19 @@ const removeUser = (socketId) => {
     if (removed) console.log("❌ User removed:", removed.token);
 };
 
-const getUser = (token) => onlineUsers.find((u) => u.token === token);
-
-// ======================
-// ⚡ Socket Events
-// ======================
 io.on("connection", (socket) => {
     addNewUser(socket.token, socket.id);
-    console.log("✅ User connected:", socket.user?.name, socket.token);
+    console.log("✅ User connected:", socket.user?.name);
+
+    socket.on("testButtonClicked", (msg) => {
+        console.log(`🟢 Test button clicked by ${socket.user?.name}:`, msg);
+        socket.emit("testResponse", `Received your message: "${msg}"`);
+    });
+
+    socket.on("postedJob", (msg) => {
+        console.log(`🟢 Job posted by ${socket.user?.name}:`, msg);
+        socket.emit("getResponse", `✅ Server received: "${msg}"`);
+    });
 
     socket.on("logout", () => {
         removeUser(socket.id);

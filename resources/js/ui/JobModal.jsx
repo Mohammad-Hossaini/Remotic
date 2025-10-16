@@ -1,9 +1,11 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { CiWarning } from "react-icons/ci";
+import { io } from "socket.io-client";
 import styled from "styled-components";
 import { useAuth } from "../hook/AuthContext";
 import { createJob, updateJob } from "../services/apiAllJobs";
@@ -139,6 +141,7 @@ const StyledWarning = styled.div`
 // ===== Component =====
 export default function JobModal({ open, onOpenChange, job }) {
     const { user } = useAuth();
+    const [socket, setSocket] = useState(null);
     const queryClient = useQueryClient();
 
     const isEditMode = Boolean(job);
@@ -152,7 +155,27 @@ export default function JobModal({ open, onOpenChange, job }) {
         defaultValues: job || {},
     });
 
-    // Create or Update mutation
+    // 🔹 اتصال سوکت هنگام بارگذاری
+    useEffect(() => {
+        if (!user?.token) return;
+
+        const newSocket = io("http://localhost:5000", {
+            auth: { token: user.token },
+        });
+
+        newSocket.on("getResponse", (data) => {
+            console.log("📩 Server says:", data);
+            toast.success(data);
+        });
+
+        setSocket(newSocket); // 🔹 ذخیره در state
+
+        return () => {
+            newSocket.disconnect();
+        };
+    }, [user?.token]);
+
+    // 🔹 Mutation ذخیره شغل
     const mutation = useMutation({
         mutationFn: async (data) => {
             if (isEditMode) return updateJob(job.id, data);
@@ -166,8 +189,6 @@ export default function JobModal({ open, onOpenChange, job }) {
                     ? "Job updated successfully!"
                     : "Job created successfully!"
             );
-            // console.log("Deadline value:", job.deadline);
-
             reset();
             onOpenChange(false);
         },
@@ -177,6 +198,7 @@ export default function JobModal({ open, onOpenChange, job }) {
         },
     });
 
+    // 🔹 تابع ثبت فرم
     const onSubmit = (data) => {
         const jobData = {
             company_id: user?.data?.user?.company?.id,
@@ -190,7 +212,16 @@ export default function JobModal({ open, onOpenChange, job }) {
             status: data.status || "draft",
             deadline: data.deadline || null,
         };
+
         mutation.mutate(jobData);
+
+        // ✅ ارسال ایونت بعد از ثبت موفق
+        if (socket) {
+            socket.emit("postedJob", "Employer posted a new job");
+            console.log("📤 postedJob emitted!");
+        } else {
+            console.warn("⚠️ No socket connection!");
+        }
     };
 
     const today = new Date().toISOString().split("T")[0];
