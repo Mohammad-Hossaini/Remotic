@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import PageNotFound from "./components/PageNotFound";
 import Settings from "./components/Settings";
 import EmployerPrivateRoute from "./features/authintication/EmployerPrivateRoute";
@@ -21,7 +20,9 @@ import SugesstedJobs from "./pages/home/job-seeker/SugesstedJobs";
 import Welcome from "./pages/home/welcomPage/Welcome";
 import Messages from "./pages/messages/Messages";
 
-import { AuthProvider } from "./hook/AuthContext";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import { AuthProvider, useAuth } from "./hook/AuthContext";
 import BackGroundInfo from "./pages/background information/BackGroundInfo";
 import CreateAccountPage from "./pages/CreateAccountPage";
 import Home from "./pages/home/Home";
@@ -44,12 +45,38 @@ const queryClient = new QueryClient({
     },
 });
 
+// ✅ هوک برای مدیریت ساکت بر اساس توکن
+function SocketHandler() {
+    const { user } = useAuth();
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+        if (!user?.token) {
+            socket?.disconnect();
+            setSocket(null);
+            return;
+        }
+
+        const newSocket = io("http://localhost:5000", {
+            auth: { token: user.token },
+        });
+
+        newSocket.on("welcome", (data) => console.log(data));
+        setSocket(newSocket);
+
+        return () => {
+            newSocket.disconnect();
+        };
+    }, [user?.token]);
+
+    return null; // فقط مدیریت ساکت، نیازی به رندر چیزی نیست
+}
+
 export default function App() {
     return (
         <AuthProvider>
-            {" "}
-            {/* ✅ AuthProvider wraps everything */}
             <QueryClientProvider client={queryClient}>
+                <SocketHandler /> {/* 🔥 مدیریت ساکت */}
                 <BrowserRouter>
                     <GlobalStyles />
 
@@ -146,7 +173,6 @@ export default function App() {
                                 path="application"
                                 element={<Application />}
                             />
-                            {/* <Route path="applicant" element={<Applicant />} /> */}
                             <Route path="postedJobs" element={<PostedJobs />} />
                             <Route
                                 path="postedNewJobs"
@@ -158,12 +184,9 @@ export default function App() {
                             />
                         </Route>
 
-                        {/* 404 fallback */}
                         <Route path="*" element={<PageNotFound />} />
                     </Routes>
                 </BrowserRouter>
-
-                {/* Notifications */}
                 <Toaster
                     position="top-right"
                     gutter={12}
@@ -180,7 +203,6 @@ export default function App() {
                         },
                     }}
                 />
-
                 <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </AuthProvider>
