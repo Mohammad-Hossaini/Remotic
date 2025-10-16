@@ -22,28 +22,68 @@ const Content = styled(RadixDialog.Content)`
     position: fixed;
     top: 60px;
     right: 20px;
-    width: 20rem;
+    width: 72rem;
+    height: 30rem;
     max-width: 90vw;
+    overflow-y: auto;
     background: var(--color-grey-0);
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
     z-index: 1000;
+`;
+const CloseButton = styled(RadixDialog.Close)`
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-xl);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: var(--color-grey-300);
+    }
 `;
 
 const NotificationItem = styled.div`
-    padding: 0.4rem 0.3rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--color-grey-300);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 1rem;
-    color: var(--color-grey-400);
+    display: flex;
+    height: 6rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-grey-50);
+    border: 1px solid var(--color-grey-200);
+    font-size: var(--font-sm);
+    color: var(--color-grey-700);
+    transition: all 0.3s ease;
+
     &:hover {
-        background-color: var(--color-grey-200);
+        background-color: var(--color-grey-100);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+`;
+
+const MarkReadBtn = styled.button`
+    background-color: var(--color-primary);
+    color: #fff;
+    font-size: var(--font-xs);
+    font-weight: 600;
+    padding: 0.8rem 0.7rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: var(--color-primary-dark);
     }
 `;
 
@@ -69,16 +109,11 @@ const Badge = styled.span`
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-    transition: transform 0.2s ease;
-    &.animate {
-        transform: scale(1.2);
-    }
 `;
 
 function Navbar() {
     const BASE_URL = "http://127.0.0.1:8000/";
     const { user } = useAuth();
-    console.log(user?.role);
     const [socket, setSocket] = useState(null);
     const [notifications, setNotifications] = useState([]);
 
@@ -119,12 +154,12 @@ function Navbar() {
     const { data: fullUser } = useQuery(
         ["user", user?.id],
         () => getUserById(user.id),
-        {
-            enabled: !!user?.id,
-            refetchOnWindowFocus: true,
-            staleTime: 0,
-        }
+        { enabled: !!user?.id, refetchOnWindowFocus: true, staleTime: 0 }
     );
+
+    const markAsRead = (id) => {
+        setNotifications((prev) => prev.filter((n) => n.id !== id));
+    };
 
     return (
         <div className="navbar-container">
@@ -158,13 +193,21 @@ function Navbar() {
                         <RadixDialog.Portal>
                             <Overlay />
                             <Content>
-                                <h4>Notifications</h4>
+                                <CloseButton>&times;</CloseButton>
+                                <h4 style={{ textAlign: "center" }}>
+                                    Jobs recently posted!
+                                </h4>
                                 {notifications.length === 0 ? (
                                     <p>No new notifications</p>
                                 ) : (
                                     notifications.map((n) => (
                                         <NotificationItem key={n.id}>
-                                            {n.text}
+                                            <span>{n.text}</span>
+                                            <MarkReadBtn
+                                                onClick={() => markAsRead(n.id)}
+                                            >
+                                                Mark as Read
+                                            </MarkReadBtn>
                                         </NotificationItem>
                                     ))
                                 )}
