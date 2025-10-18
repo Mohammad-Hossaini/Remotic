@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\NotificationHelper;
 use App\Models\Application;
 use App\Models\Job;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class ApplicationController extends Controller
 {
     // Submit new application
     // Submit new application (Job Seeker only)
-    public function store(Request $request, $jobId)
+   public function store(Request $request, $jobId)
     {
         $validator = Validator::make($request->all(), [
             'cover_letter' => 'nullable|string|max:2000',
@@ -24,9 +25,10 @@ class ApplicationController extends Controller
         }
 
         $job = Job::findOrFail($jobId);
+        $user = auth()->user();
 
         // 🔹 Prevent duplicate applications
-        $exists = Application::where('user_id', Auth::id())
+        $exists = Application::where('user_id', $user->id)
             ->where('job_id', $jobId)
             ->first();
 
@@ -36,66 +38,57 @@ class ApplicationController extends Controller
 
         // 🔹 Handle resume upload
         $resumePath = null;
-        if ($request->hasFile('resume')) {
-            $file = $request->file('resume');
+        if ($request->hasFile('resume_path')) {
+            $file = $request->file('resume_path');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('resumes'), $filename);
 
             $resumePath = 'resumes/' . $filename; // relative path
         }
 
+        // 🔹 Create application
         $application = Application::create([
-            'user_id'      => Auth::id(),
+            'user_id'      => $user->id,
             'job_id'       => $jobId,
             'cover_letter' => $request->cover_letter,
             'resume_path'  => $resumePath,
             'status'       => 'pending',
         ]);
 
+        // 🔹 Send notifications
+
+        // If job has a company, notify the company's owner
+        if ($job->company && $job->company->user_id) {
+            NotificationHelper::send(
+                $job->company->user_id,
+                'New Job Application',
+                "{$user->name} applied for your job: {$job->title}"
+            );
+        } else {
+            // If no company, notify the user who posted the job
+            if ($job->user_id) {
+                NotificationHelper::send(
+                    $job->user_id,
+                    'New Job Application',
+                    "{$user->name} applied for your job: {$job->title}"
+                );
+            }
+        }
+
+        // Notify the applicant themselves
+        NotificationHelper::send(
+            $user->id,
+            'Application Submitted',
+            "You have successfully applied for the job: {$job->title}"
+        );
+
+        // 🔹 Return response
         return response()->json([
             'message'     => 'Application submitted successfully.',
             'application' => $application,
         ], 201);
     }
-    // public function store(Request $request, $jobId)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'cover_letter' => 'nullable|string|max:2000',
-    //         'resume_path'       => 'required|mimes:pdf,doc,docx|max:2048',
-    //     ]);
 
-    //     if ($validator->fails()) {
-    //         return response()->json(['errors' => $validator->errors()], 422);
-    //     }
-
-    //     // Handle resume upload
-    //     // $resumePath = null;
-    //     // if ($request->hasFile('resume')) {
-    //     //     $resumePath = $request->file('resume')->store('public/resumes');
-    //     // }
-    //      if ($request->hasFile('resume')) {
-    //         $file = $request->file('resume');
-    //         $filename = time() . '_' . $file->getClientOriginalName();
-
-    //         // Save directly in public/resumes
-    //         $file->move(public_path('resumes'), $filename);
-
-    //         $resumePath = 'resumes/' . $filename; // save relative path in DB
-    //     }
-
-    //     $application = Application::create([
-    //         'user_id'      => Auth::id(),
-    //         'job_id'       => $jobId,
-    //         'cover_letter' => $request->cover_letter,
-    //         'resume_path'  => $resumePath,
-    //         'status'       => 'pending',
-    //     ]);
-
-    //     return response()->json([
-    //         'message' => 'Application submitted successfully.',
-    //         'application' => $application,
-    //     ], 201);
-    // }
 
      // Withdraw/Delete application (Job Seeker only)
     public function destroy($id)

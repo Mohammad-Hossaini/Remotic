@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteJobController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -106,6 +107,15 @@ Route::middleware('auth:sanctum')->group(function () {
     //--------------------------------------------------------------------------------------
     // dashboard route
     Route::get('/dashboard', [DashboardController::class, 'index']);
+
+
+
+    //--------------------------------------------------------------------------------------
+    // Notificatons
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications', [NotificationController::class, 'store']);
+    Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
 });
 
 
