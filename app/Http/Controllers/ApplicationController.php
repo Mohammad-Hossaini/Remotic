@@ -121,8 +121,33 @@ class ApplicationController extends Controller
         $application->status = $request->status;
         $application->save();
 
-        return response()->json(['message' => 'Application status updated.']);
+        $user = $application->user; // The applicant
+        $job  = $application->job;
+        $companyName = $job->company ? $job->company->name : ($job->user ? $job->user->name : 'Unknown');
+
+        // 🔹 Send notification to the applicant
+        $statusMessages = [
+            'pending'      => "Your application for '{$job->title}' is now pending.",
+            'under_review' => "Your application for '{$job->title}' is under review by {$companyName}.",
+            'shortlisted'  => "Good news! Your application for '{$job->title}' has been shortlisted by {$companyName}.",
+            'accepted'     => "Congratulations! Your application for '{$job->title}' has been accepted by {$companyName}.",
+            'rejected'     => "We’re sorry. Your application for '{$job->title}' has been rejected by {$companyName}.",
+        ];
+
+        $message = $statusMessages[$application->status] ?? "Your application status for '{$job->title}' has been updated.";
+
+        NotificationHelper::send(
+            $user->id,
+            'Application Status Update',
+            $message
+        );
+
+        return response()->json([
+            'message' => 'Application status updated and notification sent.',
+            'application' => $application,
+        ]);
     }
+
 
     // Applicant views their applications
     public function myApplications()
