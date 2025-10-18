@@ -166,7 +166,7 @@ export default function JobModal({ open, onOpenChange, job }) {
                     ? "Job updated successfully!"
                     : "Job created successfully!"
             );
-            console.log("Deadline value:", job.deadline);
+            // console.log("Deadline value:", job.deadline);
 
             reset();
             onOpenChange(false);

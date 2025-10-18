@@ -109,9 +109,9 @@ const Button = styled.button`
     cursor: pointer;
     transition: 0.2s ease;
 
-    display: flex; 
+    display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
 
     &:hover {
         background-color: var(--color-primary-dark);
@@ -237,7 +237,7 @@ export default function LoginPage() {
 
                         <CreateAccount>
                             Don’t have an account?
-                            <a onClick={() => navigate("/login/createAccount")}>
+                            <a onClick={() => navigate("/sign-up")}>
                                 Create Account
                             </a>
                         </CreateAccount>

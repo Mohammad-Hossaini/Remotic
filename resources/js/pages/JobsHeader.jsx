@@ -173,9 +173,9 @@ export default function JobsHeader({
     const isLoginPage = location.pathname === "/login";
     // const isRegisterPage = location.pathname === "/createAccount";
 
-    const isRegisterPage = location.pathname
-        .toLowerCase()
-        .includes("createaccount");
+    const isRegisterPage =
+        location.pathname.toLowerCase().includes("register-job-seeker") ||
+        location.pathname.toLowerCase().includes("/register-employer");
     const isDashboard = location.pathname.includes("/app");
     const isJobDetailsPage = location.pathname.includes("/jobDetails");
 
@@ -216,6 +216,7 @@ export default function JobsHeader({
                 {showAuthButtons && (
                     <Buttons>
                         <LoginBtn to="/login">Log in</LoginBtn>
+
                         <SignUpBtn to="/welcome">Sign up →</SignUpBtn>
                     </Buttons>
                 )}
