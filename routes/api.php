@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FavoriteJobController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProfileController;
@@ -99,6 +100,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/admin/users', [AuthController::class, 'allUsers']);
         Route::get('/admin/settings', fn() => response()->json(['settings' => 'site settings here']));
     });
+
+    
+
+    //--------------------------------------------------------------------------------------
+    // dashboard route
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 });
 
 
