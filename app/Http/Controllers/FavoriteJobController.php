@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\NotificationHelper;
 use App\Models\FavoriteJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,18 +14,36 @@ class FavoriteJobController extends Controller
     {
         $user = Auth::user();
 
+        // 🔹 Prevent duplicate favorites
         if (FavoriteJob::where('user_id', $user->id)->where('job_id', $jobId)->exists()) {
             return response()->json(['message' => 'Already in favorites.'], 409);
         }
 
+        // 🔹 Create favorite job
         $favorite = FavoriteJob::create([
             'user_id' => $user->id,
-            'job_id' => $jobId,
+            'job_id'  => $jobId,
         ]);
 
+        // Load relationships
         $favorite->load('user', 'job');
-        return response()->json($favorite, 201);
+
+        // 🔹 Send notification to the user
+        $job = $favorite->job;
+        $companyName = $job->company ? $job->company->name : ($job->user ? $job->user->name : 'Unknown');
+
+        NotificationHelper::send(
+            $user->id,
+            'Added to Favorites',
+            "You have added the job '{$job->title}' by {$companyName} to your favorites."
+        );
+
+        return response()->json([
+            'message'  => 'Job added to favorites successfully.',
+            'favorite' => $favorite,
+        ], 201);
     }
+
 
     // Remove from favorites
     public function destroy($jobId)

@@ -67,5 +67,20 @@ class JobSeeder extends Seeder
             'status' => 'open',
             'deadline' => now()->addDays(20),
         ]);
+
+        Job::create([
+            'company_id' => null,
+            'user_id' => 3,
+            'title' => 'system Analyst',
+            'description' => 'Analyze system and generate insights for business growth.',
+            'requirements' => 'SQL, Excel, PowerBI, Communication skills',
+            'location' => 'Remote',
+            'salary_min' => 400,
+            'salary_max' => 700,
+            'job_type' => 'remote',
+            'status' => 'open',
+            'deadline' => now()->addDays(20),
+        ]);
+        
     }
 }

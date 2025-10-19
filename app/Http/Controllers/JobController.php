@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\NotificationHelper;
 use App\Models\Job;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -85,11 +87,24 @@ class JobController extends Controller
         // Load the company relationship
         $job->load('company');
 
+        // 🔹 Notify all job seekers
+        $jobSeekers = User::where('role', 'job_seeker')->get();
+
+        foreach ($jobSeekers as $seeker) {
+            $companyName = $job->company ? $job->company->name : $user->name; // fallback to user name
+            NotificationHelper::send(
+                $seeker->id,
+                'New Job Posted',
+                "A new job '{$job->title}' has been posted by {$companyName}"
+            );
+        }
+
         return response()->json([
             'message' => 'Job created successfully.',
             'job' => $job,
         ], 201);
     }
+
 
 
     /**

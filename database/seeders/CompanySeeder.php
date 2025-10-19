@@ -21,6 +21,7 @@ class CompanySeeder extends Seeder
                 'location' => 'Kabul, Afghanistan',
                 'description' => 'A leading IT company specializing in cloud and AI solutions.',
                 'website' => 'https://techvision.com',
+                'logo' => 'forbes.png',
             ],
         ];
 

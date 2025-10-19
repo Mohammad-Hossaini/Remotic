@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        // Employer user
+        // Employer user that has company
         User::create([
             'name' => 'Employer',
             'email' => 'employer@gmail.com',
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             'role' => 'employer',
         ]);
 
-        // 
+        // employer that does not have company
         User::create([
             'name' => 'Employer2',
             'email' => 'employer2@gmail.com',
