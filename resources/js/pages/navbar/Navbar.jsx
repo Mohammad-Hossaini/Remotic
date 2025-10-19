@@ -2,7 +2,12 @@ import * as RadixDialog from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { IoMdEye } from "react-icons/io";
+
+import { formatDistanceToNow } from "date-fns";
 import { IoIosMoon, IoMdNotifications } from "react-icons/io";
+import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 import styled from "styled-components";
@@ -63,20 +68,20 @@ const CloseButton = styled(RadixDialog.Close)`
 
 const NotificationItem = styled.div`
     display: flex;
-    height: 6rem;
+    height: 10rem;
     justify-content: space-between;
     align-items: center;
     padding: 0.8rem 1rem;
     border-radius: var(--radius-md);
-    background-color: var(--color-grey-50);
+    background-color: var(--color-grey-30);
     border: 1px solid var(--color-grey-200);
     font-size: var(--font-sm);
     color: var(--color-grey-700);
     transition: all 0.3s ease;
 
     &:hover {
-        background-color: var(--color-grey-100);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        /* background-color: var(--color-grey-100);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); */
     }
 `;
 
@@ -124,26 +129,21 @@ function Navbar() {
     const [socket, setSocket] = useState(null);
     const [notifications, setNotifications] = useState([]);
 
-    // ===== Socket.io connection =====
     useEffect(() => {
         if (!user?.token) return;
-
         const newSocket = io("http://localhost:5000", {
             auth: { token: user.token },
             reconnection: true,
         });
 
-        newSocket.on("connect", () => {
-            console.log("✅ Socket connected, id:", newSocket.id);
-        });
-
         newSocket.on("newJobPosted", (data) => {
-            // console.log("📩 Server says:", data);
             setNotifications((prev) => [
                 ...prev,
                 {
                     id: Date.now(),
-                    text: `${data.companyName} posted "${data.jobTitle}"`,
+                    companyName: data.companyName,
+                    jobTitle: data.jobTitle,
+                    jobDescription: data.description,
                     time: new Date(),
                 },
             ]);
@@ -151,10 +151,7 @@ function Navbar() {
 
         setSocket(newSocket);
 
-        return () => {
-            newSocket.disconnect();
-            console.log("🔌 Socket disconnected");
-        };
+        return () => newSocket.disconnect();
     }, [user?.token]);
 
     // ===== Fetch full user info =====
@@ -208,13 +205,72 @@ function Navbar() {
                                     <p>No new notifications</p>
                                 ) : (
                                     notifications.map((n) => (
-                                        <NotificationItem key={n.id}>
-                                            <span>{n.text}</span>
-                                            <MarkReadBtn
-                                                onClick={() => markAsRead(n.id)}
-                                            >
-                                                Mark as Read
-                                            </MarkReadBtn>
+                                        <NotificationItem
+                                            className="NotificationItem"
+                                            key={n.id}
+                                        >
+                                            <img
+                                                src="/company-images/image(6).jfif"
+                                                alt="Company Logo"
+                                            />
+
+                                            <div className="NotificationContent">
+                                                <p className="notification-time">
+                                                    {formatDistanceToNow(
+                                                        n.time
+                                                    )}{" "}
+                                                    ago
+                                                </p>
+
+                                                <p className="company-name">
+                                                    {n.companyName}
+                                                </p>
+                                                <p className="title-of-job">
+                                                    {n.jobTitle}
+                                                </p>
+                                                <p className="job-description">
+                                                    {n.jobDescription}
+                                                </p>
+                                            </div>
+
+                                            <div className="NotificationActions">
+                                                <div className="dots-menu-wrapper">
+                                                    <button className="dots-btn">
+                                                        <HiOutlineDotsHorizontal />
+                                                    </button>
+                                                    <div className="context-menu">
+                                                        <button
+                                                            onClick={() =>
+                                                                console.log(
+                                                                    "View Job clicked"
+                                                                )
+                                                            }
+                                                        >
+                                                            <IoMdEye
+                                                                style={{
+                                                                    display:
+                                                                        "flex",
+                                                                    alignItems:
+                                                                        "center",
+                                                                }}
+                                                            />{" "}
+                                                            <span className="view">
+                                                                View Job
+                                                            </span>
+                                                        </button>
+                                                        <button
+                                                            onClick={() =>
+                                                                markAsRead(n.id)
+                                                            }
+                                                        >
+                                                            <RiDeleteBin6Line />{" "}
+                                                            <span className="done">
+                                                                Done
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </NotificationItem>
                                     ))
                                 )}

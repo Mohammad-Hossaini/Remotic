@@ -172,6 +172,7 @@ export default function JobModal({ open, onOpenChange, job }) {
         newSocket.on("getResponse", (data) => {
             // console.log("📩 Server says:", data);
             // toast.success(data);
+            console.log("all the data", data);
         });
 
         setSocket(newSocket);
@@ -229,6 +230,7 @@ export default function JobModal({ open, onOpenChange, job }) {
                     user?.data?.user?.company?.name || "Unknown Company",
                 jobTitle: data.title,
                 location: data.location,
+                description: data.description,
                 jobType: data.job_type,
                 salaryRange: `${data.salary_min} - ${data.salary_max}`,
                 deadline: data.deadline,

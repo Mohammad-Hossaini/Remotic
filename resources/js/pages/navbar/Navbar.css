@@ -131,3 +131,195 @@
     font-size: 2rem;
     color: var(--color-grey-600);
 }
+.nofication-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.job-description {
+    font-size: 1.2rem;
+}
+.contents {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+}
+
+/* ===== Notification Container ===== */
+.radix-content {
+    background: var(--color-grey-0);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 380px;
+    padding: 1rem 0;
+    overflow: hidden;
+    border: 1px solid var(--color-grey-200);
+    font-family: "Inter", sans-serif;
+}
+
+/* ===== Title ===== */
+.radix-content h4 {
+    font-size: var(--font-md);
+    font-weight: 600;
+    margin-bottom: var(--space-8);
+    text-align: center;
+    color: var(--color-grey-900);
+}
+
+/* ===== Notification Item ===== */
+.NotificationItem {
+    display: flex;
+    align-items: center;
+    padding: var(--space-16) var(--space-24);
+    border-bottom: 1px solid var(--color-grey-200);
+    gap: var(--space-12);
+    position: relative;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: var(--color-grey-0);
+}
+
+.NotificationItem:hover {
+    background-color: var(--color-grey-30);
+    box-shadow: var(--shadow-sm);
+}
+
+.NotificationItem img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* ===== Text Content ===== */
+.NotificationContent {
+    flex: 1;
+    position: relative;
+    margin-left: var(--space-16);
+}
+
+.notification-time {
+    position: absolute;
+    top: -1rem;
+    right: -4rem;
+    font-size: var(--font-sm);
+    color: var(--color-grey-500);
+}
+
+.notification-header {
+    position: sticky;
+    top: 0;
+    background: var(--color-grey-0);
+    z-index: 10;
+    padding: 1rem 0;
+    text-align: center;
+    border-bottom: 1px solid var(--color-grey-200);
+}
+
+/* Company Name */
+.company-name {
+    color: var(--color-primary);
+    font-size: var(--font-base);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+}
+
+/* Job Title */
+.title-of-job {
+    color: var(--color-grey-700);
+    font-size: var(--font-sm);
+    font-weight: 500;
+    margin-bottom: var(--space-1);
+}
+
+/* Job Description */
+.job-description {
+    font-size: var(--font-sm);
+    color: var(--color-grey-700);
+    margin-bottom: var(--space-2);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 55ch;
+}
+
+/* ===== Notification Actions (dots menu) ===== */
+.NotificationActions {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+}
+
+.dots-menu-wrapper {
+    position: relative;
+}
+
+.dots-btn {
+    background: none;
+    border: none;
+    font-size: var(--font-lg);
+    cursor: pointer;
+    color: var(--color-primary);
+    outline: none;
+    border: none;
+    outline: none;
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+}
+
+/* Context Menu */
+.context-menu {
+    display: none;
+    position: absolute;
+    top: 2rem;
+    right: 0;
+    background: var(--color-grey-0);
+    border: 1px solid var(--color-grey-200);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    flex-direction: column;
+    min-width: 12rem;
+    z-index: 10;
+}
+
+.context-menu button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+    padding: var(--space-8) var(--space-16);
+    border: none;
+    background: none;
+    text-align: left;
+    width: 100%;
+    font-size: var(--font-base);
+    cursor: pointer;
+    color: var(--color-primary);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.view,
+.done {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.context-menu button:hover {
+    background-color: var(--color-grey-100);
+    color: var(--color-grey-900);
+}
+
+.context-menu button:hover {
+    background-color: var(--color-grey-100);
+    color: var(--color-grey-900);
+}
+
+.dots-menu-wrapper:hover .context-menu,
+.dots-menu-wrapper:focus-within .context-menu {
+    display: flex;
+    flex-direction: column;
+}

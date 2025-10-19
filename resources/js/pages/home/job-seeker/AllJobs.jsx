@@ -334,7 +334,7 @@ export default function AllJobs() {
     const filteredJobs = jobs?.sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
     );
-
+    console.log("All the filter jobs :", filteredJobs);
     return (
         <AllJobsWrapper>
             <JobsHeader

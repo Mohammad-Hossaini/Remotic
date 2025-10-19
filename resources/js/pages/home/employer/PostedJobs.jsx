@@ -48,7 +48,7 @@ export default function PostedJobs() {
             removeJob(jobToDelete);
         }
     }
-
+    console.log(jobs);
     // Loading & Error states
     if (isLoading) return <p className="loading">Loading your jobs...</p>;
     if (isError)
