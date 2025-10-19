@@ -13,11 +13,11 @@ class ApplicationController extends Controller
 {
     // Submit new application
     // Submit new application (Job Seeker only)
-   public function store(Request $request, $jobId)
+  public function store(Request $request, $jobId)
     {
         $validator = Validator::make($request->all(), [
             'cover_letter' => 'nullable|string|max:2000',
-            'resume_path'       => 'required|mimes:pdf,doc,docx|max:2048',
+            'resume_path'  => 'required|mimes:pdf,doc,docx|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -28,11 +28,7 @@ class ApplicationController extends Controller
         $user = auth()->user();
 
         // 🔹 Prevent duplicate applications
-        $exists = Application::where('user_id', $user->id)
-            ->where('job_id', $jobId)
-            ->first();
-
-        if ($exists) {
+        if (Application::where('user_id', $user->id)->where('job_id', $jobId)->exists()) {
             return response()->json(['message' => 'You have already applied for this job.'], 400);
         }
 
@@ -42,8 +38,7 @@ class ApplicationController extends Controller
             $file = $request->file('resume_path');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('resumes'), $filename);
-
-            $resumePath = 'resumes/' . $filename; // relative path
+            $resumePath = 'resumes/' . $filename;
         }
 
         // 🔹 Create application
@@ -56,38 +51,46 @@ class ApplicationController extends Controller
         ]);
 
         // 🔹 Send notifications
-
-        // If job has a company, notify the company's owner
         if ($job->company && $job->company->user_id) {
             NotificationHelper::send(
                 $job->company->user_id,
                 'New Job Application',
                 "{$user->name} applied for your job: {$job->title}"
             );
-        } else {
-            // If no company, notify the user who posted the job
-            if ($job->user_id) {
-                NotificationHelper::send(
-                    $job->user_id,
-                    'New Job Application',
-                    "{$user->name} applied for your job: {$job->title}"
-                );
-            }
+        } elseif ($job->user_id) {
+            NotificationHelper::send(
+                $job->user_id,
+                'New Job Application',
+                "{$user->name} applied for your job: {$job->title}"
+            );
         }
 
-        // Notify the applicant themselves
         NotificationHelper::send(
             $user->id,
             'Application Submitted',
             "You have successfully applied for the job: {$job->title}"
         );
 
-        // 🔹 Return response
+        // 🔹 Refresh job to update accessors
+        $job->refresh();
+        // try {
+        //     \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        //     \Illuminate\Support\Facades\Artisan::call('config:clear');
+        //     \Illuminate\Support\Facades\Artisan::call('route:clear');
+        //     \Illuminate\Support\Facades\Artisan::call('view:clear');
+        //     \Illuminate\Support\Facades\Artisan::call('permission:cache-reset');
+        // } catch (\Exception $e) {
+        //     // ignore cache reset failures so response still returns
+        // }
+        $job->load('applications', 'favorites', 'company');
+
+        // ✅ Now return job including is_applied = true
         return response()->json([
             'message'     => 'Application submitted successfully.',
-            'application' => $application,
+            'job'         => $job,
         ], 201);
     }
+
 
 
      // Withdraw/Delete application (Job Seeker only)
