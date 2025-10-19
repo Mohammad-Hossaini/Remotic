@@ -207,6 +207,48 @@ class JobController extends Controller
 
         return response()->json(['message' => 'Job status updated', 'job' => $job ,  ]);
     }
+
+    public function JobsForAll(Request $request)
+    {
+        $user = $request->user(); // Get logged-in user (null if guest)
+
+        // Show only jobs with status "open"
+        $jobs = Job::with(['company', 'user'])
+            ->where('status', 'open')
+            ->latest()
+            ->get();
+
+        // ✅ Add is_applied and is_favorited manually for each job
+        foreach ($jobs as $job) {
+            if ($user) {
+                $job->setAttribute('is_applied', $job->applications->where('user_id', $user->id)->isNotEmpty());
+                $job->setAttribute('is_favorited', $job->favorites->where('user_id', $user->id)->isNotEmpty());
+            } else {
+                // For guests, always false
+                $job->setAttribute('is_applied', false);
+                $job->setAttribute('is_favorited', false);
+            }
+        }
+
+        Artisan::call('cache:clear');
+        return response()->json($jobs);
+    }
+
+    /**
+     * Show single job details (only open jobs for seekers, all for admin/employer)
+     */
+    public function showForunauthenticated(Request $request, $id)
+    {
+        $job = Job::with('company', 'user')->findOrFail($id);
+
+        // If job is not open, only the owner or admin can view it
+        if ($job->status !== 'open' &&
+            !($request->user()->id === $job->user_id || $request->user()->role === 'admin')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return response()->json($job);
+    }
 }
 
 // class JobController extends Controller

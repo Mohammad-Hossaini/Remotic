@@ -124,7 +124,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // every one can access to these routes
 // Public for all logged-in users (job seekers, employers, admin)
-             // View single job details
+        // Route::get('/jobs/unautenticated', [JobController::class, 'indexForunauthenticated']);    
+        Route::get('/jobsforall', [JobController::class, 'JobsForAll']);  
+        Route::get('/jobs/{id}/unautenticated', [JobController::class, 'showForunauthenticated']);
 
 
 
