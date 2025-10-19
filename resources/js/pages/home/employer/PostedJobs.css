@@ -42,9 +42,7 @@
 .job-img img {
     width: 70px;
     height: 70px;
-    border-radius: 50%;
     object-fit: cover;
-    border-radius: var(--radius-md);
     border: 1px solid var(--color-grey-200);
     background-color: #f8f9fa;
 }

@@ -34,24 +34,11 @@ function EmployerDashboard() {
         };
     }, [user?.token]);
 
-    // 🔹 ایونت کلیک باتن تست
-    const handleTest = () => {
-        if (!socket) return;
-        socket.emit("testButtonClicked", "Test button clicked"); // 🔹 ارسال پیام به سرور
-    };
-
     return (
         <div className="employer-section">
             <div className="employer-container">
                 {/* 🔹 Post Job Button */}
                 <div className="dashboard-actions">
-                    <button
-                        className="post-job-btn"
-                        style={{ marginRight: "1.8rem" }}
-                        onClick={handleTest}
-                    >
-                        Test
-                    </button>
                     <button
                         className="post-job-btn"
                         onClick={() => setOpenModal(true)} // ✅ open modal

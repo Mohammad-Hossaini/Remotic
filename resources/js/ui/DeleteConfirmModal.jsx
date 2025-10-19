@@ -46,6 +46,12 @@ const IconButton = styled.button`
     justify-content: center;
     border-radius: 50%;
     padding: 0.3rem;
+    border: none;
+    outline: none;
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
 
     &:hover {
         background-color: #f3f4f6;

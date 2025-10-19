@@ -49,8 +49,15 @@ const CloseButton = styled(RadixDialog.Close)`
     cursor: pointer;
     transition: all 0.2s ease;
 
+    border: none;
+    outline: none;
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
     &:hover {
-        background: var(--color-grey-300);
+        /* background: var(--color-grey-300); */
     }
 `;
 
@@ -131,7 +138,7 @@ function Navbar() {
         });
 
         newSocket.on("newJobPosted", (data) => {
-            console.log("📩 Server says:", data);
+            // console.log("📩 Server says:", data);
             setNotifications((prev) => [
                 ...prev,
                 {

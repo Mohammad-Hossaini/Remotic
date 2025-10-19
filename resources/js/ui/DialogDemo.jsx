@@ -56,6 +56,12 @@ const IconButton = styled.button`
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    border: none;
+    outline: none;
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
 `;
 
 const Body = styled.div`

@@ -58,6 +58,12 @@ const IconButton = styled.button`
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    border: none;
+    outline: none;
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
 `;
 
 const Body = styled.div`
@@ -164,7 +170,7 @@ export default function JobModal({ open, onOpenChange, job }) {
         });
 
         newSocket.on("getResponse", (data) => {
-            console.log("📩 Server says:", data);
+            // console.log("📩 Server says:", data);
             // toast.success(data);
         });
 
@@ -230,7 +236,7 @@ export default function JobModal({ open, onOpenChange, job }) {
             };
 
             socket.emit("postedJob", payload);
-            console.log("📤 postedJob emitted:", payload);
+            // console.log("📤 postedJob emitted:", payload);
         } else {
             console.warn("⚠️ No socket connection!");
         }
