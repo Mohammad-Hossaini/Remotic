@@ -1,13 +1,16 @@
+import { useQuery } from "@tanstack/react-query";
+import { GrFavorite } from "react-icons/gr";
 import {
     HiOutlineBookmark,
     HiOutlineBriefcase,
     HiOutlineClipboardList,
-    HiOutlineUserGroup,
 } from "react-icons/hi";
 import { MdTask, MdUpcoming } from "react-icons/md";
 import { PiUsersThreeFill } from "react-icons/pi";
 import styled from "styled-components";
 import { useAuth } from "../../../hook/AuthContext";
+import { getJobs } from "../../../services/apiAllJobs";
+import { getDashboardStats } from "../../../services/apiDashboard";
 
 // ===== Styled Components =====
 const DashboardContainer = styled.div`
@@ -162,7 +165,7 @@ const getOrdinal = (n) => {
 
 export default function JobSeekerDashboard() {
     const { user } = useAuth();
-
+    const token = user?.token;
     // Dynamic date
     const now = new Date();
     const dayName = now.toLocaleDateString("en-US", { weekday: "long" });
@@ -173,6 +176,24 @@ export default function JobSeekerDashboard() {
         dayNumber
     )} of ${monthName}, ${year}`;
 
+    const {
+        data: dashboardData,
+        isLoading,
+        isError,
+        error,
+    } = useQuery({
+        queryKey: ["dashboardStats", token],
+        queryFn: () => getDashboardStats(token),
+        enabled: !!token,
+    });
+    const { data: all_jobs } = useQuery({
+        queryKey: ["jobs"],
+        queryFn: getJobs,
+    });
+    console.log("All the dashboard data:", dashboardData);
+    const allJobs = all_jobs ? all_jobs.length : 0;
+    const total_jobs =
+        dashboardData?.total_favorite_jobs + dashboardData?.total_applied_jobs;
     return (
         <DashboardContainer>
             {/* Welcome Section */}
@@ -191,32 +212,43 @@ export default function JobSeekerDashboard() {
 
             {/* Statistics Section */}
             <StatisticsBox>
-                <div className="box projects">
-                    <HiOutlineBriefcase className="icon" />
+                {/* Favorite Jobs */}
+                <div className="box favorites">
+                    <GrFavorite className="icon" />
                     <div>
-                        <p className="number">18</p>
-                        <p className="name">Projects</p>
+                        <p className="number">
+                            {dashboardData?.total_favorite_jobs}
+                        </p>
+                        <p className="name">Favorite Jobs</p>
                     </div>
                 </div>
-                <div className="box jobSaved">
+
+                {/* Applied Jobs */}
+                <div className="box applied">
                     <HiOutlineBookmark className="icon" />
                     <div>
-                        <p className="number">40</p>
-                        <p className="name">Job Saved</p>
+                        <p className="number">
+                            {dashboardData?.total_applied_jobs}
+                        </p>
+                        <p className="name">Jobs Applied</p>
                     </div>
                 </div>
-                <div className="box totalJobs">
+
+                {/* Total Jobs in System */}
+                <div className="box total">
                     <HiOutlineClipboardList className="icon" />
                     <div>
-                        <p className="number">39</p>
-                        <p className="name">Total Jobs</p>
+                        <p className="number">{total_jobs}</p>
+                        <p className="name">Total Jobs Available</p>
                     </div>
                 </div>
-                <div className="box recent">
-                    <HiOutlineUserGroup className="icon" />
+
+                {/* All Jobs Loaded (from API) */}
+                <div className="box all">
+                    <HiOutlineBriefcase className="icon" />
                     <div>
-                        <p className="number">56</p>
-                        <p className="name">Recent Tasks</p>
+                        <p className="number">{allJobs}</p>
+                        <p className="name">All Listed Jobs</p>
                     </div>
                 </div>
             </StatisticsBox>

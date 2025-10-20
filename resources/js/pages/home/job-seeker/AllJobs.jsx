@@ -27,7 +27,7 @@ const JobsContainer = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;``
+    flex-direction: column;
     padding: 2rem 1rem;
 `;
 
@@ -281,7 +281,7 @@ export default function AllJobs() {
     const [savedJobIds, setSavedJobIds] = useState([]);
 
     const { user } = useAuth();
-    console.log("User in AllJobs:", user?.role);
+    // console.log("User in AllJobs:", user?.role);
 
     const location = useLocation();
     const queryClient = useQueryClient();
@@ -356,7 +356,7 @@ export default function AllJobs() {
     const filteredJobs = jobs?.sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
     );
-    console.log("All the filter jobs :", filteredJobs);
+    // console.log("All the filter jobs :", filteredJobs);
     return (
         <AllJobsWrapper>
             <JobsHeader
@@ -423,11 +423,20 @@ export default function AllJobs() {
                                     </JobDescription>
                                 </JobText>
                             </JobTop>
+
+                            {/* {user?.role === "job_seeker" && (
+                                <HeartIcon
+                                    active={savedJobIds.includes(job.id)}
+                                    onClick={() => toggleFavorite(job)}
+                                />
+                            )} */}
+                            {/* Inside your JobsCard mapping */}
                             {(!user?.role || user?.role === "job_seeker") && (
                                 <HeartIcon
                                     active={savedJobIds.includes(job.id)}
                                     onClick={() => {
                                         if (!user?.role) {
+                                            // Not logged in → open modal
                                             setModalData({
                                                 type: "save",
                                                 title: "Save this job with an account",
@@ -435,6 +444,7 @@ export default function AllJobs() {
                                                     "Save this job and other opportunities with a free account.",
                                             });
                                         } else {
+                                            // Logged in as job_seeker → toggle favorite
                                             toggleFavorite(job);
                                         }
                                     }}

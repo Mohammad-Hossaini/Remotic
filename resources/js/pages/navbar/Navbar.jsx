@@ -115,7 +115,7 @@ function Navbar() {
     const [socket, setSocket] = useState(null);
     const [notifications, setNotifications] = useState([]);
 
-    console.log("All the notifications: ", notifications);
+    // console.log("All the notifications: ", notifications);
 
     useEffect(() => {
         if (!user?.token) return;
