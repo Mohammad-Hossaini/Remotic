@@ -85,7 +85,6 @@ const NotificationItem = styled.div`
     }
 `;
 
-
 const NotificationWrapper = styled.div`
     position: relative;
     cursor: pointer;
@@ -115,6 +114,8 @@ function Navbar() {
     const { user } = useAuth();
     const [socket, setSocket] = useState(null);
     const [notifications, setNotifications] = useState([]);
+
+    console.log("All the notifications: ", notifications);
 
     useEffect(() => {
         if (!user?.token) return;
@@ -176,10 +177,9 @@ function Navbar() {
                         <RadixDialog.Trigger asChild>
                             <NotificationWrapper>
                                 <IoMdNotifications className="Icon" />
-                                {user?.role === "job_seeker" &&
-                                    notifications.length > 0 && (
-                                        <Badge>{notifications.length}</Badge>
-                                    )}
+                                {notifications.length > 0 && (
+                                    <Badge>{notifications.length}</Badge>
+                                )}
                             </NotificationWrapper>
                         </RadixDialog.Trigger>
                         <RadixDialog.Portal>

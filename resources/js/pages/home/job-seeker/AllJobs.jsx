@@ -27,7 +27,7 @@ const JobsContainer = styled.div`
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: column;``
     padding: 2rem 1rem;
 `;
 
@@ -60,6 +60,28 @@ const JobsCard = styled.div`
             pointer-events: auto;
         }
     }
+`;
+
+const JobStatus = styled.span`
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    background-color: ${(props) =>
+        props.status === "open"
+            ? "var(--color-success)"
+            : props.status === "closed"
+            ? "var(--color-error)"
+            : props.status === "draft"
+            ? "var(--color-warning)"
+            : "var(--color-grey-500)"};
 `;
 
 const HoverOverlay = styled.div`
@@ -359,6 +381,9 @@ export default function AllJobs() {
                 <JobList>
                     {filteredJobs.map((job) => (
                         <JobsCard key={job.id}>
+                            <JobStatus status={job.status}>
+                                {job.status}
+                            </JobStatus>
                             <JobTop>
                                 <JobImg
                                     src={
@@ -398,13 +423,24 @@ export default function AllJobs() {
                                     </JobDescription>
                                 </JobText>
                             </JobTop>
-
-                            {user?.role === "job_seeker" && (
+                            {(!user?.role || user?.role === "job_seeker") && (
                                 <HeartIcon
                                     active={savedJobIds.includes(job.id)}
-                                    onClick={() => toggleFavorite(job)}
+                                    onClick={() => {
+                                        if (!user?.role) {
+                                            setModalData({
+                                                type: "save",
+                                                title: "Save this job with an account",
+                                                description:
+                                                    "Save this job and other opportunities with a free account.",
+                                            });
+                                        } else {
+                                            toggleFavorite(job);
+                                        }
+                                    }}
                                 />
                             )}
+
                             <HoverOverlay className="hover-overlay">
                                 <Link
                                     to={`jobDetails/${job.id}`}

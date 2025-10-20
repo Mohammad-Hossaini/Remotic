@@ -1,9 +1,11 @@
+/* Container */
 .postedJobsContainer {
     padding: 2rem;
     max-width: 100rem;
     margin: 0 auto;
 }
 
+/* Header */
 .postedHeader {
     margin-bottom: 2rem;
 }
@@ -14,7 +16,9 @@
     color: var(--color-grey-900);
 }
 
+/* Job Card */
 .postedJobCard {
+    position: relative; /* Needed for absolute positioning of status badge */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -32,6 +36,7 @@
     box-shadow: var(--shadow-md);
 }
 
+/* Left Section */
 .left {
     display: flex;
     align-items: center;
@@ -47,6 +52,7 @@
     background-color: #f8f9fa;
 }
 
+/* Job Description */
 .job-desc {
     display: flex;
     flex-direction: column;
@@ -82,34 +88,7 @@
     font-style: italic;
 }
 
-.right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    column-gap: 0.8rem;
-    width: 90px;
-}
-
-.jobIcon {
-    font-size: 2.2rem;
-    color: #2563eb;
-}
-
-.deleteIcon {
-    font-size: 2rem;
-    color: #b91c1c;
-    cursor: pointer;
-}
-
-.loading,
-.error,
-.no-jobs {
-    text-align: center;
-    margin-top: 2rem;
-    font-size: 1.4rem;
-    color: var(--color-grey-600);
-}
-
+/* Right Section */
 .right {
     display: flex;
     align-items: center;
@@ -125,7 +104,6 @@
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    font-size: 1.4rem;
     font-size: 1.8rem;
 }
 
@@ -135,4 +113,40 @@
 
 .deleteBtn {
     color: #ef4444;
+}
+
+/* Loading, Error, No Jobs */
+.loading,
+.error,
+.no-jobs {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.4rem;
+    color: var(--color-grey-600);
+}
+
+/* Status Badge */
+.job-status-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    text-transform: uppercase;
+    color: #fff;
+    z-index: 10;
+}
+
+.job-status-open {
+    color: var(--color-success);
+}
+
+.job-status-closed {
+    color: var(--color-error);
+}
+
+.job-status-draft {
+    color: var(--color-warning);
 }
