@@ -80,24 +80,11 @@ const NotificationItem = styled.div`
     transition: all 0.3s ease;
 
     &:hover {
-        /* background-color: var(--color-grey-100);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); */
+        background-color: var(--color-grey-100);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 `;
 
-const MarkReadBtn = styled.button`
-    background-color: var(--color-primary);
-    color: #fff;
-    font-size: var(--font-xs);
-    font-weight: 600;
-    padding: 0.8rem 0.7rem;
-    border-radius: var(--radius-sm);
-    transition: all 0.2s ease;
-
-    &:hover {
-        background-color: var(--color-primary-dark);
-    }
-`;
 
 const NotificationWrapper = styled.div`
     position: relative;
@@ -144,6 +131,7 @@ function Navbar() {
                     companyName: data.companyName,
                     jobTitle: data.jobTitle,
                     jobDescription: data.description,
+                    jobID: data.jobId,
                     time: new Date(),
                 },
             ]);
@@ -239,25 +227,29 @@ function Navbar() {
                                                         <HiOutlineDotsHorizontal />
                                                     </button>
                                                     <div className="context-menu">
-                                                        <button
-                                                            onClick={() =>
-                                                                console.log(
-                                                                    "View Job clicked"
-                                                                )
-                                                            }
+                                                        <Link
+                                                            to={`/app/allJobs/jobDetails/${n.jobID}`}
                                                         >
-                                                            <IoMdEye
-                                                                style={{
-                                                                    display:
-                                                                        "flex",
-                                                                    alignItems:
-                                                                        "center",
-                                                                }}
-                                                            />{" "}
-                                                            <span className="view">
-                                                                View Job
-                                                            </span>
-                                                        </button>
+                                                            <button
+                                                                onClick={() =>
+                                                                    console.log(
+                                                                        "View Job clicked"
+                                                                    )
+                                                                }
+                                                            >
+                                                                <IoMdEye
+                                                                    style={{
+                                                                        display:
+                                                                            "flex",
+                                                                        alignItems:
+                                                                            "center",
+                                                                    }}
+                                                                />{" "}
+                                                                <span className="view">
+                                                                    View Job
+                                                                </span>
+                                                            </button>
+                                                        </Link>
                                                         <button
                                                             onClick={() =>
                                                                 markAsRead(n.id)

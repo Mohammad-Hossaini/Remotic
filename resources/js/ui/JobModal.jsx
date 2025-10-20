@@ -170,8 +170,6 @@ export default function JobModal({ open, onOpenChange, job }) {
         });
 
         newSocket.on("getResponse", (data) => {
-            // console.log("📩 Server says:", data);
-            // toast.success(data);
             console.log("all the data", data);
         });
 
@@ -188,14 +186,41 @@ export default function JobModal({ open, onOpenChange, job }) {
             if (isEditMode) return updateJob(job.id, data);
             return createJob(data);
         },
-        onSuccess: () => {
+
+        onSuccess: (response) => {
+            const createdJob = response.job || response; // ✅ اصلاح نام متغیر
+            console.log("✅ Created Job:", createdJob);
+            console.log("🆔 Job ID:", createdJob?.id);
+
+            // ✅ invalidate job list
             queryClient.invalidateQueries(["jobs"]);
             queryClient.invalidateQueries(["postedJobs"]);
+
             toast.success(
                 isEditMode
                     ? "Job updated successfully!"
                     : "Job created successfully!"
             );
+
+            // ✅ ارسال نوتیفیکشن فقط زمانی که ایجاد موفق بوده
+            if (!isEditMode && socket) {
+                const payload = {
+                    jobId: createdJob?.id,
+                    employerName: user?.data?.user?.name,
+                    companyName:
+                        user?.data?.user?.company?.name || "Unknown Company",
+                    jobTitle: createdJob?.title,
+                    location: createdJob?.location,
+                    description: createdJob?.description,
+                    jobType: createdJob?.job_type,
+                    salaryRange: `${createdJob?.salary_min} - ${createdJob?.salary_max}`,
+                    deadline: createdJob?.deadline,
+                    createdAt: new Date().toISOString(),
+                };
+                socket.emit("postedJob", payload);
+                console.log("📤 postedJob emitted:", payload);
+            }
+
             reset();
             onOpenChange(false);
         },
@@ -205,8 +230,6 @@ export default function JobModal({ open, onOpenChange, job }) {
         },
     });
 
-    // 🔹 تابع ثبت فرم
-    // console.log(user?.data?.user?.name);
     const onSubmit = (data) => {
         const jobData = {
             company_id: user?.data?.user?.company?.id,
@@ -237,8 +260,7 @@ export default function JobModal({ open, onOpenChange, job }) {
                 createdAt: new Date().toISOString(),
             };
 
-            socket.emit("postedJob", payload);
-            // console.log("📤 postedJob emitted:", payload);
+            // socket.emit("postedJob", payload);
         } else {
             console.warn("⚠️ No socket connection!");
         }
