@@ -20,7 +20,7 @@ const Content = styled(RadixDialog.Content)`
     left: 50%;
     transform: translate(-50%, -50%);
     width: 70rem;
-    height: 30rem;
+    height: 33rem;
     background: var(--color-grey-900);
     padding: 2rem;
     border-radius: var(--radius-md);

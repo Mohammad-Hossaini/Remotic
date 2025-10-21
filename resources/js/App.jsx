@@ -45,7 +45,7 @@ const queryClient = new QueryClient({
     },
 });
 
-// ✅ هوک برای مدیریت ساکت بر اساس توکن
+// ✅ Hook for managing token
 function SocketHandler() {
     const { user } = useAuth();
     const [socket, setSocket] = useState(null);
@@ -69,14 +69,14 @@ function SocketHandler() {
         };
     }, [user?.token]);
 
-    return null; // فقط مدیریت ساکت، نیازی به رندر چیزی نیست
+    return null; 
 }
 
 export default function App() {
     return (
         <AuthProvider>
             <QueryClientProvider client={queryClient}>
-                <SocketHandler /> {/* 🔥 مدیریت ساکت */}
+                <SocketHandler /> 
                 <BrowserRouter>
                     <GlobalStyles />
 

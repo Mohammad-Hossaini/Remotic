@@ -70,7 +70,7 @@ function JobDetails() {
                             <img
                                 src={
                                     job?.companyLogo ||
-                                    "/company-images/image(2).jfif"
+                                    "/company-images/image(6).jfif"
                                 }
                                 alt="Company Logo"
                                 className="jobImg"

@@ -218,7 +218,7 @@
 .bg-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: fill;
 }
 
 .profile-photo {
@@ -245,13 +245,13 @@
     justify-content: center;
 }
 
-/* ویرایش بک‌گراند */
+
 .edit-bg-bottom {
     bottom: 200px;
     right: 10px;
 }
 
-/* ویرایش پروفایل */
+
 .edit-profile {
     bottom: -10px;
     left: 100px;

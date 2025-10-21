@@ -229,14 +229,11 @@ function Navbar() {
                                                     <div className="context-menu">
                                                         <Link
                                                             to={`/app/allJobs/jobDetails/${n.jobID}`}
+                                                            onClick={() =>
+                                                                markAsRead(n.id)
+                                                            }
                                                         >
-                                                            <button
-                                                                onClick={() =>
-                                                                    console.log(
-                                                                        "View Job clicked"
-                                                                    )
-                                                                }
-                                                            >
+                                                            <button>
                                                                 <IoMdEye
                                                                     style={{
                                                                         display:
