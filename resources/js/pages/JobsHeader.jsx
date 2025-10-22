@@ -209,7 +209,7 @@ export default function JobsHeader({
             <TopRow>
                 <SearchWrapper>
                     {(isHomePage || isLoginPage || isRegisterPage) && (
-                        <StyledH2>Remote Work Hub</StyledH2>
+                        <StyledH2>Remotic</StyledH2>
                     )}
                     <StyledHome to="/home">Home</StyledHome>
                     {showFiltersSection && (

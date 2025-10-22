@@ -295,13 +295,17 @@ export default function AllJobs() {
         queryKey: ["jobs"],
         queryFn: getJobs,
     });
+    // const logos = jobs.map((job) => job.company?.logo || "default-logo.png");
+    // console.log("All company logos:", logos);
+    // console.log("Company logo:", jobs[0]?.company?.logo);
+    // const logos1 = jobs[0]?.company?.logo;
 
     useEffect(() => {
         if (!user?.token) return;
         getMyFavorites(user.token)
             .then((favorites) => setSavedJobIds(favorites.map((f) => f.job.id)))
             .catch(console.error);
-    }, [user]);
+    }, [user, queryClient]); 
 
     const toggleFavorite = async (job) => {
         if (!user?.token) {
@@ -319,17 +323,15 @@ export default function AllJobs() {
 
             if (isFavorite) {
                 await removeFavoriteJob(job.id, user.token);
+                toast.error("Removed from favorites 💔");
                 setSavedJobIds((prev) => prev.filter((id) => id !== job.id));
-                toast.success("Job removed from favorites");
             } else {
                 await addFavoriteJob(job.id, user.token);
+                toast.success("Added to favorites ❤️");
                 setSavedJobIds((prev) => [...prev, job.id]);
-                toast.success("Job added to favorites");
             }
-
-            queryClient.invalidateQueries({
-                queryKey: ["myFavorites", user?.id],
-            });
+            const updatedFavorites = await getMyFavorites(user.token);
+            setSavedJobIds(updatedFavorites.map((f) => f.job.id));
         } catch (err) {
             console.error(err);
             toast.error(err.message || "Failed to update favorite");
@@ -356,7 +358,7 @@ export default function AllJobs() {
     const filteredJobs = jobs?.sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
     );
-    // console.log("All the filter jobs :", filteredJobs);
+    console.log("All the filter jobs :", jobs);
     return (
         <AllJobsWrapper>
             <JobsHeader
@@ -388,10 +390,11 @@ export default function AllJobs() {
                                 <JobImg
                                     src={
                                         job.company?.logo ||
-                                        "/company-images/image(6).jfif"
+                                        "/popular-logos/logo(4).png"
                                     }
                                     alt={job.company?.name || "Company"}
                                 />
+
                                 <JobText>
                                     <JobTitle>{job.title}</JobTitle>
                                     <JobPosition>
@@ -423,20 +426,11 @@ export default function AllJobs() {
                                     </JobDescription>
                                 </JobText>
                             </JobTop>
-
-                            {/* {user?.role === "job_seeker" && (
-                                <HeartIcon
-                                    active={savedJobIds.includes(job.id)}
-                                    onClick={() => toggleFavorite(job)}
-                                />
-                            )} */}
-                            {/* Inside your JobsCard mapping */}
                             {(!user?.role || user?.role === "job_seeker") && (
                                 <HeartIcon
                                     active={savedJobIds.includes(job.id)}
                                     onClick={() => {
                                         if (!user?.role) {
-                                            // Not logged in → open modal
                                             setModalData({
                                                 type: "save",
                                                 title: "Save this job with an account",
@@ -444,7 +438,6 @@ export default function AllJobs() {
                                                     "Save this job and other opportunities with a free account.",
                                             });
                                         } else {
-                                            // Logged in as job_seeker → toggle favorite
                                             toggleFavorite(job);
                                         }
                                     }}

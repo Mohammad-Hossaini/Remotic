@@ -70,8 +70,8 @@ class CompanyController extends Controller
     if ($request->hasFile('logo')) {
         $file = $request->file('logo');
         $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('logos'), $filename);
-        $logoPath = 'logos/' . $filename;
+    $logoPath = $file->storeAs('logos', $filename, 'public');
+
     }
 
     $company = Company::create([
