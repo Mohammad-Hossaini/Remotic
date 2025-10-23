@@ -244,13 +244,10 @@ const HeroImage = styled.img`
     object-fit: cover;
 
     @media (max-width: 59em) {
-        max-width: 300px;
+        max-width: 400px;
     }
     @media (max-width: 44em) {
-        max-width: 250px;
-    }
-    @media (max-width: 34em) {
-        max-width: 200px;
+        max-width: 350px;
     }
 `;
 

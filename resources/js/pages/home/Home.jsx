@@ -14,8 +14,8 @@ function Home() {
             {/* <Header /> */}
             <HeroSection />
             <Featured />
-            {/* <Features />
-            <Testimonial />
+            <Features />
+            {/* <Testimonial />
             <Pricing />
             <div className="section-FAC">
                 <p className="fac-title">Frequently Asked Questions</p>
