@@ -11,9 +11,9 @@ import "./Home.css";
 function Home() {
     return (
         <>
-            <Header />
+            {/* <Header /> */}
             <HeroSection />
-            <Featured />
+            {/* <Featured />
             <Features />
             <Testimonial />
             <Pricing />
@@ -22,7 +22,7 @@ function Home() {
                 <SectionFac />
             </div>
             <CTASection />
-            <Footer />
+            <Footer /> */}
         </>
     );
 }
