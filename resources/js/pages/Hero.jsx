@@ -4,22 +4,25 @@ import styled from "styled-components";
 /* ==============================
    STYLED COMPONENTS
 ============================== */
+
 const SectionHero = styled.section`
-    padding: 7.2rem 0 4.4rem 0;
+    padding: 7.2rem 2.4rem 4.4rem 2.4rem; 
     background-color: #e6f2ef;
     font-family: "Rubik", sans-serif;
-    min-height: 85rem;
 
-    @media (min-width: 84em) {
+    @media (max-width: 84em) {
         min-height: 55rem;
+        padding: 6rem 4rem; 
     }
 
     @media (max-width: 75em) {
         min-height: 53rem;
+        padding: 5rem 3rem;
     }
 
     @media (max-width: 59em) {
         min-height: 93rem;
+        padding: 4rem 2rem;
     }
 `;
 

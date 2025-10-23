@@ -13,8 +13,8 @@ function Home() {
         <>
             {/* <Header /> */}
             <HeroSection />
-            {/* <Featured />
-            <Features />
+            <Featured />
+            {/* <Features />
             <Testimonial />
             <Pricing />
             <div className="section-FAC">
