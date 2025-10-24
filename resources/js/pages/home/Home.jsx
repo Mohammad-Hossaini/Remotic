@@ -11,12 +11,12 @@ import "./Home.css";
 function Home() {
     return (
         <>
-            {/* <Header /> */}
+            <Header />
             <HeroSection />
             <Featured />
             <Features />
-            {/* <Testimonial />
-            <Pricing />
+            <Testimonial />
+            {/* <Pricing />
             <div className="section-FAC">
                 <p className="fac-title">Frequently Asked Questions</p>
                 <SectionFac />
