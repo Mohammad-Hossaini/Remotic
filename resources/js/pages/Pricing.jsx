@@ -1,4 +1,5 @@
 import { FaCheck } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const SectionPricing = styled.section`
@@ -220,9 +221,9 @@ export default function Pricing() {
                     </List>
 
                     <PlanSignUp>
-                        <a href="#" className="pricing-btn">
+                        <Link to="/sign-up" className="pricing-btn">
                             Get Started
-                        </a>
+                        </Link>
                     </PlanSignUp>
                 </PricingPlan>
 
@@ -255,9 +256,9 @@ export default function Pricing() {
                     </List>
 
                     <PlanSignUp>
-                        <a href="#" className="pricing-btn">
+                        <Link to="/sign-up" className="pricing-btn">
                             Upgrade Now
-                        </a>
+                        </Link>
                     </PlanSignUp>
                 </PricingPlan>
             </PricingContainer>

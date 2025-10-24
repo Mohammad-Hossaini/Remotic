@@ -17,11 +17,8 @@ function Home() {
             <Features />
             <Testimonial />
             <Pricing />
-            <div className="section-FAC">
-                <p className="fac-title">Frequently Asked Questions</p>
                 <SectionFac />
-            </div>
-            <CTASection />
+            {/* <CTASection /> */}
             {/* <Footer /> */}
         </>
     );
