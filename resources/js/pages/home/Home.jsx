@@ -16,13 +16,13 @@ function Home() {
             <Featured />
             <Features />
             <Testimonial />
-            {/* <Pricing />
+            <Pricing />
             <div className="section-FAC">
                 <p className="fac-title">Frequently Asked Questions</p>
                 <SectionFac />
             </div>
             <CTASection />
-            <Footer /> */}
+            {/* <Footer /> */}
         </>
     );
 }

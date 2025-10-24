@@ -1,11 +1,10 @@
-// Pricing.jsx
 import { FaCheck } from "react-icons/fa";
-import { RxCross2 } from "react-icons/rx";
 import styled from "styled-components";
 
-const SectionPricing = styled.div`
+const SectionPricing = styled.section`
     font-family: "Rubik", sans-serif;
-    margin: 3rem 0 9.6rem 0;
+    padding: 9.6rem 0;
+    background-color: #fff;
 `;
 
 const PricingTitle = styled.div`
@@ -15,39 +14,58 @@ const PricingTitle = styled.div`
     .subheading {
         color: #087f5b;
         font-weight: 500;
+        font-size: 1.8rem;
     }
 
     .heading-secondary {
         margin-top: 1.4rem;
+        font-size: 4rem;
+        font-weight: 700;
+        color: #114a38;
     }
 `;
-
 const PricingContainer = styled.div`
     max-width: 120rem;
     padding: 0 3.2rem;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 6.4rem;
-    row-gap: 9.6rem;
+    gap: 6.4rem;
+    justify-items: center;
+    align-items: start;
+
+    @media (max-width: 59em) {
+    }
+
+    @media (max-width: 44em) {
+        grid-template-columns: 1fr;
+        row-gap: 6.4rem;
+    }
 `;
 
 const PricingPlan = styled.div`
     border-radius: 11px;
-    width: 70%;
-    height: 85vh;
+    width: 80%;
     padding: ${(props) => (props.variant === "starter" ? "4.6rem" : "4.8rem")};
     background-color: ${(props) =>
         props.variant === "complete" ? "#e6f2ef" : "transparent"};
     border: ${(props) =>
         props.variant === "starter" ? "2px solid #e6f2ef" : "none"};
-    justify-self: ${(props) => (props.variant === "starter" ? "end" : "auto")};
+
+    justify-self: center;
+
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-0.8rem);
+        box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.08);
+    }
 
     &::after {
         content: ${(props) =>
-            props.variant === "complete" ? '"Best value"' : '""'};
+            props.variant === "complete" ? '"Best value"' : ""};
         position: absolute;
         top: 6%;
         right: -18%;
@@ -58,6 +76,34 @@ const PricingPlan = styled.div`
         background-color: #ffd43b;
         padding: 0.8rem 8rem;
         transform: rotate(45deg);
+    }
+
+    @media (max-width: 75em) {
+        width: 100%;
+        &::after {
+            right: -12%;
+        }
+    }
+
+    @media (max-width: 59em) {
+        width: 90%;
+        &::after {
+            right: -25%;
+        }
+    }
+
+    @media (max-width: 54.06em) and (min-width: 44em) {
+        width: 88%;
+        &::after {
+            display: none;
+        }
+    }
+
+    @media (max-width: 44em) {
+        width: 80%;
+        &::after {
+            right: -17%;
+        }
     }
 `;
 
@@ -90,6 +136,7 @@ const PlanPrice = styled.p`
 
 const PlanText = styled.p`
     font-size: 1.6rem;
+    color: #555;
 `;
 
 const List = styled.ul`
@@ -104,7 +151,7 @@ const ListItem = styled.li`
     display: flex;
     align-items: center;
     gap: 1.6rem;
-    line-height: 1.2;
+    line-height: 1.4;
 
     .list-icon {
         width: 2.4rem;
@@ -140,71 +187,70 @@ export default function Pricing() {
             <PricingTitle>
                 <span className="subheading">Pricing</span>
                 <h2 className="heading-secondary">
-                    Eating well without breaking the bank
+                    Choose the perfect plan for your hiring needs
                 </h2>
             </PricingTitle>
 
             <PricingContainer>
+                {/* Starter Plan */}
                 <PricingPlan variant="starter">
                     <PlanHeader>
                         <PlanName>Starter</PlanName>
                         <PlanPrice>
-                            <span>$</span>399
+                            <span>$</span>49
                         </PlanPrice>
-                        <PlanText>per month. That's just $13 per job!</PlanText>
+                        <PlanText>
+                            Ideal for startups hiring their first freelancers.
+                        </PlanText>
                     </PlanHeader>
 
                     <List>
                         <ListItem>
                             <FaCheck className="list-icon" />
-                            <span>1 meal per day</span>
+                            <span>Post up to 3 job listings</span>
                         </ListItem>
                         <ListItem>
                             <FaCheck className="list-icon" />
-                            <span>Order from 11am to 9pm</span>
+                            <span>Basic candidate matching</span>
                         </ListItem>
                         <ListItem>
                             <FaCheck className="list-icon" />
-                            <span>Delivery is free</span>
-                        </ListItem>
-                        <ListItem>
-                            <RxCross2 className="list-icon" />
-                            <span></span>
+                            <span>Email support</span>
                         </ListItem>
                     </List>
 
                     <PlanSignUp>
                         <a href="#" className="pricing-btn">
-                            Start getting now
+                            Get Started
                         </a>
                     </PlanSignUp>
                 </PricingPlan>
 
+                {/* Complete Plan */}
                 <PricingPlan variant="complete">
                     <PlanHeader>
-                        <PlanName>Complete</PlanName>
+                        <PlanName>Pro Business</PlanName>
                         <PlanPrice>
-                            <span>$</span>399
+                            <span>$</span>99
                         </PlanPrice>
-                        <PlanText>per month. That's just $13 per job!</PlanText>
+                        <PlanText>
+                            Perfect for growing companies hiring remotely at
+                            scale.
+                        </PlanText>
                     </PlanHeader>
 
                     <List>
                         <ListItem>
                             <FaCheck className="list-icon" />
-                            <span>1 meal per day</span>
+                            <span>Unlimited job postings</span>
                         </ListItem>
                         <ListItem>
                             <FaCheck className="list-icon" />
-                            <span>Order from 11am to 9pm</span>
+                            <span>Smart talent recommendations</span>
                         </ListItem>
                         <ListItem>
                             <FaCheck className="list-icon" />
-                            <span>Delivery is free</span>
-                        </ListItem>
-                        <ListItem>
-                            <FaCheck className="list-icon" />
-                            <span>Delivery is free</span>
+                            <span>Priority job placement</span>
                         </ListItem>
                     </List>
 
