@@ -17,9 +17,9 @@ function Home() {
             <Features />
             <Testimonial />
             <Pricing />
-                <SectionFac />
+            <SectionFac />
             <CTASection />
-            {/* <Footer /> */}
+            <Footer />
         </>
     );
 }

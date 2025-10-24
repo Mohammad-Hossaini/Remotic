@@ -97,11 +97,13 @@ const NavBtn = styled(Link)`
 const LoginBtn = styled(NavBtn)`
     color: #114a38;
     background-color: #fff;
-    /* border: 2px solid #114a38; */
 
     &:hover {
         background-color: #e6f2ef;
         box-shadow: inset 0 0 0 3px #fff;
+    }
+    @media (max-width: 75em) {
+        display: none;
     }
 
     @media (max-width: 59em) {
