@@ -1,5 +1,3 @@
-// CTASection.jsx
-import { GoSearch } from "react-icons/go";
 import { HiOutlineLocationMarker, HiOutlineMail } from "react-icons/hi";
 import styled from "styled-components";
 
@@ -21,73 +19,145 @@ const CTAContainer = styled.div`
     background-image: url("/cta-image(3).png");
     background-repeat: no-repeat;
     background-color: #154c1e;
+
+    @media (max-width: 75em) {
+        grid-template-columns: 1fr 30rem;
+    }
+
+    @media (max-width: 59em) {
+        grid-template-columns: 1fr;
+        height: auto;
+        padding: 2rem;
+        row-gap: 2rem;
+    }
 `;
 
 const CTALeft = styled.div`
     margin-left: 2rem;
     margin-bottom: 5rem;
 
-    .cta-title,
+    .cta-title {
+        color: #fff;
+        font-size: 3rem;
+        margin-bottom: 1rem;
+
+        @media (max-width: 44em) {
+            font-size: 2.4rem;
+        }
+    }
+
     .cta-desc {
         color: #fff;
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+        @media (max-width: 44em) {
+            font-size: 1.4rem;
+        }
     }
 `;
 
 const CTARight = styled.div`
-    border-radius: 2.5rem;
+    border-radius: 7px;
     display: grid;
     grid-template-columns: 1fr 30%;
     column-gap: 1.2rem;
     padding: 1.2rem;
     background-color: lightgrey;
+
+    @media (max-width: 59em) {
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+    }
 `;
 
 const RightLeft = styled.div`
-    border-radius: 2.5rem;
+    border-radius: 7px;
     background-color: #fff;
     padding: 1.2rem 2.8rem;
 
     .cta-label {
         display: flex;
         align-items: center;
-        gap: var(--space-6);
-        font-size: var(--font-xs);
+        gap: 0.5rem;
+        font-size: 1.2rem;
         font-weight: 500;
-        color: var(--color-grey-700);
-        margin-bottom: var(--space-2);
+        color: #555;
+        margin-bottom: 0.5rem;
     }
 
     .cta-icon {
-        font-size: var(--font-sm);
-        color: var(--color-primary);
+        font-size: 1.4rem;
+        color: #087f5b;
     }
 
     .cta-input {
         width: 100%;
-        padding: var(--space-8) var(--space-12);
-        font-size: var(--font-sm);
-        border: 1px solid var(--color-grey-300);
-        border-radius: var(--radius-sm);
-        background-color: var(--color-grey-30);
-        transition: border 0.2s;
-        margin-bottom: var(--space-8);
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 0.8rem;
+        margin-bottom: 1rem;
         outline: none;
+        transition: border 0.2s;
 
         &:focus {
-            border-color: var(--color-primary);
+            border-color: #087f5b;
         }
     }
 `;
 
+// const RightRight = styled.div`
+//     border-radius: 7px;
+//     padding: 1.4rem;
+//     background-color: #087f5b;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     gap: 0.8rem;
+//     cursor: pointer;
+//     transition: background-color 0.3s ease, transform 0.2s ease;
+
+//     &:hover {
+//         background-color: #066649;
+//         transform: translateY(-2px);
+//     }
+
+//     .btn-text {
+//         color: #fff;
+//         font-size: 1.6rem;
+//         font-weight: 600;
+//         letter-spacing: 0.5px;
+//         text-transform: uppercase;
+
+//         @media (max-width: 44em) {
+//             font-size: 1.4rem;
+//         }
+//     }
+
+//     .btn-icon {
+//         font-size: 4.8rem;
+//         color: #fff;
+//         transition: transform 0.2s ease;
+
+//         @media (max-width: 44em) {
+//             font-size: 3.6rem;
+//         }
+//     }
+
+//     &:hover .btn-icon {
+//         transform: scale(1.1);
+//     }
+// `;
 const RightRight = styled.div`
-    border-radius: 2.5rem;
-    padding: 1.4rem;
+    border-radius: 7px;
+    padding: 0.6rem 1.2rem; /* decreased padding */
     background-color: #087f5b;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.8rem;
+    gap: 0.4rem; /* decreased gap */
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 
@@ -102,12 +172,20 @@ const RightRight = styled.div`
         font-weight: 600;
         letter-spacing: 0.5px;
         text-transform: uppercase;
+
+        @media (max-width: 44em) {
+            font-size: 1.4rem;
+        }
     }
 
     .btn-icon {
         font-size: 4.8rem;
         color: #fff;
         transition: transform 0.2s ease;
+
+        @media (max-width: 44em) {
+            font-size: 3.6rem;
+        }
     }
 
     &:hover .btn-icon {
@@ -121,9 +199,9 @@ export default function CTASection() {
             <CTAContainer>
                 <CTALeft>
                     <div className="cta-description">
-                        <h1 className="cta-title">Travel without limit</h1>
+                        <h1 className="cta-title">Hire and Work Remotely</h1>
                         <p className="cta-desc">
-                            Find the right e-visa trip, easy apply in minutes.
+                            Discover top talent or your next remote job fast.
                         </p>
                     </div>
                 </CTALeft>
@@ -148,9 +226,6 @@ export default function CTASection() {
 
                     <RightRight>
                         <p className="btn-text">Find us</p>
-                        <span>
-                            <GoSearch className="btn-icon" />
-                        </span>
                     </RightRight>
                 </CTARight>
             </CTAContainer>

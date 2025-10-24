@@ -6,13 +6,13 @@ import styled from "styled-components";
 ============================== */
 
 const SectionHero = styled.section`
-    padding: 7.2rem 2.4rem 4.4rem 2.4rem; 
+    padding: 7.2rem 2.4rem 4.4rem 2.4rem;
     background-color: #e6f2ef;
     font-family: "Rubik", sans-serif;
-
+    height: 100vh;
     @media (max-width: 84em) {
         min-height: 55rem;
-        padding: 6rem 4rem; 
+        padding: 6rem 4rem;
     }
 
     @media (max-width: 75em) {
