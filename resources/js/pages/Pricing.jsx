@@ -182,10 +182,10 @@ const PlanSignUp = styled.div`
     }
 `;
 
-export default function Pricing() {
+export default function Pricing({ id }) {
     return (
         <SectionPricing>
-            <PricingTitle>
+            <PricingTitle id={id}>
                 <span className="subheading">Pricing</span>
                 <h2 className="heading-secondary">
                     Choose the perfect plan for your hiring needs

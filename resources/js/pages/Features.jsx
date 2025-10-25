@@ -239,10 +239,10 @@ const BtnLearnMore = styled.button`
    COMPONENT
 ============================== */
 
-export default function Features() {
+export default function Features({ id }) {
     return (
         <FeaturesSection>
-            <FeaturePrimary>
+            <FeaturePrimary id={id}>
                 Your path to remote success in 3 simple steps
             </FeaturePrimary>
 

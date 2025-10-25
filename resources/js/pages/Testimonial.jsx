@@ -20,7 +20,7 @@ const TestimonialTitle = styled.div`
     text-align: center;
 
     h3 {
-        font-size: 3rem; 
+        font-size: 3rem;
         font-weight: 900;
         line-height: 1.2;
         text-align: center;
@@ -166,9 +166,9 @@ const CustomerName = styled.p`
     }
 `;
 
-export default function Testimonial() {
+export default function Testimonial({ id }) {
     return (
-        <StyledAllContainer>
+        <StyledAllContainer id={id}>
             <TestimonialSection>
                 <TestimonialTitle>
                     <h3>Hear What Our Users Are Saying</h3>

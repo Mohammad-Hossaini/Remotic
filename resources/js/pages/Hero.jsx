@@ -1,12 +1,12 @@
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-
 /* ==============================
    STYLED COMPONENTS
 ============================== */
 
 const SectionHero = styled.section`
-    padding: 7.2rem 2.4rem 4.4rem 2.4rem;
+    padding: 3rem 2.4rem 4.4rem 2.4rem;
     background-color: #e6f2ef;
     font-family: "Rubik", sans-serif;
     height: 100vh;
@@ -255,8 +255,57 @@ const HeroImage = styled.img`
    COMPONENT
 ============================== */
 
-export default function HeroSection() {
-    return (
+// export default function HeroSection() {
+//     return (
+// <main>
+//     <SectionHero>
+//         <Hero>
+//             <HeroTextBox>
+//                 <HeadingPrimary>
+//                     Empowering Your Remote Career Journey
+//                 </HeadingPrimary>
+
+//                 <HeroDescription>
+//                     Find remote jobs that fit your skills and lifestyle.
+//                     Connect with global companies, grow your career, and
+//                     unlock new opportunities from anywhere.
+//                 </HeroDescription>
+
+//                 <CTAButton to="/register-employer">
+//                     Post a Job – It’s Free
+//                 </CTAButton>
+
+//                 <Profiles>
+//                     <img src="/profile/profile-1.jpg" alt="profile 1" />
+//                     <img src="/profile/profile-2.jpg" alt="profile 2" />
+//                     <img src="/profile/profile-3.jpg" alt="profile 3" />
+//                     <img src="/profile/profile-4.jpg" alt="profile 4" />
+//                     <img src="/profile/profile-5.jpg" alt="profile 5" />
+//                     <img src="/profile/profile-6.jpg" alt="profile 6" />
+//                 </Profiles>
+
+//                 <Statistic>
+//                     More than <strong>7,500</strong> professionals have
+//                     joined Remote Work Hub, collaborating, sharing
+//                     knowledge, and building projects together
+//                 </Statistic>
+//             </HeroTextBox>
+
+//             <HeroImageBox>
+//                 <HeroImage
+//                     src="hero-image-removebg-preview.png"
+//                     alt="Remote work illustration"
+//                 />
+//             </HeroImageBox>
+//         </Hero>
+//     </SectionHero>
+// </main>
+//     );
+// }
+
+const HeroSection = forwardRef((props, ref) => (
+    <section id="hero" ref={ref} className="section-hero">
+        {/* Hero content */}
         <main>
             <SectionHero>
                 <Hero>
@@ -300,5 +349,7 @@ export default function HeroSection() {
                 </Hero>
             </SectionHero>
         </main>
-    );
-}
+    </section>
+));
+
+export default HeroSection;

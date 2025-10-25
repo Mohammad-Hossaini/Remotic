@@ -112,7 +112,7 @@ const SectionFAQWrapper = styled.section`
     }
 `;
 
-export default function SectionFAQ() {
+export default function SectionFAQ({ id }) {
     const [openIndex, setOpenIndex] = useState(null);
 
     const toggleAccordion = (index) => {
@@ -167,7 +167,7 @@ export default function SectionFAQ() {
     ];
 
     return (
-        <SectionFAQWrapper>
+        <SectionFAQWrapper id={id}>
             <p className="faq-title">Frequently Asked Questions</p>
             {faqs.map((item, index) => (
                 <div
