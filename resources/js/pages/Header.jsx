@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { TfiClose, TfiMenu } from "react-icons/tfi";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 /* ==============================
-   STYLED COMPONENTS (unchanged)
+   STYLED COMPONENTS
 ============================== */
 
 const HeaderContainer = styled.header`
@@ -50,6 +50,7 @@ const LogoContainer = styled.div`
         }
     }
 `;
+
 const Nav = styled.nav`
     ul {
         display: flex;
@@ -216,11 +217,15 @@ const CloseIcon = styled(TfiClose)`
 ============================== */
 
 export default function Header({ heroRef }) {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const isMainPage = location.pathname === "/home";
+    const isHomePage = location.pathname === "/";
     const [isNavOpen, setIsNavOpen] = useState(false);
-    const headerRef = useRef(null);
     const [isSticky, setIsSticky] = useState(false);
+    const headerRef = useRef(null);
 
-    // Toggle mobile nav
+    // ✅ Toggle mobile nav
     const toggleNav = () => {
         setIsNavOpen((prev) => {
             document.body.style.overflow = !prev ? "hidden" : "auto";
@@ -228,15 +233,32 @@ export default function Header({ heroRef }) {
         });
     };
 
-    // Close mobile nav when a link is clicked
-    const handleNavItemClick = () => {
-        if (isNavOpen) {
-            setIsNavOpen(false);
-            document.body.style.overflow = "auto";
-        }
+    // ✅ Close mobile nav when link clicked
+    const closeNav = () => {
+        setIsNavOpen(false);
+        document.body.style.overflow = "auto";
     };
 
-    // Sticky navigation
+    // ✅ Smooth scroll or navigate for Home
+    const handleHomeClick = (e) => {
+        e.preventDefault();
+
+        if (isMainPage) {
+            // Smooth scroll to hero
+            const hero = document.querySelector("#hero");
+            if (hero) hero.scrollIntoView({ behavior: "smooth" });
+        } else if (isHomePage) {
+            // Navigate to /home
+            navigate("/home");
+        } else {
+            // Default go to home page
+            navigate("/home");
+        }
+
+        closeNav();
+    };
+
+    // ✅ Sticky nav behavior
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => setIsSticky(!entry.isIntersecting),
@@ -261,52 +283,58 @@ export default function Header({ heroRef }) {
             <Nav isOpen={isNavOpen}>
                 <ul>
                     <li>
-                        <NavItem href="#hero" onClick={handleNavItemClick}>
+                        <NavItem href="#hero" onClick={handleHomeClick}>
                             Home
                         </NavItem>
                     </li>
-                    <li>
-                        <NavItem
-                            href="#sit-features"
-                            onClick={handleNavItemClick}
-                        >
-                            Features
-                        </NavItem>
-                    </li>
-                    <li>
-                        <NavItem
-                            href="#testimonial"
-                            onClick={handleNavItemClick}
-                        >
-                            Testimonial
-                        </NavItem>
-                    </li>
-                    <li>
-                        <NavItem href="#pricing" onClick={handleNavItemClick}>
-                            Pricing
-                        </NavItem>
-                    </li>
-                    <li>
-                        <NavItem href="#fac" onClick={handleNavItemClick}>
-                            FAQ
-                        </NavItem>
-                    </li>
-                    <li>
-                        <NavItem href="#cta" onClick={handleNavItemClick}>
-                            Contact
-                        </NavItem>
-                    </li>
+
+                    {isMainPage && (
+                        <>
+                            <li>
+                                <NavItem
+                                    href="#sit-features"
+                                    onClick={closeNav}
+                                >
+                                    Features
+                                </NavItem>
+                            </li>
+                            <li>
+                                <NavItem href="#testimonial" onClick={closeNav}>
+                                    Testimonial
+                                </NavItem>
+                            </li>
+                            <li>
+                                <NavItem href="#pricing" onClick={closeNav}>
+                                    Pricing
+                                </NavItem>
+                            </li>
+                            <li>
+                                <NavItem href="#fac" onClick={closeNav}>
+                                    FAQ
+                                </NavItem>
+                            </li>
+                            <li>
+                                <NavItem href="#cta" onClick={closeNav}>
+                                    Contact
+                                </NavItem>
+                            </li>
+                        </>
+                    )}
                 </ul>
 
                 <MobileButtons>
-                    <LoginBtn to="/login">Log in</LoginBtn>
-                    <SignUpBtn to="/createAccount">Sign up →</SignUpBtn>
+                    <LoginBtn to="/login" onClick={closeNav}>
+                        Log in
+                    </LoginBtn>
+                    <SignUpBtn to="/welcome" onClick={closeNav}>
+                        Sign up →
+                    </SignUpBtn>
                 </MobileButtons>
             </Nav>
 
             <Buttons>
                 <LoginBtn to="/login">Log in</LoginBtn>
-                <SignUpBtn to="/createAccount">Sign up →</SignUpBtn>
+                <SignUpBtn to="/welcome">Sign up →</SignUpBtn>
             </Buttons>
 
             <IconButton onClick={toggleNav}>

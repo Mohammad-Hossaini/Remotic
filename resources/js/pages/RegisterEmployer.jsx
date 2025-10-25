@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { createNewUser } from "../services/apiUsers";
 import Spinner from "../ui/Spinner";
 import Footer from "./Footer";
-import JobsHeader from "./JobsHeader";
+import Header from "./Header";
 
 const RegisterWrapper = styled.div`
     display: flex;
@@ -136,7 +136,7 @@ export default function RegisterEmployer() {
 
     return (
         <>
-            <JobsHeader />
+            <Header />
             <RegisterWrapper>
                 <RegisterCard>
                     <Title>Create your Employer Account</Title>

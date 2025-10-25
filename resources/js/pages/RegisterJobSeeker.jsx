@@ -8,6 +8,7 @@ import { createNewUser } from "../services/apiUsers";
 import Spinner from "../ui/Spinner";
 import Footer from "./Footer";
 import JobsHeader from "./JobsHeader";
+import Header from "./Header";
 
 const RegisterWrapper = styled.div`
     display: flex;
@@ -135,8 +136,7 @@ export default function RegisterJobSeeker() {
     const onSubmit = (data) => mutate({ ...data, role: "job_seeker" });
 
     return (
-        <>
-            <JobsHeader />
+        <><Header/>
             <RegisterWrapper>
                 <RegisterCard>
                     <Title>Create your Job Seeker Account</Title>
