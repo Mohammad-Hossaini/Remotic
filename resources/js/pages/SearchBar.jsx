@@ -1,12 +1,12 @@
 import "./searchBar.css";
-
 export default function SearchBar({
     searchTerm,
     setSearchTerm,
     locationFilter,
     setLocationFilter,
-    onApply,
 }) {
+    const handleSubmit = (e) => e.preventDefault();
+
     return (
         <div className="main-container">
             <div className="content-container">
@@ -17,26 +17,21 @@ export default function SearchBar({
                         grow your career fast with others.
                     </p>
                     <p className="pop-search">
-                        <strong>Popular Search :</strong> Software Developer ,
-                        UX Designer , Mobile Developer.
+                        <strong>Popular Search :</strong> Software Developer, UX
+                        Designer, Mobile Developer.
                     </p>
                 </div>
 
                 <div className="img-container">
                     <img
                         src="/bg-image_3_-removebg-preview.png"
-                        alt=""
+                        alt="Search illustration"
                         className="search-img"
                     />
                 </div>
 
-                {/* 🔹 جعبه سرچ */}
                 <div className="search-container">
-                    <form
-                        className="search-form"
-                        onSubmit={(e) => e.preventDefault()}
-                    >
-                        {/* فیلد Type */}
+                    <form className="search-form" onSubmit={handleSubmit}>
                         <div className="first-input">
                             <label className="type-label">Type</label>
                             <input
@@ -48,7 +43,6 @@ export default function SearchBar({
                             />
                         </div>
 
-                        {/* فیلد Location */}
                         <div className="first-input">
                             <label className="type-label">Location</label>
                             <input
@@ -61,11 +55,11 @@ export default function SearchBar({
                                 }
                             />
                         </div>
-                    </form>
 
-                    <div className="apply-buttons">
-                        <button onClick={onApply}>Apply</button>
-                    </div>
+                        {/* <div className="apply-buttons">
+                            <button type="submit">Search</button>
+                        </div> */}
+                    </form>
                 </div>
             </div>
         </div>
