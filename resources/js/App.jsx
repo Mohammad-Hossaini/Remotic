@@ -1,40 +1,51 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { io } from "socket.io-client";
+
+import { AuthProvider, useAuth } from "./hook/AuthContext";
+import GlobalStyles from "./styles/GlobalStyles";
+
 import PageNotFound from "./components/PageNotFound";
 import Settings from "./components/Settings";
 import EmployerPrivateRoute from "./features/authintication/EmployerPrivateRoute";
 import JobseekerPrivateRoute from "./features/authintication/JobseekerPrivateRoute";
 
+// ✅ Pages
 import Application from "./pages/application/Application";
-import EmployerDashboard from "./pages/home/employer/EmployerDashboard";
-import PostedJobs from "./pages/home/employer/PostedJobs";
-import PostedNewJobs from "./pages/home/employer/PostedNewJobs";
+import BackGroundInfo from "./pages/background information/BackGroundInfo";
+import CreateAccountPage from "./pages/CreateAccountPage";
+import Home from "./pages/home/Home";
+import Welcome from "./pages/home/welcomPage/Welcome";
+import LoginPage from "./pages/LoginPage";
+import Messages from "./pages/messages/Messages";
+import RegisterEmployer from "./pages/RegisterEmployer";
+import RegisterJobSeeker from "./pages/RegisterJobSeeker";
+import SearchBar from "./pages/SearchBar";
+import SignUpPage from "./pages/SignUpPage";
+
+// ✅ Job Seeker Pages
 import AllJobs from "./pages/home/job-seeker/AllJobs";
 import AppliedJobs from "./pages/home/job-seeker/AppliedJobs";
 import JobDetails from "./pages/home/job-seeker/JobDetails";
 import JobSeekerDashboard from "./pages/home/job-seeker/JobSeekerDashboard";
 import SavedJobs from "./pages/home/job-seeker/SavedJobs";
 import SugesstedJobs from "./pages/home/job-seeker/SugesstedJobs";
-import Welcome from "./pages/home/welcomPage/Welcome";
-import Messages from "./pages/messages/Messages";
 
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import { AuthProvider, useAuth } from "./hook/AuthContext";
-import BackGroundInfo from "./pages/background information/BackGroundInfo";
-import CreateAccountPage from "./pages/CreateAccountPage";
-import Home from "./pages/home/Home";
-import LoginPage from "./pages/LoginPage";
-import RegisterEmployer from "./pages/RegisterEmployer";
-import RegisterJobSeeker from "./pages/RegisterJobSeeker";
-import SearchBar from "./pages/SearchBar";
-import SignUpPage from "./pages/SignUpPage";
-import GlobalStyles from "./styles/GlobalStyles";
+// ✅ Employer Pages
+import EmployerDashboard from "./pages/home/employer/EmployerDashboard";
+import PostedJobs from "./pages/home/employer/PostedJobs";
+import PostedNewJobs from "./pages/home/employer/PostedNewJobs";
+
+// ✅ Layouts
 import AppLayout from "./ui/AppLayout";
 import EmployerAppLayout from "./ui/EmployerAppLayout";
 
+// =======================================================
+// ✅ React Query Client
+// =======================================================
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -45,7 +56,9 @@ const queryClient = new QueryClient({
     },
 });
 
-// ✅ Hook for managing token
+// =======================================================
+// ✅ Socket.IO Token-Based Connection Handler
+// =======================================================
 function SocketHandler() {
     const { user } = useAuth();
     const [socket, setSocket] = useState(null);
@@ -59,9 +72,17 @@ function SocketHandler() {
 
         const newSocket = io("http://localhost:5000", {
             auth: { token: user.token },
+            transports: ["websocket"], // ✅ more stable
         });
 
-        newSocket.on("welcome", (data) => console.log(data));
+        newSocket.on("connect", () =>
+            console.log("✅ Socket connected:", newSocket.id)
+        );
+
+        newSocket.on("welcome", (msg) => console.log("🟢 Server says:", msg));
+
+        newSocket.on("disconnect", () => console.log("⚠️ Socket disconnected"));
+
         setSocket(newSocket);
 
         return () => {
@@ -69,28 +90,26 @@ function SocketHandler() {
         };
     }, [user?.token]);
 
-    return null; 
+    return null;
 }
 
+// =======================================================
+// ✅ Main App Component
+// =======================================================
 export default function App() {
     return (
         <AuthProvider>
             <QueryClientProvider client={queryClient}>
-                <SocketHandler /> 
                 <BrowserRouter>
                     <GlobalStyles />
+                    <SocketHandler />
 
                     <Routes>
-                        {/* Public pages */}
+                        {/* ---------------- PUBLIC ROUTES ---------------- */}
                         <Route path="/" element={<AllJobs />} />
-                        <Route
-                            path="/jobDetails/:id"
-                            element={<JobDetails />}
-                        />
                         <Route path="/home" element={<Home />} />
                         <Route path="/welcome" element={<Welcome />} />
                         <Route path="/searchBar" element={<SearchBar />} />
-                        <Route path="/settings" element={<Settings />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/sign-up" element={<SignUpPage />} />
                         <Route
@@ -109,8 +128,13 @@ export default function App() {
                             path="/login/createAccount"
                             element={<CreateAccountPage />}
                         />
+                        <Route
+                            path="/jobDetails/:id"
+                            element={<JobDetails />}
+                        />
+                        <Route path="/settings" element={<Settings />} />
 
-                        {/* Job Seeker Routes */}
+                        {/* ---------------- JOB SEEKER ROUTES ---------------- */}
                         <Route
                             path="/app/*"
                             element={
@@ -149,7 +173,7 @@ export default function App() {
                             />
                         </Route>
 
-                        {/* Employer Routes */}
+                        {/* ---------------- EMPLOYER ROUTES ---------------- */}
                         <Route
                             path="/employerApp/*"
                             element={
@@ -184,25 +208,30 @@ export default function App() {
                             />
                         </Route>
 
+                        {/* ---------------- 404 PAGE ---------------- */}
                         <Route path="*" element={<PageNotFound />} />
                     </Routes>
+
+                    {/* ✅ Toaster Notifications */}
+                    <Toaster
+                        position="top-right"
+                        gutter={12}
+                        containerStyle={{ margin: "8px" }}
+                        toastOptions={{
+                            success: { duration: 3000 },
+                            error: { duration: 5000 },
+                            style: {
+                                fontSize: "16px",
+                                maxWidth: "500px",
+                                padding: "16px 24px",
+                                backgroundColor: "var(--color-grey-0)",
+                                color: "var(--color-grey-700)",
+                            },
+                        }}
+                    />
                 </BrowserRouter>
-                <Toaster
-                    position="top-right"
-                    gutter={12}
-                    containerStyle={{ margin: "8px" }}
-                    toastOptions={{
-                        success: { duration: 3000 },
-                        error: { duration: 5000 },
-                        style: {
-                            fontSize: "16px",
-                            maxWidth: "500px",
-                            padding: "16px 24px",
-                            backgroundColor: "var(--color-grey-0)",
-                            color: "var(--color-grey-700)",
-                        },
-                    }}
-                />
+
+                {/* ✅ React Query DevTools */}
                 <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </AuthProvider>

@@ -42,7 +42,7 @@ const LogoCol = styled.div`
         margin-bottom: 2rem;
 
         .logo {
-            width: 150px;
+            width: 90px;
             height: auto;
 
             @media (max-width: 768px) {
@@ -176,13 +176,13 @@ export default function Footer() {
         <FooterContainer>
             <FooterGrid>
                 <LogoCol>
-                    <a href="#" className="footer-logo">
+                    <Link to="/" className="footer-logo">
                         <img
                             className="logo"
-                            src="/img/remotehub-logo.png"
+                            src="/remotic-logo2.png"
                             alt="Remote Work Hub Logo"
                         />
-                    </a>
+                    </Link>
                     <ul className="social-links">
                         <li>
                             <a href="#" className="footer-link">

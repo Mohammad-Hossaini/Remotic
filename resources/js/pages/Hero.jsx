@@ -35,14 +35,14 @@ const Hero = styled.div`
     align-items: center;
 
     /**************************/
-    /* BELOW 1344px (Smaller desktops) */
+    /* BELOW 1344px(84em) (Smaller desktops) */
     /**************************/
     @media (max-width: 84em) {
         gap: 6rem;
     }
 
     /**************************/
-    /* BELOW 1200px (Landscape Tablets) */
+    /* BELOW 1200px(75em) (Landscape Tablets) */
     /**************************/
     @media (max-width: 75em) {
         grid-template-columns: 1fr 1fr;
@@ -50,7 +50,7 @@ const Hero = styled.div`
     }
 
     /**************************/
-    /* BELOW 944px (Tablets) */
+    /* BELOW 944px(59em) (Tablets) */
     /**************************/
     @media (max-width: 59em) {
         grid-template-columns: 1fr;
@@ -59,14 +59,14 @@ const Hero = styled.div`
     }
 
     /**************************/
-    /* BELOW 704px (Smaller tablets) */
+    /* BELOW 704px(44em) (Smaller tablets) */
     /**************************/
     @media (max-width: 44em) {
         gap: 2.5rem;
     }
 
     /**************************/
-    /* BELOW 544px (Phones) */
+    /* BELOW 544px(34em) (Phones) */
     /**************************/
     @media (max-width: 34em) {
         gap: 2rem;
@@ -251,57 +251,6 @@ const HeroImage = styled.img`
     }
 `;
 
-/* ==============================
-   COMPONENT
-============================== */
-
-// export default function HeroSection() {
-//     return (
-// <main>
-//     <SectionHero>
-//         <Hero>
-//             <HeroTextBox>
-//                 <HeadingPrimary>
-//                     Empowering Your Remote Career Journey
-//                 </HeadingPrimary>
-
-//                 <HeroDescription>
-//                     Find remote jobs that fit your skills and lifestyle.
-//                     Connect with global companies, grow your career, and
-//                     unlock new opportunities from anywhere.
-//                 </HeroDescription>
-
-//                 <CTAButton to="/register-employer">
-//                     Post a Job – It’s Free
-//                 </CTAButton>
-
-//                 <Profiles>
-//                     <img src="/profile/profile-1.jpg" alt="profile 1" />
-//                     <img src="/profile/profile-2.jpg" alt="profile 2" />
-//                     <img src="/profile/profile-3.jpg" alt="profile 3" />
-//                     <img src="/profile/profile-4.jpg" alt="profile 4" />
-//                     <img src="/profile/profile-5.jpg" alt="profile 5" />
-//                     <img src="/profile/profile-6.jpg" alt="profile 6" />
-//                 </Profiles>
-
-//                 <Statistic>
-//                     More than <strong>7,500</strong> professionals have
-//                     joined Remote Work Hub, collaborating, sharing
-//                     knowledge, and building projects together
-//                 </Statistic>
-//             </HeroTextBox>
-
-//             <HeroImageBox>
-//                 <HeroImage
-//                     src="hero-image-removebg-preview.png"
-//                     alt="Remote work illustration"
-//                 />
-//             </HeroImageBox>
-//         </Hero>
-//     </SectionHero>
-// </main>
-//     );
-// }
 
 const HeroSection = forwardRef((props, ref) => (
     <section id="hero" ref={ref} className="section-hero">

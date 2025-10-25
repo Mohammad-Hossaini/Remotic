@@ -11,7 +11,7 @@ import { loginUser } from "../features/authintication/apiLogin";
 import { useAuth } from "../hook/AuthContext";
 import Spinner from "../ui/Spinner";
 import Footer from "./Footer";
-import JobsHeader from "./JobsHeader";
+import Header from "./Header";
 
 /* Page Wrapper */
 const PageWrapper = styled.div`
@@ -178,7 +178,7 @@ export default function LoginPage() {
 
     return (
         <>
-            <JobsHeader />
+            <Header />
             <PageWrapper>
                 <Card>
                     <Title>Login to Remote Work Hub</Title>

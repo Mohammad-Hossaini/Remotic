@@ -1,6 +1,8 @@
 .main-container {
     background-color: #e6f2ef;
-    height: 65vh;
+    font-family: "Rubik", sans-serif;
+    height: auto;
+    padding-bottom: 5rem;
 }
 
 .content-container {
@@ -13,10 +15,8 @@
     column-gap: 1.8rem;
 }
 
-.texts {
-    margin-top: 10rem;
-    width: 40rem;
-    margin: 5rem auto;
+.text-container {
+    margin-top: 5rem;
 }
 
 .img-container {
@@ -24,19 +24,21 @@
     align-self: flex-end;
     justify-content: flex-start;
 }
+
 .search-img {
     width: 80%;
     transform: scaleX(-1);
 }
+
 .text-title {
-    font-family: sans-serif;
-    margin-top: 10rem;
+    font-family: "Rubik", sans-serif;
     line-height: 1.02;
     font-weight: 600;
     font-size: 6rem;
     padding-left: 2.4rem;
     color: var(--color-grey-700);
 }
+
 .text-desc {
     padding-left: 2.4rem;
     font-size: 1.8rem;
@@ -44,6 +46,16 @@
     margin-top: 1.6rem;
     color: var(--color-grey-800);
 }
+
+.pop-search {
+    margin-left: 2.4rem;
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    line-height: 1.02;
+    font-weight: 500;
+    color: var(--color-grey-900);
+}
+
 .search-container {
     background-color: var(--color-grey-0);
     width: 60%;
@@ -52,35 +64,31 @@
     top: 33rem;
     left: 2.4rem;
     border-radius: 5px;
-    display: flex; 
+    display: flex;
     align-items: center;
     padding: 0 1rem;
-    gap: 1.2rem; 
+    gap: 1.2rem;
 }
+
 .search-form {
     display: flex;
     flex: 1;
     gap: 1.2rem;
 }
-.pop-search {
-    margin-left: 2.4rem;
-    font-size: 1.2rem;
-    margin-top: 13rem;
-    line-height: 1.02;
-    font-weight: 500;
-    color: var(--color-grey-900);
-}
+
 .first-input {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
 }
+
 .type-label {
     color: var(--color-grey-900);
     font-size: 1.2rem;
     margin-bottom: 0.4rem;
 }
+
 .type-input {
     width: 100%;
     border: none;
@@ -90,11 +98,224 @@
 }
 
 .apply-buttons {
-    width: 10rem;
-    padding: 1.2rem 1.4rem;
+    min-width: 100px;
+    padding: 1rem;
     border-radius: 5px;
     background-color: #114a38;
     color: var(--color-grey-0);
     text-align: center;
     cursor: pointer;
+}
+
+.apply-buttons button {
+    width: 100%;
+    background: transparent;
+    color: inherit;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* ===== Responsive: 820px ~ 1200px (Smaller desktops / Landscape tablets) ===== */
+@media (max-width: 75em) {
+    /* 1200px */
+    .content-container {
+        max-width: 90%;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 1.5rem;
+    }
+
+    .text-title {
+        font-size: 4.5rem;
+        padding-left: 1em;
+    }
+
+    .text-desc {
+        font-size: 1.5rem;
+        padding-left: 1em;
+    }
+
+    .pop-search {
+        margin-left: 1em;
+        font-size: 1.1rem;
+    }
+
+    .search-container {
+        width: 65%;
+        top: 25rem;
+        left: 1em;
+        gap: 1em;
+        padding: 0.8rem;
+        height: 6rem;
+    }
+
+    .type-input {
+        font-size: 1.1rem;
+        padding: 0.6rem;
+    }
+
+    .apply-buttons {
+        padding: 0.8rem;
+    }
+
+    .img-container {
+        justify-content: flex-end;
+    }
+}
+
+/* ===== Responsive: 820px ~ 535px (Tablets / small tablets) ===== */
+@media (max-width: 51.25em) and (min-width: 33.4375em) {
+    .content-container {
+        grid-template-columns: 1fr;
+        max-width: 85%;
+        margin: 0 auto;
+        row-gap: 2rem;
+    }
+
+    .text-title {
+        font-size: 3rem;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .text-desc {
+        font-size: 1.3rem;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .pop-search {
+        margin-left: 0;
+        font-size: 1.1rem;
+        text-align: center;
+        margin-top: 0.8rem;
+    }
+
+    .img-container {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .search-container {
+        position: static;
+        width: 100%;
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    .search-img {
+        width: 60%;
+    }
+
+    .search-form {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .type-input {
+        font-size: 1.1rem;
+        padding: 0.6rem;
+    }
+
+    .apply-buttons {
+        width: 100%;
+        padding: 0.8rem;
+        text-align: center;
+    }
+}
+
+/* ===== Responsive: 820px ~ 535px (Tablets / small tablets) ===== */
+@media (max-width: 51.25em) and (min-width: 33.4375em) {
+    .content-container {
+        grid-template-columns: 1fr;
+        max-width: 85%;
+        margin: 0 auto;
+        row-gap: 0;
+    }
+
+    .text-title {
+        font-size: 3rem;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .text-desc {
+        font-size: 1.3rem;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .pop-search {
+        margin-left: 0;
+        font-size: 1.1rem;
+        text-align: center;
+        margin-top: 0.8rem;
+    }
+
+    .img-container {
+        justify-content: center;
+        margin-top: 0;
+    }
+
+    .search-container {
+        position: static;
+        width: 100%;
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 1rem;
+        margin-top: 0;
+    }
+
+    .search-img {
+        width: 60%;
+        margin-bottom: 0;
+    }
+
+    .search-form {
+        flex-direction: column;
+        gap: 0.8rem;
+        width: 100%;
+    }
+
+    .type-input {
+        font-size: 1.1rem;
+        padding: 0.6rem;
+        outline: 1px solid;
+        padding: 1rem 1.2rem;
+    }
+
+    .apply-buttons {
+        width: 100%;
+        padding: 0.8rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 33.4375em) {
+    .content-container {
+        height: 65vh;
+    }
+    .search-img {
+        width: 90%;
+        margin-top: 8.2rem;
+    }
+    .text-title {
+        font-size: 2.3rem;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .text-desc {
+        font-size: 1.2rem;
+        padding-left: 0;
+        text-align: center;
+    }
+    .pop-search {
+        margin-left: 0;
+        font-size: 1rem;
+        text-align: center;
+        margin-top: 6.2rem;
+    }
 }

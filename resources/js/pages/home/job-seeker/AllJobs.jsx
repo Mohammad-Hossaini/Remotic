@@ -15,7 +15,7 @@ import {
 import Button from "../../../ui/Button";
 import DialogDemo from "../../../ui/DialogDemo";
 import Footer from "../../Footer";
-import JobsHeader from "../../JobsHeader";
+import Header from "../../Header";
 import SearchBar from "../../SearchBar";
 
 // ================= Styled Components =================
@@ -305,7 +305,7 @@ export default function AllJobs() {
         getMyFavorites(user.token)
             .then((favorites) => setSavedJobIds(favorites.map((f) => f.job.id)))
             .catch(console.error);
-    }, [user, queryClient]); 
+    }, [user, queryClient]);
 
     const toggleFavorite = async (job) => {
         if (!user?.token) {
@@ -361,12 +361,7 @@ export default function AllJobs() {
     console.log("All the filter jobs :", jobs);
     return (
         <AllJobsWrapper>
-            <JobsHeader
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                locationFilter={locationFilter}
-                setLocationFilter={setLocationFilter}
-            />
+            <Header />
             {isHomePage && (
                 <SearchBar
                     searchTerm={searchTerm}
