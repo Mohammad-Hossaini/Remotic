@@ -94,7 +94,13 @@
     border: none;
     font-size: 1.2rem;
     padding: 0.8rem;
-    border-radius: 5px;
+    border-bottom: 1px solid var(--color-primary);
+    border-radius: 0;
+    outline: none;
+    &:focus {
+        outline: none;
+        box-shadow: none;
+    }
 }
 
 .apply-buttons {

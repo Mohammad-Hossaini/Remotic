@@ -73,7 +73,6 @@ const JobStatus = styled.span`
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-
     background-color: ${(props) =>
         props.status === "open"
             ? "var(--color-success)"
@@ -109,20 +108,6 @@ const FancyButton = styled(Button)`
     font-weight: 600;
     border-radius: var(--radius-sm);
     padding: var(--space-12) var(--space-20);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-    }
-`;
-
-const EmpButton = styled(Button)`
-    width: 140px;
-    font-size: var(--font-sm);
-    font-weight: 600;
-    border-radius: var(--radius-sm);
     box-shadow: var(--shadow-sm);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 
@@ -213,7 +198,6 @@ const HeartIcon = styled(HiMiniHeart)`
     transition: color 0.3s ease;
 `;
 
-// ================= Modal =================
 const ModalOverlay = styled.div`
     position: fixed;
     inset: 0;
@@ -279,26 +263,36 @@ export default function AllJobs() {
     const [searchTerm, setSearchTerm] = useState("");
     const [locationFilter, setLocationFilter] = useState("");
     const [savedJobIds, setSavedJobIds] = useState([]);
+    const [filteredJobs, setFilteredJobs] = useState([]);
 
     const { user } = useAuth();
-    // console.log("User in AllJobs:", user?.role);
-
     const location = useLocation();
     const queryClient = useQueryClient();
     const isHomePage = location.pathname === "/";
 
     const {
-        data: jobs,
+        data: jobs = [],
         isLoading,
         error,
     } = useQuery({
         queryKey: ["jobs"],
         queryFn: getJobs,
     });
-    // const logos = jobs.map((job) => job.company?.logo || "default-logo.png");
-    // console.log("All company logos:", logos);
-    // console.log("Company logo:", jobs[0]?.company?.logo);
-    // const logos1 = jobs[0]?.company?.logo;
+
+    // Update filtered jobs when jobs or filters change
+    useEffect(() => {
+        if (!jobs) return;
+        const result = jobs.filter((job) => {
+            const matchesType = job.title
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+            const matchesLocation = job.location
+                .toLowerCase()
+                .includes(locationFilter.toLowerCase());
+            return matchesType && matchesLocation;
+        });
+        setFilteredJobs(result);
+    }, [jobs, searchTerm, locationFilter]);
 
     useEffect(() => {
         if (!user?.token) return;
@@ -320,7 +314,6 @@ export default function AllJobs() {
 
         try {
             const isFavorite = savedJobIds.includes(job.id);
-
             if (isFavorite) {
                 await removeFavoriteJob(job.id, user.token);
                 toast.error("Removed from favorites 💔");
@@ -355,22 +348,16 @@ export default function AllJobs() {
     if (isLoading) return <p>Loading jobs...</p>;
     if (error) return <p>Failed to load jobs 😢</p>;
 
-    const filteredJobs = jobs?.sort(
-        (a, b) => new Date(b.created_at) - new Date(a.created_at)
-    );
-    console.log("All the filter jobs :", jobs);
     return (
         <AllJobsWrapper>
             <Header />
+
             {isHomePage && (
                 <SearchBar
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
                     locationFilter={locationFilter}
                     setLocationFilter={setLocationFilter}
-                    onApply={() =>
-                        console.log("Searching:", searchTerm, locationFilter)
-                    }
                 />
             )}
 
@@ -389,7 +376,6 @@ export default function AllJobs() {
                                     }
                                     alt={job.company?.name || "Company"}
                                 />
-
                                 <JobText>
                                     <JobTitle>{job.title}</JobTitle>
                                     <JobPosition>
@@ -421,21 +407,11 @@ export default function AllJobs() {
                                     </JobDescription>
                                 </JobText>
                             </JobTop>
+
                             {(!user?.role || user?.role === "job_seeker") && (
                                 <HeartIcon
                                     active={savedJobIds.includes(job.id)}
-                                    onClick={() => {
-                                        if (!user?.role) {
-                                            setModalData({
-                                                type: "save",
-                                                title: "Save this job with an account",
-                                                description:
-                                                    "Save this job and other opportunities with a free account.",
-                                            });
-                                        } else {
-                                            toggleFavorite(job);
-                                        }
-                                    }}
+                                    onClick={() => toggleFavorite(job)}
                                 />
                             )}
 
