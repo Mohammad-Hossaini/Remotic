@@ -83,6 +83,7 @@ const GlobalStyles = createGlobalStyle`
 
 html {
   font-size: 62.5%; /* 1rem = 10px */
+   scroll-behavior: smooth;
 }
 
 body {
@@ -94,6 +95,18 @@ body {
   background-color: var(--background-color);
   min-height: 100vh;
 }
+
+/* body.sticky header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  background-color: #e6f2ef;
+  z-index: 1000;
+  transition: all 0.3s;
+} */
+
 
 h1,h2,h3,h4,h5,h6 {
   font-weight: 600;

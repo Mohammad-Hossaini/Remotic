@@ -193,10 +193,10 @@ const RightRight = styled.div`
     }
 `;
 
-export default function CTASection() {
+export default function CTASection({ id }) {
     return (
         <SectionCTA>
-            <CTAContainer>
+            <CTAContainer id={id}>
                 <CTALeft>
                     <div className="cta-description">
                         <h1 className="cta-title">Hire and Work Remotely</h1>

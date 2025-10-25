@@ -86,11 +86,13 @@ const Logos = styled.div`
     }
 `;
 
-export default function Featured() {
+export default function Featured({ id }) {
     return (
         <FeaturedSection>
             <FeaturedContainer>
-                <FeaturedTitle>In the spotlight of global brands</FeaturedTitle>
+                <FeaturedTitle id={id}>
+                    In the spotlight of global brands
+                </FeaturedTitle>
                 <FeaturedBox>
                     <Logos>
                         <img

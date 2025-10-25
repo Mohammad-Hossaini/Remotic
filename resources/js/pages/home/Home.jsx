@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import CTASection from "../CTASection";
 import Featured from "../Featured";
 import Features from "../Features";
@@ -9,16 +10,17 @@ import Testimonial from "../Testimonial";
 import SectionFac from "./FAC/SectionFac";
 import "./Home.css";
 function Home() {
+    const heroRef = useRef(null);
     return (
         <>
-            <Header />
-            <HeroSection />
-            <Featured />
-            <Features />
-            <Testimonial />
-            <Pricing />
-            <SectionFac />
-            <CTASection />
+            <Header heroRef={heroRef} />
+            <HeroSection id="home" ref={heroRef} />
+            <Featured id="featured" />
+            <Features id="sit-features" />
+            <Testimonial id="testimonial" />
+            <Pricing id="pricing" />
+            <SectionFac id="fac" />
+            <CTASection id="cta" />
             <Footer />
         </>
     );
