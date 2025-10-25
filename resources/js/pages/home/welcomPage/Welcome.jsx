@@ -28,12 +28,6 @@ function Welcome() {
                             Continue with Microsoft
                         </button>
 
-                        {/* <Link to="/sign-up">
-                            <button className="Btn">
-                                {" "}
-                                <SlEnvolope /> Sign in with Email
-                            </button>
-                        </Link> */}
                         <Link to="/sign-up">
                             <button className="Btn">
                                 <span className="email-icon">
