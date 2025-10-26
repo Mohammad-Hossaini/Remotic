@@ -344,9 +344,12 @@ export default function AllJobs() {
             setCurrentJob(job);
         }
     };
-
-    if (isLoading) return <p>Loading jobs...</p>;
-    if (error) return <p>Failed to load jobs 😢</p>;
+    if (error)
+        return (
+            <p style={{ textAlign: "center", padding: "2rem" }}>
+                Failed to load jobs 😢
+            </p>
+        );
 
     return (
         <AllJobsWrapper>
@@ -362,102 +365,115 @@ export default function AllJobs() {
             )}
 
             <JobsContainer>
-                <JobList>
-                    {filteredJobs.map((job) => (
-                        <JobsCard key={job.id}>
-                            <JobStatus status={job.status}>
-                                {job.status}
-                            </JobStatus>
-                            <JobTop>
-                                <JobImg
-                                    src={
-                                        job.company?.logo ||
-                                        "/popular-logos/logo(4).png"
-                                    }
-                                    alt={job.company?.name || "Company"}
-                                />
-                                <JobText>
-                                    <JobTitle>{job.title}</JobTitle>
-                                    <JobPosition>
-                                        {job.company?.name}
-                                    </JobPosition>
-                                    <JobInfo>
-                                        <CompanyName>
-                                            {job.job_type}
-                                        </CompanyName>
-                                        <Location>{job.location}</Location>
-                                        <Salary>
-                                            ${job.salary_min} - $
-                                            {job.salary_max}
-                                        </Salary>
-                                        <PostedAt>
-                                            {new Date(
-                                                job.created_at
-                                            ).toLocaleDateString("en-US", {
-                                                month: "short",
-                                                day: "numeric",
-                                            })}
-                                        </PostedAt>
-                                    </JobInfo>
-                                    <JobDescription>
-                                        {job.description.length > 80
-                                            ? job.description.slice(0, 80) +
-                                              "..."
-                                            : job.description}
-                                    </JobDescription>
-                                </JobText>
-                            </JobTop>
-
-                            {(!user?.role || user?.role === "job_seeker") && (
-                                <HeartIcon
-                                    active={savedJobIds.includes(job.id)}
-                                    onClick={() => toggleFavorite(job)}
-                                />
-                            )}
-
-                            <HoverOverlay className="hover-overlay">
-                                <Link
-                                    to={`jobDetails/${job.id}`}
-                                    style={{
-                                        flex:
-                                            !user?.role ||
-                                            user?.role === "job_seeker"
-                                                ? "1"
-                                                : "unset",
-                                    }}
-                                >
-                                    <FancyButton
-                                        variation={
-                                            !user?.role ||
-                                            user?.role === "job_seeker"
-                                                ? "secondary"
-                                                : "primary"
+                {isLoading ? (
+                    // 🌀 Loading spinner or skeleton only for job area
+                    <div style={{ textAlign: "center", padding: "3rem 0" }}>
+                        <div className="spinner" />
+                        <p>Loading jobs...</p>
+                    </div>
+                ) : filteredJobs.length > 0 ? (
+                    <JobList>
+                        {filteredJobs.map((job) => (
+                            <JobsCard key={job.id}>
+                                <JobStatus status={job.status}>
+                                    {job.status}
+                                </JobStatus>
+                                <JobTop>
+                                    <JobImg
+                                        src={
+                                            job.company?.logo ||
+                                            "/popular-logos/logo(4).png"
                                         }
+                                        alt={job.company?.name || "Company"}
+                                    />
+                                    <JobText>
+                                        <JobTitle>{job.title}</JobTitle>
+                                        <JobPosition>
+                                            {job.company?.name}
+                                        </JobPosition>
+                                        <JobInfo>
+                                            <CompanyName>
+                                                {job.job_type}
+                                            </CompanyName>
+                                            <Location>{job.location}</Location>
+                                            <Salary>
+                                                ${job.salary_min} - $
+                                                {job.salary_max}
+                                            </Salary>
+                                            <PostedAt>
+                                                {new Date(
+                                                    job.created_at
+                                                ).toLocaleDateString("en-US", {
+                                                    month: "short",
+                                                    day: "numeric",
+                                                })}
+                                            </PostedAt>
+                                        </JobInfo>
+                                        <JobDescription>
+                                            {job.description.length > 80
+                                                ? job.description.slice(0, 80) +
+                                                  "..."
+                                                : job.description}
+                                        </JobDescription>
+                                    </JobText>
+                                </JobTop>
+
+                                {(!user?.role ||
+                                    user?.role === "job_seeker") && (
+                                    <HeartIcon
+                                        active={savedJobIds.includes(job.id)}
+                                        onClick={() => toggleFavorite(job)}
+                                    />
+                                )}
+
+                                <HoverOverlay className="hover-overlay">
+                                    <Link
+                                        to={`jobDetails/${job.id}`}
                                         style={{
-                                            width:
+                                            flex:
                                                 !user?.role ||
                                                 user?.role === "job_seeker"
-                                                    ? "100%"
-                                                    : "140px",
+                                                    ? "1"
+                                                    : "unset",
                                         }}
                                     >
-                                        Learn More
-                                    </FancyButton>
-                                </Link>
+                                        <FancyButton
+                                            variation={
+                                                !user?.role ||
+                                                user?.role === "job_seeker"
+                                                    ? "secondary"
+                                                    : "primary"
+                                            }
+                                            style={{
+                                                width:
+                                                    !user?.role ||
+                                                    user?.role === "job_seeker"
+                                                        ? "100%"
+                                                        : "140px",
+                                            }}
+                                        >
+                                            Learn More
+                                        </FancyButton>
+                                    </Link>
 
-                                {(user?.role === "job_seeker" ||
-                                    !user?.role) && (
-                                    <FancyButton
-                                        variation="primary"
-                                        onClick={() => handleApplyNow(job)}
-                                    >
-                                        Apply Now
-                                    </FancyButton>
-                                )}
-                            </HoverOverlay>
-                        </JobsCard>
-                    ))}
-                </JobList>
+                                    {(user?.role === "job_seeker" ||
+                                        !user?.role) && (
+                                        <FancyButton
+                                            variation="primary"
+                                            onClick={() => handleApplyNow(job)}
+                                        >
+                                            Apply Now
+                                        </FancyButton>
+                                    )}
+                                </HoverOverlay>
+                            </JobsCard>
+                        ))}
+                    </JobList>
+                ) : (
+                    <p style={{ textAlign: "center", padding: "3rem 0" }}>
+                        No jobs found 😔
+                    </p>
+                )}
             </JobsContainer>
 
             {modalData && (
