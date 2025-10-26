@@ -134,7 +134,7 @@ function EmployerDashboard() {
         enabled: !!token,
     });
 
-    console.log(dashboard);
+    // console.log(dashboard);
 
     const stats = [
         {

@@ -175,7 +175,11 @@ export default function ProfileDialog({ children }) {
                     <ProfileImageWrapper>
                         <ProfileImage
                             src={
-                                user?.data?.user?.profile?.profile_image
+                                user?.role === "employer"
+                                    ? user?.data?.user?.company?.logo
+                                        ? `http://127.0.0.1:8000/storage/${user.data.user.company.logo}`
+                                        : "images/company-default-images2.png"
+                                    : user?.data?.user?.profile?.profile_image
                                     ? `${BASE_URL}${user.data.user.profile.profile_image}`
                                     : "/profile/default.jpg"
                             }
@@ -184,8 +188,24 @@ export default function ProfileDialog({ children }) {
                     </ProfileImageWrapper>
 
                     <Description>
-                        {user?.data?.user?.profile?.description ||
-                            "No description available."}
+                        {user?.role === "employer"
+                            ? user?.data?.user?.company?.description
+                                ? user.data.user.company.description.length >
+                                  100
+                                    ? user.data.user.company.description.slice(
+                                          0,
+                                          100
+                                      ) + "..."
+                                    : user.data.user.company.description
+                                : "No description available."
+                            : user?.data?.user?.profile?.description
+                            ? user.data.user.profile.description.length > 100
+                                ? user.data.user.profile.description.slice(
+                                      0,
+                                      100
+                                  ) + "..."
+                                : user.data.user.profile.description
+                            : "No description available."}
                     </Description>
 
                     {user?.role === "job_seeker" && (

@@ -1,10 +1,10 @@
-
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useAuth } from "../../../hook/AuthContext";
 import { deleteJob, userPostedJobs } from "../../../services/apiAllJobs";
 import DeleteConfirmModal from "../../../ui/DeleteConfirmModal";
 import JobModal from "../../../ui/JobModal";
@@ -15,7 +15,8 @@ export default function PostedJobs() {
     const [editOpenId, setEditOpenId] = useState(null);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [jobToDelete, setJobToDelete] = useState(null);
-
+    const { user } = useAuth();
+    // console.log("picture", user?.data?.user?.company?.logo);
     const {
         data: jobs = [],
         isLoading,
@@ -50,7 +51,7 @@ export default function PostedJobs() {
             removeJob(jobToDelete);
         }
     }
-
+    // console.log("All the posted jobs", jobs);
     if (isLoading) return <p className="loading">Loading your jobs...</p>;
     if (isError)
         return <p className="error">Failed to load jobs. Try again.</p>;
@@ -85,8 +86,9 @@ export default function PostedJobs() {
                             <div className="job-img">
                                 <img
                                     src={
-                                        job.company?.logo ||
-                                        "/company-images/image(6).jfif"
+                                        user?.data?.user?.company?.logo
+                                            ? `http://127.0.0.1:8000/storage/${user.data.user.company.logo}`
+                                            : "/images/company-default.png"
                                     }
                                     alt={job.company?.name || "Company Logo"}
                                 />

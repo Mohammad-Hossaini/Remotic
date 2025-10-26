@@ -118,7 +118,7 @@
     height: 3rem;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--color-grey-500);
+    border: 2px solid var(--color-grey-300);
 }
 
 .avatar-name {
@@ -191,6 +191,7 @@
     height: 45px;
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid var(--color-grey-300);
 }
 
 /* ===== Text Content ===== */
@@ -202,7 +203,7 @@
 
 .notification-time {
     position: absolute;
-    top: -1rem;
+    top: -0.1rem;
     right: -4rem;
     font-size: var(--font-sm);
     color: var(--color-grey-500);

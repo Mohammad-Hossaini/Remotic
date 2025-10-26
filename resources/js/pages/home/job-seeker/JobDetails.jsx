@@ -40,6 +40,7 @@ function JobDetails() {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
+    // console.log("The image of the company : ", job);
 
     return (
         <div className="jobDetails">
@@ -69,10 +70,11 @@ function JobDetails() {
                         <div className="jobImage">
                             <img
                                 src={
-                                    job?.companyLogo ||
-                                    "/company-images/image(6).jfif"
+                                    job.company?.logo
+                                        ? `http://127.0.0.1:8000/storage/${job.company.logo}`
+                                        : "/popular-logos/logo(4).png"
                                 }
-                                alt="Company Logo"
+                                alt={job.company?.name || "Company Logo"}
                                 className="jobImg"
                             />
                         </div>

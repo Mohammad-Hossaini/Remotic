@@ -26,7 +26,9 @@ class FavoriteJobController extends Controller
         ]);
 
         // Load relationships
-        $favorite->load('user', 'job');
+        // $favorite->load('user', 'job');
+        $favorite->load('user', 'job.company');
+
 
         // 🔹 Send notification to the user
         $job = $favorite->job;
@@ -58,7 +60,9 @@ class FavoriteJobController extends Controller
     public function myFavorites()
     {
         $user = Auth::user();
-        $favorites = FavoriteJob::with('job')->where('user_id', $user->id)->get();
+        // $favorites = FavoriteJob::with('job')->where('user_id', $user->id)->get();
+        $favorites = FavoriteJob::with('job.company')->where('user_id', $user->id)->get();
+
 
         return response()->json($favorites);
     }

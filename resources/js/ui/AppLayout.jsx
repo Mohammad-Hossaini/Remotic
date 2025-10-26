@@ -12,7 +12,7 @@ const StyledAppLayout = styled.div`
 `;
 
 const Main = styled.div`
-  background-color: var(--color-grey-30);
+  background-color: var(--color-grey-0);
   overflow-y: auto; 
 `;
 

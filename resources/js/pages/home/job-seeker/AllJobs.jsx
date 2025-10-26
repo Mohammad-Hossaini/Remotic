@@ -38,12 +38,13 @@ const JobList = styled.div`
     padding-top: 1rem;
 `;
 
+
 const JobsCard = styled.div`
     min-width: 320px;
     min-height: 250px;
     display: flex;
     flex-direction: column;
-    background: var(--color-grey-0);
+    background: var(--color-grey-30);
     padding: 1.6rem;
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-grey-300);
@@ -124,12 +125,14 @@ const JobTop = styled.div`
 `;
 
 const JobImg = styled.img`
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    border-radius: var(--radius-md);
+    border-radius: 50%;
     flex-shrink: 0;
+    /* background-color: red; */
+    border: 2.4px solid var(--color-grey-300);
 `;
 
 const JobText = styled.div`
@@ -351,6 +354,8 @@ export default function AllJobs() {
             </p>
         );
 
+    // console.log(filteredJobs);
+
     return (
         <AllJobsWrapper>
             <Header />
@@ -381,11 +386,15 @@ export default function AllJobs() {
                                 <JobTop>
                                     <JobImg
                                         src={
-                                            job.company?.logo ||
-                                            "/popular-logos/logo(4).png"
+                                            job.company?.logo
+                                                ? `http://127.0.0.1:8000/storage/${job.company.logo}`
+                                                : "/popular-logos/logo(4).png"
                                         }
-                                        alt={job.company?.name || "Company"}
+                                        alt={
+                                            job.company?.name || "Company Logo"
+                                        }
                                     />
+
                                     <JobText>
                                         <JobTitle>{job.title}</JobTitle>
                                         <JobPosition>

@@ -147,6 +147,7 @@ const StyledWarning = styled.div`
 // ===== Component =====
 export default function JobModal({ open, onOpenChange, job }) {
     const { user } = useAuth();
+    // console.log("Employer Logo :", user?.data?.user?.company?.logo);
     const [socket, setSocket] = useState(null);
     const queryClient = useQueryClient();
 
@@ -170,7 +171,7 @@ export default function JobModal({ open, onOpenChange, job }) {
         });
 
         newSocket.on("getResponse", (data) => {
-            console.log("all the data", data);
+            // console.log("all the data", data);
         });
 
         setSocket(newSocket);
@@ -188,11 +189,10 @@ export default function JobModal({ open, onOpenChange, job }) {
         },
 
         onSuccess: (response) => {
-            const createdJob = response.job || response; // ✅ اصلاح نام متغیر
-            console.log("✅ Created Job:", createdJob);
-            console.log("🆔 Job ID:", createdJob?.id);
+            const createdJob = response.job || response;
+            // console.log("✅ Created Job:", createdJob);
+            // console.log("🆔 Job ID:", createdJob?.id);
 
-            // ✅ invalidate job list
             queryClient.invalidateQueries(["jobs"]);
             queryClient.invalidateQueries(["postedJobs"]);
 
@@ -202,13 +202,15 @@ export default function JobModal({ open, onOpenChange, job }) {
                     : "Job created successfully!"
             );
 
-            // ✅ ارسال نوتیفیکشن فقط زمانی که ایجاد موفق بوده
             if (!isEditMode && socket) {
                 const payload = {
                     jobId: createdJob?.id,
                     employerName: user?.data?.user?.name,
                     companyName:
                         user?.data?.user?.company?.name || "Unknown Company",
+                    companyLogo: user?.data?.user?.company?.logo
+                        ? `http://127.0.0.1:8000/storage/${user.data.user.company.logo}`
+                        : null,
                     jobTitle: createdJob?.title,
                     location: createdJob?.location,
                     description: createdJob?.description,
@@ -217,13 +219,15 @@ export default function JobModal({ open, onOpenChange, job }) {
                     deadline: createdJob?.deadline,
                     createdAt: new Date().toISOString(),
                 };
+
+                // console.log("📤 Emitting postedJob payload:", payload);
                 socket.emit("postedJob", payload);
-                console.log("📤 postedJob emitted:", payload);
             }
 
             reset();
             onOpenChange(false);
         },
+
         onError: (err) => {
             console.error(err);
             toast.error(err.message || "Failed to save job!");
@@ -251,6 +255,7 @@ export default function JobModal({ open, onOpenChange, job }) {
                 employerName: user?.data?.user?.name,
                 companyName:
                     user?.data?.user?.company?.name || "Unknown Company",
+                companyLogo: user?.data?.user?.company?.logo,
                 jobTitle: data.title,
                 location: data.location,
                 description: data.description,
@@ -259,8 +264,6 @@ export default function JobModal({ open, onOpenChange, job }) {
                 deadline: data.deadline,
                 createdAt: new Date().toISOString(),
             };
-
-            // socket.emit("postedJob", payload);
         } else {
             console.warn("⚠️ No socket connection!");
         }
