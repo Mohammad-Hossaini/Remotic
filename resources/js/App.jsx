@@ -79,9 +79,9 @@ function SocketHandler() {
             console.log("✅ Socket connected:", newSocket.id)
         );
 
-        newSocket.on("welcome", (msg) => console.log("🟢 Server says:", msg));
+        // newSocket.on("welcome", (msg) => console.log("🟢 Server says:", msg));
 
-        newSocket.on("disconnect", () => console.log("⚠️ Socket disconnected"));
+        // newSocket.on("disconnect", () => console.log("⚠️ Socket disconnected"));
 
         setSocket(newSocket);
 

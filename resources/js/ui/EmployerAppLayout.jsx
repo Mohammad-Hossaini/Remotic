@@ -23,7 +23,7 @@ const SidebarWrapper = styled.aside`
 const Main = styled.main`
     grid-row: 2 / -1;
     grid-column: 2 / -1;
-    background-color: var(--color-grey-30);
+    background-color: var(--color-grey-0);
     overflow-y: auto;
 `;
 

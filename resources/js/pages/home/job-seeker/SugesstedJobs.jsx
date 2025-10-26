@@ -30,7 +30,11 @@ function SugesstedJobs() {
                         <div className="sugessted-left">
                             <div className="left-image">
                                 <img
-                                    src={job.companyLogo}
+                                    src={
+                                        job.company?.logo
+                                            ? `http://127.0.0.1:8000/storage/${job.company.logo}`
+                                            : "/popular-logos/logo(4).png"
+                                    }
                                     alt={job.companyName}
                                     className="company-image"
                                 />

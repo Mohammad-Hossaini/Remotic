@@ -65,7 +65,7 @@ function SavedJobs() {
     if (isLoading || loadingCompanies)
         return <p className="loading">Loading saved jobs...</p>;
     if (isError) return <p className="error">Failed to fetch saved jobs.</p>;
-
+    // console.log("saved jobs :", savedJobs);
     return (
         <div className="savedJobContainer">
             <Toaster position="top-right" reverseOrder={false} />
@@ -86,15 +86,11 @@ function SavedJobs() {
                                 <div className="job-img">
                                     <img
                                         src={
-                                            company?.logo ||
-                                            job.company?.logo ||
-                                            "/company-images/image(6).jfif"
+                                            company?.logo
+                                                ? `http://127.0.0.1:8000/storage/${company.logo}`
+                                                : "/company-images/default.png"
                                         }
-                                        alt={
-                                            company?.name ||
-                                            job.company?.name ||
-                                            "Company Logo"
-                                        }
+                                        alt={company?.name || "Company Logo"}
                                     />
                                 </div>
 

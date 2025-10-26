@@ -221,6 +221,9 @@ export default function Header({ heroRef }) {
     const navigate = useNavigate();
     const isMainPage = location.pathname === "/home";
     const isHomePage = location.pathname === "/";
+    const isEmployerPage = location.pathname === "/employerApp/allJobs";
+    const isJobSeekerPage = location.pathname === "/app/allJobs";
+
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
     const headerRef = useRef(null);
@@ -244,14 +247,11 @@ export default function Header({ heroRef }) {
         e.preventDefault();
 
         if (isMainPage) {
-            // Smooth scroll to hero
             const hero = document.querySelector("#hero");
             if (hero) hero.scrollIntoView({ behavior: "smooth" });
         } else if (isHomePage) {
-            // Navigate to /home
             navigate("/home");
         } else {
-            // Default go to home page
             navigate("/home");
         }
 
@@ -273,73 +273,86 @@ export default function Header({ heroRef }) {
     }, [heroRef]);
 
     return (
-        <HeaderContainer ref={headerRef} className={isSticky ? "sticky" : ""}>
-            <LogoContainer>
-                <Link to="/">
-                    <img src="/remotic-logo2.png" alt="Remotic Logo" />
-                </Link>
-            </LogoContainer>
+        <>
+            {!isEmployerPage && !isJobSeekerPage && (
+                <HeaderContainer
+                    ref={headerRef}
+                    className={isSticky ? "sticky" : ""}
+                >
+                    <LogoContainer>
+                        <Link to="/">
+                            <img src="/remotic-logo2.png" alt="Remotic Logo" />
+                        </Link>
+                    </LogoContainer>
 
-            <Nav isOpen={isNavOpen}>
-                <ul>
-                    <li>
-                        <NavItem href="#hero" onClick={handleHomeClick}>
-                            Home
-                        </NavItem>
-                    </li>
-
-                    {isMainPage && (
-                        <>
+                    <Nav isOpen={isNavOpen}>
+                        <ul>
                             <li>
-                                <NavItem
-                                    href="#sit-features"
-                                    onClick={closeNav}
-                                >
-                                    Features
+                                <NavItem href="#hero" onClick={handleHomeClick}>
+                                    Home
                                 </NavItem>
                             </li>
-                            <li>
-                                <NavItem href="#testimonial" onClick={closeNav}>
-                                    Testimonial
-                                </NavItem>
-                            </li>
-                            <li>
-                                <NavItem href="#pricing" onClick={closeNav}>
-                                    Pricing
-                                </NavItem>
-                            </li>
-                            <li>
-                                <NavItem href="#fac" onClick={closeNav}>
-                                    FAQ
-                                </NavItem>
-                            </li>
-                            <li>
-                                <NavItem href="#cta" onClick={closeNav}>
-                                    Contact
-                                </NavItem>
-                            </li>
-                        </>
-                    )}
-                </ul>
 
-                <MobileButtons>
-                    <LoginBtn to="/login" onClick={closeNav}>
-                        Log in
-                    </LoginBtn>
-                    <SignUpBtn to="/welcome" onClick={closeNav}>
-                        Sign up →
-                    </SignUpBtn>
-                </MobileButtons>
-            </Nav>
+                            {isMainPage && (
+                                <>
+                                    <li>
+                                        <NavItem
+                                            href="#sit-features"
+                                            onClick={closeNav}
+                                        >
+                                            Features
+                                        </NavItem>
+                                    </li>
+                                    <li>
+                                        <NavItem
+                                            href="#testimonial"
+                                            onClick={closeNav}
+                                        >
+                                            Testimonial
+                                        </NavItem>
+                                    </li>
+                                    <li>
+                                        <NavItem
+                                            href="#pricing"
+                                            onClick={closeNav}
+                                        >
+                                            Pricing
+                                        </NavItem>
+                                    </li>
+                                    <li>
+                                        <NavItem href="#fac" onClick={closeNav}>
+                                            FAQ
+                                        </NavItem>
+                                    </li>
+                                    <li>
+                                        <NavItem href="#cta" onClick={closeNav}>
+                                            Contact
+                                        </NavItem>
+                                    </li>
+                                </>
+                            )}
+                        </ul>
 
-            <Buttons>
-                <LoginBtn to="/login">Log in</LoginBtn>
-                <SignUpBtn to="/welcome">Sign up →</SignUpBtn>
-            </Buttons>
+                        <MobileButtons>
+                            <LoginBtn to="/login" onClick={closeNav}>
+                                Log in
+                            </LoginBtn>
+                            <SignUpBtn to="/welcome" onClick={closeNav}>
+                                Sign up →
+                            </SignUpBtn>
+                        </MobileButtons>
+                    </Nav>
 
-            <IconButton onClick={toggleNav}>
-                {isNavOpen ? <CloseIcon /> : <MenuIcon />}
-            </IconButton>
-        </HeaderContainer>
+                    <Buttons>
+                        <LoginBtn to="/login">Log in</LoginBtn>
+                        <SignUpBtn to="/welcome">Sign up →</SignUpBtn>
+                    </Buttons>
+
+                    <IconButton onClick={toggleNav}>
+                        {isNavOpen ? <CloseIcon /> : <MenuIcon />}
+                    </IconButton>
+                </HeaderContainer>
+            )}
+        </>
     );
 }

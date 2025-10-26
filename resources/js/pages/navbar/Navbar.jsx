@@ -15,7 +15,7 @@ import { useAuth } from "../../hook/AuthContext";
 import { getUserById } from "../../services/apiUsers";
 import ProfileDialog from "../../ui/ProfileDialog";
 import "./Navbar.css";
-
+import DefaultCompany from "../../../../public/images/company-default-images2.png";
 // ===== Styled Components =====
 const Overlay = styled(RadixDialog.Overlay)`
     background: rgba(0, 0, 0, 0.2);
@@ -112,24 +112,40 @@ const Badge = styled.span`
 function Navbar() {
     const BASE_URL = "http://127.0.0.1:8000/";
     const { user } = useAuth();
+    // console.log(user?.role);
     const [socket, setSocket] = useState(null);
     const [notifications, setNotifications] = useState([]);
 
     // console.log("All the notifications: ", notifications);
-
     useEffect(() => {
         if (!user?.token) return;
+
         const newSocket = io("http://localhost:5000", {
             auth: { token: user.token },
             reconnection: true,
         });
 
+        newSocket.on("connect", () => {
+            console.log("✅ Connected to socket server with ID:", newSocket.id);
+        });
+
+        newSocket.on("connect_error", (err) => {
+            console.error("❌ Socket connection error:", err.message);
+        });
+
+        newSocket.on("disconnect", () => {
+            console.log("🔴 Disconnected from socket server");
+        });
+
         newSocket.on("newJobPosted", (data) => {
+            console.log("🟡 New job data received from server:", data);
             setNotifications((prev) => [
                 ...prev,
                 {
                     id: Date.now(),
+                    employerName: data.employerName,
                     companyName: data.companyName,
+                    companyImage: data.companyLogo,
                     jobTitle: data.jobTitle,
                     jobDescription: data.description,
                     jobID: data.jobId,
@@ -139,7 +155,6 @@ function Navbar() {
         });
 
         setSocket(newSocket);
-
         return () => newSocket.disconnect();
     }, [user?.token]);
 
@@ -153,6 +168,8 @@ function Navbar() {
     const markAsRead = (id) => {
         setNotifications((prev) => prev.filter((n) => n.id !== id));
     };
+
+    // console.log("nototication data :");
 
     return (
         <div className="navbar-container">
@@ -198,7 +215,10 @@ function Navbar() {
                                             key={n.id}
                                         >
                                             <img
-                                                src="/company-images/image(6).jfif"
+                                                src={
+                                                    n?.companyImage ||
+                                                    DefaultCompany
+                                                }
                                                 alt="Company Logo"
                                             />
 
@@ -219,6 +239,28 @@ function Navbar() {
                                                 <p className="job-description">
                                                     {n.jobDescription}
                                                 </p>
+                                                <div
+                                                    style={{
+                                                        marginTop: "0.5rem",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        gap: "0.4rem",
+                                                        fontSize: "0.9rem",
+                                                        color: "var(--color-grey-500)",
+                                                        fontStyle: "italic",
+                                                    }}
+                                                >
+                                                    <span>Posted by</span>
+                                                    <span
+                                                        style={{
+                                                            fontWeight: "600",
+                                                            color: "var(--color-grey-700)",
+                                                            fontStyle: "normal",
+                                                        }}
+                                                    >
+                                                        {n.employerName}
+                                                    </span>
+                                                </div>
                                             </div>
 
                                             <div className="NotificationActions">
@@ -272,15 +314,27 @@ function Navbar() {
 
                 <ProfileDialog>
                     <div className="avatar-wrapper">
-                        <img
-                            src={
-                                user?.data?.user?.profile?.profile_image
-                                    ? `${BASE_URL}${user.data.user.profile.profile_image}`
-                                    : "/profile/default.jpg"
-                            }
-                            alt="Profile"
-                            className="avatar-img"
-                        />
+                        {user?.role === "employer" ? (
+                            <img
+                                src={
+                                    user?.data?.user?.company?.logo
+                                        ? `http://127.0.0.1:8000/storage/${user.data.user.company.logo}`
+                                        : "images/company-default-images2.png"
+                                }
+                                alt="Profile"
+                                className="avatar-img"
+                            />
+                        ) : (
+                            <img
+                                src={
+                                    user?.data?.user?.profile?.profile_image
+                                        ? `${BASE_URL}${user.data.user.profile.profile_image}`
+                                        : "/profile/default.jpg"
+                                }
+                                alt="Profile"
+                                className="avatar-img"
+                            />
+                        )}
                         <FaCaretDown className="avatar-caret" />
                     </div>
                 </ProfileDialog>
