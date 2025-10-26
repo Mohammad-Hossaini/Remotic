@@ -10,6 +10,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 
 const RegisterWrapper = styled.div`
+    font-family: "Rubik", sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;

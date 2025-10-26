@@ -7,10 +7,10 @@ import styled from "styled-components";
 import { createNewUser } from "../services/apiUsers";
 import Spinner from "../ui/Spinner";
 import Footer from "./Footer";
-import JobsHeader from "./JobsHeader";
 import Header from "./Header";
 
 const RegisterWrapper = styled.div`
+    font-family: "Rubik", sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -136,7 +136,8 @@ export default function RegisterJobSeeker() {
     const onSubmit = (data) => mutate({ ...data, role: "job_seeker" });
 
     return (
-        <><Header/>
+        <>
+            <Header />
             <RegisterWrapper>
                 <RegisterCard>
                     <Title>Create your Job Seeker Account</Title>
