@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import "./JobDetails.css";
-
 function JobDetails() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { id } = useParams();
@@ -40,7 +38,6 @@ function JobDetails() {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
-    // console.log("The image of the company : ", job);
 
     return (
         <div className="jobDetails">
@@ -54,16 +51,15 @@ function JobDetails() {
 
                     <p className="headerDesc">{job?.company.description}</p>
 
-                    <div className="headerButtons">
+                    {/* <div className="headerButtons">
                         <button className="btn-secondary">VIEW COMPANY</button>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="jobDetailsHeaderRight"></div>
             </div>
 
             {/* Content Section */}
             <div className="jobContent">
-                {/* About Job */}
                 <div className="aboutJob">
                     <h2>About this job</h2>
                     <div className="aboutJobContent">
@@ -90,7 +86,6 @@ function JobDetails() {
                     <p>{job?.description}</p>
                 </div>
 
-                {/* Shared Buttons with Company Logos */}
                 <div className="sharedButton">
                     <button className="sharedBtn">
                         <img
@@ -125,6 +120,7 @@ function JobDetails() {
                         Share on Twitter
                     </button>
                 </div>
+
                 <div className="skills">
                     <h2>Skills</h2>
                     <div className="buttons">
@@ -140,7 +136,6 @@ function JobDetails() {
                     </div>
                 </div>
 
-                {/* Job URL */}
                 <div className="others">
                     <input
                         type="text"
