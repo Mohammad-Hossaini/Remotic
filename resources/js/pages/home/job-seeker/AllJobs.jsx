@@ -38,7 +38,6 @@ const JobList = styled.div`
     padding-top: 1rem;
 `;
 
-
 const JobsCard = styled.div`
     min-width: 320px;
     min-height: 250px;
@@ -501,7 +500,7 @@ export default function AllJobs() {
                                     Log in
                                 </WideButton>
                             </Link>
-                            <Link to="/createAccount">
+                            <Link to="/sign-up">
                                 <WideButton variation="primary">
                                     Sign up
                                 </WideButton>

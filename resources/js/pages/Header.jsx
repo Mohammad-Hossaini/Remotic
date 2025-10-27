@@ -259,16 +259,39 @@ export default function Header({ heroRef }) {
     };
 
     // ✅ Sticky nav behavior
+    // useEffect(() => {
+    //     const observer = new IntersectionObserver(
+    //         ([entry]) => setIsSticky(!entry.isIntersecting),
+    //         { root: null, threshold: 0, rootMargin: "-80px" }
+    //     );
+
+    //     if (heroRef?.current) observer.observe(heroRef.current);
+
+    //     return () => {
+    //         if (heroRef?.current) observer.unobserve(heroRef.current);
+    //     };
+    // }, [heroRef]);
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => setIsSticky(!entry.isIntersecting),
-            { root: null, threshold: 0, rootMargin: "-80px" }
-        );
+        const handleScroll = () => {
+            if (!heroRef?.current) {
+                // fallback: stick header after 80px scroll
+                setIsSticky(window.scrollY > 80);
+            }
+        };
+
+        const observer = heroRef?.current
+            ? new IntersectionObserver(
+                  ([entry]) => setIsSticky(!entry.isIntersecting),
+                  { root: null, threshold: 0, rootMargin: "-80px" }
+              )
+            : null;
 
         if (heroRef?.current) observer.observe(heroRef.current);
+        else window.addEventListener("scroll", handleScroll);
 
         return () => {
             if (heroRef?.current) observer.unobserve(heroRef.current);
+            else window.removeEventListener("scroll", handleScroll);
         };
     }, [heroRef]);
 
