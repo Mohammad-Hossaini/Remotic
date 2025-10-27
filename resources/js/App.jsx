@@ -16,7 +16,7 @@ import JobseekerPrivateRoute from "./features/authintication/JobseekerPrivateRou
 // ✅ Pages
 import Application from "./pages/application/Application";
 import BackGroundInfo from "./pages/background information/BackGroundInfo";
-import CreateAccountPage from "./pages/CreateAccountPage";
+// import CreateAccountPage from "./pages/CreateAccountPage";
 import Home from "./pages/home/Home";
 import Welcome from "./pages/home/welcomPage/Welcome";
 import LoginPage from "./pages/LoginPage";
@@ -119,14 +119,6 @@ export default function App() {
                         <Route
                             path="/register-employer"
                             element={<RegisterEmployer />}
-                        />
-                        <Route
-                            path="/createAccount"
-                            element={<CreateAccountPage />}
-                        />
-                        <Route
-                            path="/login/createAccount"
-                            element={<CreateAccountPage />}
                         />
                         <Route
                             path="/jobDetails/:id"
