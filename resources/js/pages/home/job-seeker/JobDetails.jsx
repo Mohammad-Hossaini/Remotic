@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { MdContentCopy } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import "./JobDetails.css";
 function JobDetails() {
@@ -29,11 +31,10 @@ function JobDetails() {
         fetchJob();
     }, [id]);
 
-    const jobUrl = `https://company.com/job/${id}`;
-
+    const jobUrl = `${window.location.origin}/jobDetails/${id}`;
     const copyJobUrl = () => {
         navigator.clipboard.writeText(jobUrl);
-        alert("Job URL copied!");
+        toast.success("Job URL copied successfully!");
     };
 
     if (loading) return <p>Loading...</p>;
@@ -60,92 +61,154 @@ function JobDetails() {
 
             {/* Content Section */}
             <div className="jobContent">
-                <div className="aboutJob">
-                    <h2>About this job</h2>
-                    <div className="aboutJobContent">
-                        <div className="jobImage">
+                <div className="left-container-side">
+                    <div className="aboutJob">
+                        <h2 className="aboutJob-title">About this job</h2>
+                        <div className="aboutJobContent">
+                            <div className="jobImage">
+                                <img
+                                    src={
+                                        job.company?.logo
+                                            ? `http://127.0.0.1:8000/storage/${job.company.logo}`
+                                            : "/popular-logos/logo(4).png"
+                                    }
+                                    alt={job.company?.name || "Company Logo"}
+                                    className="jobImg"
+                                />
+                            </div>
+                            <div className="jobInfo">
+                                <p className="job-title">
+                                    {job?.title}{" "}
+                                    <span className="job-type">
+                                        ({job?.job_type})
+                                    </span>
+                                </p>
+                                <h4 className="job-location">
+                                    {job?.location}
+                                </h4>
+                                <strong className="salary">{`$${job?.salary_min} - $${job?.salary_max}`}</strong>
+                            </div>
+                        </div>
+                        <p>{job?.description}</p>
+                    </div>
+                    <div className="skills">
+                        <h2>Requied Skills</h2>
+                        <div className="buttons">
+                            {job?.requirements ? (
+                                job.requirements
+                                    .split(",")
+                                    .map((skill, index) => (
+                                        <button
+                                            key={index}
+                                            className="skillBtn"
+                                        >
+                                            {skill.trim()}
+                                        </button>
+                                    ))
+                            ) : (
+                                <p>No skills listed</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+                <div className="right-container-side">
+                    <div className="sharedButton">
+                        {/* WhatsApp */}
+                        <button
+                            className="sharedBtn"
+                            onClick={() =>
+                                window.open(
+                                    `https://wa.me/?text=Check%20out%20this%20job:%20${encodeURIComponent(
+                                        jobUrl
+                                    )}`,
+                                    "_blank"
+                                )
+                            }
+                        >
                             <img
-                                src={
-                                    job.company?.logo
-                                        ? `http://127.0.0.1:8000/storage/${job.company.logo}`
-                                        : "/popular-logos/logo(4).png"
-                                }
-                                alt={job.company?.name || "Company Logo"}
-                                className="jobImg"
+                                src="/popular-logos/whatsApp.jfif"
+                                alt="WhatsApp"
+                                className="btnLogo"
                             />
-                        </div>
-                        <div className="jobInfo">
-                            <p>
-                                {job?.company.name}{" "}
-                                <span>({job?.job_type})</span>
-                            </p>
-                            <h4>{job?.location}</h4>
-                            <strong>{`${job?.salary_max} - ${job?.salary_min}`}</strong>
-                        </div>
+                            Share on WhatsApp
+                        </button>
+
+                        {/* Facebook */}
+                        <button
+                            className="sharedBtn"
+                            onClick={() =>
+                                window.open(
+                                    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                                        jobUrl
+                                    )}`,
+                                    "_blank"
+                                )
+                            }
+                        >
+                            <img
+                                src="/popular-logos/facebook.jfif"
+                                alt="Facebook"
+                                className="btnLogo"
+                            />
+                            Share on Facebook
+                        </button>
+
+                        {/* LinkedIn */}
+                        <button
+                            className="sharedBtn"
+                            onClick={() =>
+                                window.open(
+                                    `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                                        jobUrl
+                                    )}`,
+                                    "_blank"
+                                )
+                            }
+                        >
+                            <img
+                                src="/popular-logos/linkedin.png"
+                                alt="LinkedIn"
+                                className="btnLogo"
+                            />
+                            Share on LinkedIn
+                        </button>
+
+                        {/* Twitter (X) */}
+                        <button
+                            className="sharedBtn"
+                            onClick={() =>
+                                window.open(
+                                    `https://twitter.com/intent/tweet?text=Check%20out%20this%20job!%20${encodeURIComponent(
+                                        jobUrl
+                                    )}`,
+                                    "_blank"
+                                )
+                            }
+                        >
+                            <img
+                                src="/popular-logos/x.png"
+                                alt="Twitter"
+                                className="btnLogo"
+                            />
+                            Share on Twitter
+                        </button>
                     </div>
-                    <p>{job?.description}</p>
-                </div>
-
-                <div className="sharedButton">
-                    <button className="sharedBtn">
-                        <img
-                            src="/popular-logos/logo(7).jfif"
-                            alt="WhatsApp"
-                            className="btnLogo"
+                    <div className="others">
+                        <input
+                            type="text"
+                            className="jobUrlInput"
+                            value={jobUrl}
+                            readOnly
                         />
-                        Share on WhatsApp
-                    </button>
-                    <button className="sharedBtn">
-                        <img
-                            src="/popular-logos/logo(3).png"
-                            alt="Facebook"
-                            className="btnLogo"
-                        />
-                        Share on Facebook
-                    </button>
-                    <button className="sharedBtn">
-                        <img
-                            src="/popular-logos/logo(2).png"
-                            alt="LinkedIn"
-                            className="btnLogo"
-                        />
-                        Share on LinkedIn
-                    </button>
-                    <button className="sharedBtn">
-                        <img
-                            src="/popular-logos/logo(4).png"
-                            alt="Twitter"
-                            className="btnLogo"
-                        />
-                        Share on Twitter
-                    </button>
-                </div>
-
-                <div className="skills">
-                    <h2>Skills</h2>
-                    <div className="buttons">
-                        {job?.requirements ? (
-                            job.requirements.split(",").map((skill, index) => (
-                                <button key={index} className="skillBtn">
-                                    {skill.trim()}
-                                </button>
-                            ))
-                        ) : (
-                            <p>No skills listed</p>
-                        )}
+                        <button className="copyBtn" onClick={copyJobUrl}>
+                            <MdContentCopy className="copyIcon" />
+                        </button>
                     </div>
-                </div>
 
-                <div className="others">
-                    <input
-                        type="text"
-                        className="jobUrlInput"
-                        value={jobUrl}
-                        readOnly
-                    />
-                    <button className="copyBtn" onClick={copyJobUrl}>
-                        Copy
-                    </button>
+                    <div className="job-bottom-right">
+                        <p className="job-title">{job?.title}</p>
+                        <span className="job-type">({job?.job_type})</span>
+                    </div>
                 </div>
             </div>
         </div>
