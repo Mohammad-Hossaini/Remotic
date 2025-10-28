@@ -1,21 +1,26 @@
+import { useState } from "react";
 import styled from "styled-components";
 import EmployerMainnav from "./EmployerMainnav";
-import Logo from "./Logo";
 
 const StyledSidebar = styled.div`
-  background-color: var(--color-grey-0);
-  padding: 3.2rem 2.4rem;
-  border-right: 1px solid var(--color-grey-100);
-  grid-row: 1/-1;
-`;
-function Sidebar() {
-  return (
-    <StyledSidebar>
-      <Logo />
-      {/* <MainNav /> */}
-      <EmployerMainnav />
-    </StyledSidebar>
-  );
-}
+    background-color: var(--color-grey-0);
+    grid-row: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: ${(props) => (props.isOpen ? "flex-start" : "center")};
+    width: ${(props) => (props.isOpen ? "26rem" : "6rem")};
+    transition: width 0.3s ease, align-items 0.3s ease;
+    overflow: hidden;
 
-export default Sidebar;
+`;
+
+
+
+function EmployerSidebar({ isOpen, toggleSidebar }) {
+    return (
+        <StyledSidebar isOpen={isOpen}>
+            <EmployerMainnav isOpen={isOpen} toggleSidebar={toggleSidebar} />
+        </StyledSidebar>
+    );
+}
+export default EmployerSidebar

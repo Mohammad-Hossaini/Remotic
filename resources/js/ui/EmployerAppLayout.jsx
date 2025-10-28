@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import EmployerSidebar from "./EmployerSidebar";
@@ -5,14 +6,16 @@ import Header from "./Header";
 
 const StyledAppLayout = styled.div`
     display: grid;
-    grid-template-columns: 26rem 1fr; /* Sidebar + Main */
-    grid-template-rows: auto 1fr; /* Header + Content */
+    grid-template-columns: ${(props) =>
+        props.isOpen ? "26rem 1fr" : "6rem 1fr"};
+    grid-template-rows: auto 1fr;
     height: 100vh;
     overflow: hidden;
+    transition: grid-template-columns 0.3s ease;
 `;
 
 const HeaderWrapper = styled.header`
-    grid-column: 1 / -1; /* Header spans both columns */
+    grid-column: 1 / -1;
 `;
 
 const SidebarWrapper = styled.aside`
@@ -20,22 +23,28 @@ const SidebarWrapper = styled.aside`
     grid-column: 1 / 2;
 `;
 
-const Main = styled.main`
-    grid-row: 2 / -1;
-    grid-column: 2 / -1;
+const Main = styled.div`
     background-color: var(--color-grey-0);
     overflow-y: auto;
+    border-left: 1px solid var(--color-grey-100); // <-- adds divider
 `;
 
 function EmployerAppLayout() {
+    const [isOpen, setIsOpen] = useState(true);
+
+    const toggleSidebar = () => setIsOpen((prev) => !prev);
+
     return (
-        <StyledAppLayout>
+        <StyledAppLayout isOpen={isOpen}>
             <HeaderWrapper>
                 <Header />
             </HeaderWrapper>
 
             <SidebarWrapper>
-                <EmployerSidebar />
+                <EmployerSidebar
+                    isOpen={isOpen}
+                    toggleSidebar={toggleSidebar}
+                />
             </SidebarWrapper>
 
             <Main>
