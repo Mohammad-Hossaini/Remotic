@@ -188,7 +188,7 @@ function Navbar() {
     const markAsRead = (id) => {
         setNotifications((prev) => prev.filter((n) => n.id !== id));
     };
-    const isEmployerDashboard = location.pathname.includes("employerDashboard");
+    const isEmployerDashboard = location.pathname.includes("employerApp");
 
     // console.log("nototication data :");
 
