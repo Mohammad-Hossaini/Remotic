@@ -1,5 +1,5 @@
 .profile-container {
-    max-width: 110rem;
+    /* max-width: 110rem; */
     margin: 0 auto;
     background-color: var(--color-grey-0);
     border-radius: var(--radius-md);

@@ -17,17 +17,23 @@ const StyledSidebar = styled.div`
 `;
 
 const MenuButton = styled.button`
-    position: fixed; /* keep it always clickable */
-    top: 1rem;
+    position: fixed;
+    top: 1.8rem;
     left: ${(props) =>
-        props.isOpen ? "26rem" : "6rem"}; /* moves with sidebar */
+        props.isOpen ? "28rem" : "8rem"}; 
     background: none;
     border: none;
     color: #218c6b;
     font-size: 2.4rem;
     cursor: pointer;
-    z-index: 1000; /* ensure it's above everything */
+    z-index: 1000; 
     transition: all 0.3s ease;
+    outline: none;
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 7px rgba(8, 127, 91, 0.4);
+        transform: scale(1.05);
+    }
 
     &:hover {
         color: #065a3f;
