@@ -21,16 +21,17 @@ const NavList = styled.ul`
 const StyledNavLink = styled(NavLink)`
     display: flex;
     align-items: center;
+    justify-content: ${(props) => (props.isOpen ? "flex-start" : "center")};
     gap: 1.2rem;
     color: var(--color-grey-600);
     font-size: 1.6rem;
     font-weight: 500;
-    padding: 1.2rem 2.4rem;
+    padding: ${(props) => (props.isOpen ? "1.2rem 2.4rem" : "1.2rem 0")};
     transition: all 0.3s;
 
     & svg {
-        width: ${(props) => (props.isOpen ? "2.4rem" : "3rem")};
-        height: ${(props) => (props.isOpen ? "2.4rem" : "3rem")};
+        width: ${(props) => (props.isOpen ? "2.4rem" : "2.8rem")};
+        height: ${(props) => (props.isOpen ? "2.4rem" : "2.8rem")};
         color: var(--color-grey-400);
         transition: all 0.3s;
     }
