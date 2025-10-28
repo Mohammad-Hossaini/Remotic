@@ -14,7 +14,6 @@ const NavList = styled.ul`
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    /* border: 1px solid var(--color-grey-100); */
     padding-top: 2rem;
 `;
 

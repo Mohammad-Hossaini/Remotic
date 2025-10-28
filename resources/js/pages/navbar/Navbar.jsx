@@ -11,11 +11,11 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 import styled from "styled-components";
+import DefaultCompany from "../../../../public/images/company-default-images2.png";
 import { useAuth } from "../../hook/AuthContext";
 import { getUserById } from "../../services/apiUsers";
 import ProfileDialog from "../../ui/ProfileDialog";
 import "./Navbar.css";
-import DefaultCompany from "../../../../public/images/company-default-images2.png";
 // ===== Styled Components =====
 const Overlay = styled(RadixDialog.Overlay)`
     background: rgba(0, 0, 0, 0.2);
@@ -109,6 +109,26 @@ const Badge = styled.span`
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 `;
 
+const SiteNameContainer = styled.div`
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 1.4rem;
+`;
+const StyledLogoSite = styled.img`
+    height: 25px;
+    width: auto;
+    object-fit: contain;
+`;
+const StyledNameSite = styled.p`
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: #218c6b;
+`;
+
 function Navbar() {
     const BASE_URL = "http://127.0.0.1:8000/";
     const { user } = useAuth();
@@ -168,6 +188,7 @@ function Navbar() {
     const markAsRead = (id) => {
         setNotifications((prev) => prev.filter((n) => n.id !== id));
     };
+    const isEmployerDashboard = location.pathname.includes("employerDashboard");
 
     // console.log("nototication data :");
 
@@ -175,6 +196,15 @@ function Navbar() {
         <div className="navbar-container">
             {/* Left links */}
             <div className="left">
+                {isEmployerDashboard && (
+                    <SiteNameContainer>
+                        <StyledLogoSite
+                            src="/remotic-logo3.png"
+                            alt="Remotic Logo"
+                        />
+                        <StyledNameSite>Remotic</StyledNameSite>
+                    </SiteNameContainer>
+                )}
                 <Link to="/employerApp"></Link>
             </div>
 

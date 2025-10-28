@@ -19,11 +19,10 @@ const StyledName = styled.p`
 `;
 
 const StyledImage = styled.img`
-    height: 40px;
+    height: 25px;
     width: auto;
     object-fit: contain;
 `;
-
 
 function Logo({ isOpen }) {
     return (
