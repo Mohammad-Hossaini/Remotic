@@ -39,6 +39,7 @@
 
 /* ===== Content Section ===== */
 .jobContent {
+    font-family: "Rubik", sans-serif;
     display: grid;
     grid-template-columns: 60% auto;
     align-items: start;

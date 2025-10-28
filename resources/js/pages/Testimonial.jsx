@@ -2,6 +2,7 @@ import { FaStar } from "react-icons/fa";
 import styled from "styled-components";
 
 const StyledAllContainer = styled.div`
+    font-family: "Rubik", sans-serif;
     background: linear-gradient(to bottom, #e6f2ef 0%, #f9f9f9 100%);
     padding: 6.4rem 0;
 `;

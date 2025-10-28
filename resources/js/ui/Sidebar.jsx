@@ -1,20 +1,52 @@
+import { RiMenu2Fill } from "react-icons/ri";
 import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./Mainnav";
 
 const StyledSidebar = styled.div`
-  background-color: var(--color-grey-0);
-  padding: 3.2rem 2.4rem;
-  border-right: 1px solid var(--color-grey-100);
-  grid-row: 1/-1;
+    position: relative;
+    padding: 0;
+    border: 1px solid var(--color-grey-100);
+    grid-row: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: ${(props) => (props.isOpen ? "26rem" : "6rem")};
+    transition: width 0.3s ease;
+    overflow: hidden;
 `;
-function Sidebar() {
-  return (
-    <StyledSidebar>
-      <Logo />
-      <MainNav />
-    </StyledSidebar>
-  );
+
+const MenuButton = styled.button`
+    position: fixed; /* keep it always clickable */
+    top: 1rem;
+    left: ${(props) =>
+        props.isOpen ? "26rem" : "6rem"}; /* moves with sidebar */
+    background: none;
+    border: none;
+    color: #218c6b;
+    font-size: 2.4rem;
+    cursor: pointer;
+    z-index: 1000; /* ensure it's above everything */
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: #065a3f;
+    }
+`;
+
+function Sidebar({ isOpen, toggleSidebar }) {
+    return (
+        <>
+            <MenuButton isOpen={isOpen} onClick={toggleSidebar}>
+                <RiMenu2Fill />
+            </MenuButton>
+
+            <StyledSidebar isOpen={isOpen}>
+                <Logo isOpen={isOpen} />
+                <MainNav isOpen={isOpen} />
+            </StyledSidebar>
+        </>
+    );
 }
 
 export default Sidebar;

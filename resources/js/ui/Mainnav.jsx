@@ -14,105 +14,105 @@ const NavList = styled.ul`
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    border-top: 1px solid var(--color-grey-100);
+    /* border: 1px solid var(--color-grey-100); */
     padding-top: 2rem;
 `;
 
 const StyledNavLink = styled(NavLink)`
-    &:link,
-    &:visited {
-        display: flex;
-        align-items: center;
-        gap: 1.2rem;
-        color: var(--color-grey-600);
-        font-size: 1.6rem;
-        font-weight: 500;
-        padding: 1.2rem 2.4rem;
-        transition: all 0.3s;
-    }
-
-    &:hover,
-    &:active,
-    &.active:link,
-    &.active:visited {
-        color: var(--color-grey-800);
-        background-color: var(--color-grey-30);
-        border-radius: var(--border-radius-sm);
-    }
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    color: var(--color-grey-600);
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 1.2rem 2.4rem;
+    transition: all 0.3s;
 
     & svg {
-        width: 2.4rem;
-        height: 2.4rem;
+        width: ${(props) => (props.isOpen ? "2.4rem" : "3rem")};
+        height: ${(props) => (props.isOpen ? "2.4rem" : "3rem")};
         color: var(--color-grey-400);
         transition: all 0.3s;
     }
 
-    &:hover svg,
-    &:active svg,
-    &.active:link svg,
-    &.active:visited svg {
-        color: var(--color-brand-600);
+    span {
+        display: ${(props) => (props.isOpen ? "inline" : "none")};
+        transition: all 0.3s;
+    }
+
+    &:hover,
+    &.active {
+        color: var(--color-grey-800);
+        background-color: var(--color-grey-30);
+        border-radius: var(--radius-sm);
+
+        & svg {
+            color: var(--color-brand-600);
+        }
     }
 `;
 
-function MainNav({ children, role = "jobseeker" }) {
+function MainNav({ isOpen, role = "jobseeker" }) {
     const navigate = useNavigate();
     const profilePath =
         role === "employer" ? "/employerApp/profile" : "/app/profile";
+
     return (
-        <nav>
+        <nav style={{ width: "100%" }}>
             <NavList>
-                <li>
-                    <StyledNavLink to="/app/jobSeekerDashboard">
-                        <HiOutlineHome />
-                        <span>Home</span>
-                    </StyledNavLink>
-                </li>
-
-                <li>
-                    <StyledNavLink to="/app/allJobs">
-                        <BsBriefcase />
-                        <span>All Jobs</span>
-                    </StyledNavLink>
-                </li>
-
-                <li>
-                    <StyledNavLink to="/app/savedJobs">
-                        <HiOutlineHeart />
-                        <span>Favorite Jobs</span>
-                    </StyledNavLink>
-                </li>
-                <li>
-                    <StyledNavLink to="/app/appliedJobs">
-                        <HiOutlineCheckCircle />
-                        <span>Applied Jobs</span>
-                    </StyledNavLink>
-                </li>
-                <li>
-                    <StyledNavLink to="/app/sugessteddJobs">
-                        <MdOutlineBookmarkAdded />
-                        <span>Sugessted Jobs</span>
-                    </StyledNavLink>
-                </li>
-                <li>
-                    <StyledNavLink to="/app/application">
-                        <IoFolderOpenOutline />
-                        <span>Application</span>
-                    </StyledNavLink>
-                </li>
-                <li>
-                    <StyledNavLink to="/app/messages">
-                        <TbMessage2Share />
-                        <span>Messages</span>
-                    </StyledNavLink>
-                </li>
-
-                <li>
-                    <StyledNavLink to={profilePath}>
-                        <FaRegUser />
-                        <span>Profile</span>
-                    </StyledNavLink>
-                </li>
+                {[
+                    {
+                        path: "/app/jobSeekerDashboard",
+                        icon: <HiOutlineHome />,
+                        label: "Home",
+                    },
+                    {
+                        path: "/app/allJobs",
+                        icon: <BsBriefcase />,
+                        label: "All Jobs",
+                    },
+                    {
+                        path: "/app/savedJobs",
+                        icon: <HiOutlineHeart />,
+                        label: "Favorite Jobs",
+                    },
+                    {
+                        path: "/app/appliedJobs",
+                        icon: <HiOutlineCheckCircle />,
+                        label: "Applied Jobs",
+                    },
+                    {
+                        path: "/app/sugessteddJobs",
+                        icon: <MdOutlineBookmarkAdded />,
+                        label: "Suggested Jobs",
+                    },
+                    {
+                        path: "/app/application",
+                        icon: <IoFolderOpenOutline />,
+                        label: "Application",
+                    },
+                    {
+                        path: "/app/messages",
+                        icon: <TbMessage2Share />,
+                        label: "Messages",
+                    },
+                    {
+                        path: profilePath,
+                        icon: <FaRegUser />,
+                        label: "Profile",
+                    },
+                ].map((item) => (
+                    <li key={item.path}>
+                        {/* <StyledNavLink to={item.path}>
+                            {item.icon}
+                            {isOpen && <span>{item.label}</span>}
+                        </StyledNavLink> */}
+                        <StyledNavLink to={item.path} isOpen={isOpen}>
+                            {item.icon}
+                            <span>{item.label}</span>
+                        </StyledNavLink>
+                    </li>
+                ))}
             </NavList>
         </nav>
     );

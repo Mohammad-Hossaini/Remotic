@@ -3,9 +3,11 @@ import styled from "styled-components";
 
 const SectionCTA = styled.div`
     margin: 9.6rem 0 1.4rem 0;
+    font-family: "Rubik", sans-serif;
 `;
 
 const CTAContainer = styled.div`
+    font-family: "Rubik", sans-serif;
     max-width: 110rem;
     border: 1px solid #999;
     border-radius: 2.5rem;
@@ -106,49 +108,6 @@ const RightLeft = styled.div`
     }
 `;
 
-// const RightRight = styled.div`
-//     border-radius: 7px;
-//     padding: 1.4rem;
-//     background-color: #087f5b;
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     justify-content: center;
-//     gap: 0.8rem;
-//     cursor: pointer;
-//     transition: background-color 0.3s ease, transform 0.2s ease;
-
-//     &:hover {
-//         background-color: #066649;
-//         transform: translateY(-2px);
-//     }
-
-//     .btn-text {
-//         color: #fff;
-//         font-size: 1.6rem;
-//         font-weight: 600;
-//         letter-spacing: 0.5px;
-//         text-transform: uppercase;
-
-//         @media (max-width: 44em) {
-//             font-size: 1.4rem;
-//         }
-//     }
-
-//     .btn-icon {
-//         font-size: 4.8rem;
-//         color: #fff;
-//         transition: transform 0.2s ease;
-
-//         @media (max-width: 44em) {
-//             font-size: 3.6rem;
-//         }
-//     }
-
-//     &:hover .btn-icon {
-//         transform: scale(1.1);
-//     }
-// `;
 const RightRight = styled.div`
     border-radius: 7px;
     padding: 0.6rem 1.2rem; /* decreased padding */
