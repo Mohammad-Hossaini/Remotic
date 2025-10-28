@@ -9,7 +9,6 @@ const SectionFAQWrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 2.4rem;
-    font-family: "Inter", sans-serif;
     padding: 0 2rem;
 
     .faq-title {

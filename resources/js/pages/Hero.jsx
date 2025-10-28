@@ -1,28 +1,25 @@
-import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+
 /* ==============================
    STYLED COMPONENTS
 ============================== */
-
 const SectionHero = styled.section`
-    padding: 3rem 2.4rem 4.4rem 2.4rem;
+    padding: 7.2rem 0 4.4rem 0;
     background-color: #e6f2ef;
     font-family: "Rubik", sans-serif;
-    height: 100vh;
-    @media (max-width: 84em) {
+    min-height: 85rem;
+
+    @media (min-width: 84em) {
         min-height: 55rem;
-        padding: 6rem 4rem;
     }
 
     @media (max-width: 75em) {
         min-height: 53rem;
-        padding: 5rem 3rem;
     }
 
     @media (max-width: 59em) {
         min-height: 93rem;
-        padding: 4rem 2rem;
     }
 `;
 
@@ -35,14 +32,14 @@ const Hero = styled.div`
     align-items: center;
 
     /**************************/
-    /* BELOW 1344px(84em) (Smaller desktops) */
+    /* BELOW 1344px (Smaller desktops) */
     /**************************/
     @media (max-width: 84em) {
         gap: 6rem;
     }
 
     /**************************/
-    /* BELOW 1200px(75em) (Landscape Tablets) */
+    /* BELOW 1200px (Landscape Tablets) */
     /**************************/
     @media (max-width: 75em) {
         grid-template-columns: 1fr 1fr;
@@ -50,7 +47,7 @@ const Hero = styled.div`
     }
 
     /**************************/
-    /* BELOW 944px(59em) (Tablets) */
+    /* BELOW 944px (Tablets) */
     /**************************/
     @media (max-width: 59em) {
         grid-template-columns: 1fr;
@@ -59,14 +56,14 @@ const Hero = styled.div`
     }
 
     /**************************/
-    /* BELOW 704px(44em) (Smaller tablets) */
+    /* BELOW 704px (Smaller tablets) */
     /**************************/
     @media (max-width: 44em) {
         gap: 2.5rem;
     }
 
     /**************************/
-    /* BELOW 544px(34em) (Phones) */
+    /* BELOW 544px (Phones) */
     /**************************/
     @media (max-width: 34em) {
         gap: 2rem;
@@ -244,17 +241,22 @@ const HeroImage = styled.img`
     object-fit: cover;
 
     @media (max-width: 59em) {
-        max-width: 400px;
+        max-width: 300px;
     }
     @media (max-width: 44em) {
-        max-width: 350px;
+        max-width: 250px;
+    }
+    @media (max-width: 34em) {
+        max-width: 200px;
     }
 `;
 
+/* ==============================
+   COMPONENT
+============================== */
 
-const HeroSection = forwardRef((props, ref) => (
-    <section id="hero" ref={ref} className="section-hero">
-        {/* Hero content */}
+export default function HeroSection() {
+    return (
         <main>
             <SectionHero>
                 <Hero>
@@ -298,7 +300,5 @@ const HeroSection = forwardRef((props, ref) => (
                 </Hero>
             </SectionHero>
         </main>
-    </section>
-));
-
-export default HeroSection;
+    );
+}

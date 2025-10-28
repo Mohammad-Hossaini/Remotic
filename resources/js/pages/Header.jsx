@@ -258,19 +258,6 @@ export default function Header({ heroRef }) {
         closeNav();
     };
 
-    // ✅ Sticky nav behavior
-    // useEffect(() => {
-    //     const observer = new IntersectionObserver(
-    //         ([entry]) => setIsSticky(!entry.isIntersecting),
-    //         { root: null, threshold: 0, rootMargin: "-80px" }
-    //     );
-
-    //     if (heroRef?.current) observer.observe(heroRef.current);
-
-    //     return () => {
-    //         if (heroRef?.current) observer.unobserve(heroRef.current);
-    //     };
-    // }, [heroRef]);
     useEffect(() => {
         const handleScroll = () => {
             if (!heroRef?.current) {
