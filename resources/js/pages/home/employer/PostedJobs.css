@@ -1,153 +1,257 @@
-/* Container */
+/* =======================
+   Container
+======================= */
 .postedJobsContainer {
-    padding: 2rem;
-    max-width: 100rem;
-    margin: 0 auto;
+  padding: 2rem;
+  max-width: 100rem;
+  margin: 0 auto;
 }
 
-/* Header */
+/* =======================
+   Header
+======================= */
 .postedHeader {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .postedHeader h2 {
-    font-size: 2.4rem;
-    font-weight: 600;
-    color: var(--color-grey-900);
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--color-grey-900);
 }
 
-/* Job Card */
+/* =======================
+   Job Card
+======================= */
 .postedJobCard {
-    position: relative; /* Needed for absolute positioning of status badge */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--color-grey-0);
-    border: 1px solid var(--color-grey-200);
-    border-radius: var(--radius-lg);
-    padding: 1.6rem 2rem;
-    margin-bottom: 1.6rem;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem 2rem;
+  margin-bottom: 1.6rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .postedJobCard:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
 
-/* Left Section */
+/* =======================
+   Left Section
+======================= */
 .left {
-    display: flex;
-    align-items: center;
-    column-gap: 1.8rem;
-    flex: 1;
+  display: flex;
+  align-items: center;
+  column-gap: 1.8rem;
+  flex: 1;
 }
 
 .job-img img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--color-grey-200);
-    background-color: #f8f9fa;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-grey-200);
+  background-color: #f8f9fa;
 }
 
-/* Job Description */
 .job-desc {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .job-title {
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: var(--color-grey-900);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-grey-900);
 }
 
 .job-company {
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: var(--color-grey-700);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--color-grey-700);
 }
 
 .job-meta,
 .job-deadline,
 .job-posted {
-    font-size: 1.2rem;
-    color: var(--color-grey-500);
+  font-size: 1.2rem;
+  color: var(--color-grey-500);
 }
 
 .job-deadline {
-    font-weight: 500;
-    color: #dc2626;
+  font-weight: 500;
+  color: #dc2626;
 }
 
 .job-posted {
-    color: #2563eb;
-    font-style: italic;
+  color: #2563eb;
+  font-style: italic;
 }
 
-/* Right Section */
+/* =======================
+   Right Section
+======================= */
 .right {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .iconBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 35px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 1.8rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.iconBtn:hover {
+  transform: scale(1.05);
 }
 
 .editBtn {
-    color: #2563eb;
+  color: #2563eb;
 }
 
 .deleteBtn {
-    color: #ef4444;
+  color: #ef4444;
 }
 
-/* Loading, Error, No Jobs */
-.loading,
-.error,
-.no-jobs {
-    text-align: center;
-    margin-top: 2rem;
-    font-size: 1.4rem;
-    color: var(--color-grey-600);
-}
-
-/* Status Badge */
+/* =======================
+   Status Badge
+======================= */
 .job-status-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.4rem 0.8rem;
-    font-size: 1.2rem;
-    font-weight: 600;
-    border-radius: var(--radius-md);
-    text-transform: uppercase;
-    color: #fff;
-    z-index: 10;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  text-transform: uppercase;
+  color: #fff;
+  z-index: 10;
 }
 
 .job-status-open {
-    color: var(--color-success);
+  background-color: var(--color-success);
 }
 
 .job-status-closed {
-    color: var(--color-error);
+  background-color: var(--color-error);
 }
 
 .job-status-draft {
-    color: var(--color-warning);
+  background-color: var(--color-warning);
+}
+
+/* =======================
+   Loading / Empty / Error
+======================= */
+.loading,
+.error,
+.no-jobs {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 1.4rem;
+  color: var(--color-grey-600);
+}
+
+/* =======================
+   RESPONSIVE DESIGN
+======================= */
+
+/* ✅ Tablet & below */
+@media (max-width: 992px) {
+  .postedJobCard {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .left {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .right {
+    align-self: flex-end;
+    margin-top: 0.5rem;
+  }
+
+  .job-img img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .job-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* ✅ Mobile */
+@media (max-width: 600px) {
+  .postedJobsContainer {
+    padding: 1rem;
+  }
+
+  .postedJobCard {
+    padding: 1.2rem;
+  }
+
+  .left {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .job-desc {
+    align-items: center;
+  }
+
+  .right {
+    justify-content: center;
+    width: 100%;
+    margin-top: 0.8rem;
+  }
+
+  .job-status-badge {
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 1rem;
+  }
+
+  .job-img img {
+    width: 55px;
+    height: 55px;
+  }
+
+  .job-title {
+    font-size: 1.4rem;
+  }
+
+  .job-company {
+    font-size: 1.2rem;
+  }
+
+  .job-meta {
+    font-size: 1.1rem;
+  }
 }
