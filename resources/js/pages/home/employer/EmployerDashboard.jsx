@@ -8,17 +8,28 @@ import { getEmployerDashboardStats } from "../../../services/apiDashboard";
 import JobApplicantsChart from "../../../ui/BarChart";
 import JobModal from "../../../ui/JobModal";
 
+/* ==============================
+   STYLED COMPONENTS
+============================== */
 const Container = styled.div`
     max-width: 120rem;
     margin: 0 auto;
     padding: 2rem;
-    height: 20rem;
+    height: auto;
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
 `;
 
 const DashboardActions = styled.div`
     display: flex;
     justify-content: flex-end;
     margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+        justify-content: center;
+    }
 `;
 
 const PostJobButton = styled.button`
@@ -30,10 +41,16 @@ const PostJobButton = styled.button`
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s;
+
     &:hover {
         background-color: #087f5b;
         transform: translateY(-2px);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 480px) {
+        font-size: 1.4rem;
+        padding: 0.8rem 1.6rem;
     }
 `;
 
@@ -69,21 +86,33 @@ const ContentGrid = styled.div`
     display: grid;
     grid-template-columns: 2fr 1.2fr;
     gap: 2rem;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 const LeftBox = styled.div`
     background: #fff;
     border-radius: 1rem;
     padding: 2rem;
-    height: 50rem;
-    overflow: auto;
+    min-height: 30rem;
+    overflow-y: auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    @media (max-width: 768px) {
+        padding: 1.5rem;
+    }
 `;
 
 const RightBox = styled.div`
     display: grid;
     grid-template-rows: 1fr 1fr;
     gap: 2rem;
+
+    @media (max-width: 1024px) {
+        grid-template-rows: auto;
+    }
 `;
 
 const SectionTitle = styled.h2`
@@ -96,9 +125,40 @@ const SectionTitle = styled.h2`
 const RecentBox = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     border-bottom: 1px solid #eee;
     padding: 1rem 0;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+`;
+
+const JobInfo = styled.div`
+    h3 {
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+        color: #222;
+    }
+
+    p {
+        font-size: 1.3rem;
+        color: #555;
+        line-height: 1.4;
+        max-width: 45ch;
+        word-break: break-word;
+    }
+`;
+
+const DeadlineText = styled.p`
+    font-size: 1.2rem;
+    color: #777;
+
+    @media (max-width: 600px) {
+        align-self: flex-end;
+    }
 `;
 
 const ChartBox = styled.div`
@@ -106,12 +166,18 @@ const ChartBox = styled.div`
     border-radius: 1rem;
     padding: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-`;
-const StyledDescription = styled.p`
-    width: 8rem;
-    font-size: 1.2rem;
+
+    h3 {
+        font-size: 1.6rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #114a38;
+    }
 `;
 
+/* ==============================
+   MAIN COMPONENT
+============================== */
 function EmployerDashboard() {
     const [openModal, setOpenModal] = useState(false);
     const { user } = useAuth();
@@ -134,7 +200,12 @@ function EmployerDashboard() {
         enabled: !!token,
     });
 
-    // console.log(dashboard);
+    const truncateText = (text, maxLength = 130) => {
+        if (!text) return "";
+        return text.length > maxLength
+            ? text.slice(0, maxLength) + "..."
+            : text;
+    };
 
     const stats = [
         {
@@ -191,15 +262,11 @@ function EmployerDashboard() {
                     <SectionTitle>Recent Jobs</SectionTitle>
                     {recentJobs.map((job) => (
                         <RecentBox key={job.id}>
-                            <div>
+                            <JobInfo>
                                 <h3>{job.title}</h3>
-                                <p>{job.description}</p>
-                            </div>
-                            <div>
-                                <StyledDescription>
-                                    {job.deadline ?? "—"}
-                                </StyledDescription>
-                            </div>
+                                <p>{truncateText(job.description)}</p>
+                            </JobInfo>
+                            <DeadlineText>{job.deadline ?? "—"}</DeadlineText>
                         </RecentBox>
                     ))}
                 </LeftBox>
@@ -215,17 +282,6 @@ function EmployerDashboard() {
                             <p>No data yet</p>
                         )}
                     </ChartBox>
-
-                    {/* <ChartBox>
-                        <h3>Applications by Status</h3>
-                        {dashboard?.charts?.applications_per_job?.length ? (
-                            <ApplicationStatus
-                                data={dashboard.charts.applications_per_job}
-                            />
-                        ) : (
-                            <p>No data yet</p>
-                        )}
-                    </ChartBox> */}
                 </RightBox>
             </ContentGrid>
         </Container>

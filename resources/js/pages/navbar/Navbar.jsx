@@ -2,12 +2,8 @@ import * as RadixDialog from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { IoMdEye } from "react-icons/io";
-
-import { formatDistanceToNow } from "date-fns";
 import { IoIosMoon, IoMdNotifications } from "react-icons/io";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { TfiClose, TfiMenu } from "react-icons/tfi";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 import styled from "styled-components";
@@ -128,8 +124,53 @@ const StyledNameSite = styled.p`
     font-weight: 600;
     color: #218c6b;
 `;
+const IconButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none;
+    margin-right: 1.8rem;
+    /* outline: none;
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 7px rgba(8, 127, 91, 0.4);
+        transform: scale(1.05);
+    } */
 
+    @media (max-width: 59em) {
+        display: block;
+        z-index: 2000;
+    }
+`;
+
+const iconSize = "3.2rem";
+
+const MenuIcon = styled(TfiMenu)`
+    font-size: ${iconSize};
+    color: #114a38;
+    transition: all 0.3s;
+
+    &:hover {
+        transform: scale(1.1);
+        color: #087f5b;
+    }
+`;
+
+const CloseIcon = styled(TfiClose)`
+    font-size: ${iconSize};
+    color: #114a38;
+    transition: all 0.3s;
+
+    &:hover {
+        transform: rotate(90deg);
+        color: #087f5b;
+    }
+`;
 function Navbar() {
+    const [isNavOpen, setIsNavOpen] = useState(false);
+    const toggleNav = () => setIsNavOpen((prev) => !prev);
+    const closeNav = () => setIsNavOpen(false);
+
     const BASE_URL = "http://127.0.0.1:8000/";
     const { user } = useAuth();
     // console.log(user?.role);
@@ -139,6 +180,7 @@ function Navbar() {
     // console.log("All the notifications: ", notifications);
     useEffect(() => {
         if (!user?.token) return;
+        4;
 
         const newSocket = io("http://localhost:5000", {
             auth: { token: user.token },
@@ -193,8 +235,188 @@ function Navbar() {
     // console.log("nototication data :");
 
     return (
-        <div className="navbar-container">
-            {/* Left links */}
+        // <div className="navbar-container">
+        //     {/* Left links */}
+        //     <div className="left">
+        //         {isEmployerDashboard && (
+        //             <SiteNameContainer>
+        //                 <StyledLogoSite
+        //                     src="/remotic-logo3.png"
+        //                     alt="Remotic Logo"
+        //                 />
+        //                 <StyledNameSite>Remotic</StyledNameSite>
+        //             </SiteNameContainer>
+        //         )}
+        //         <Link to="/employerApp"></Link>
+        //     </div>
+
+        //     {/* Center search */}
+        //     <div className="center">
+        //         <input
+        //             className="headerInput"
+        //             type="search"
+        //             placeholder="Search jobs, applicants..."
+        //         />
+        //     </div>
+
+        //     {/* Right icons */}
+        //     <div className="right">
+        //         <div className="icons" style={{ position: "relative" }}>
+        //             <RadixDialog.Root>
+        //                 <RadixDialog.Trigger asChild>
+        //                     <NotificationWrapper>
+        //                         <IoMdNotifications className="Icon" />
+        //                         {notifications.length > 0 && (
+        //                             <Badge>{notifications.length}</Badge>
+        //                         )}
+        //                     </NotificationWrapper>
+        //                 </RadixDialog.Trigger>
+        //                 <RadixDialog.Portal>
+        //                     <Overlay />
+        //                     <Content>
+        //                         <CloseButton>&times;</CloseButton>
+        //                         <h4 style={{ textAlign: "center" }}>
+        //                             Jobs recently posted!
+        //                         </h4>
+        //                         {notifications.length === 0 ? (
+        //                             <p>No new notifications</p>
+        //                         ) : (
+        //                             notifications.map((n) => (
+        //                                 <NotificationItem
+        //                                     className="NotificationItem"
+        //                                     key={n.id}
+        //                                 >
+        //                                     <img
+        //                                         src={
+        //                                             n?.companyImage ||
+        //                                             DefaultCompany
+        //                                         }
+        //                                         alt="Company Logo"
+        //                                     />
+
+        //                                     <div className="NotificationContent">
+        //                                         <p className="notification-time">
+        //                                             {formatDistanceToNow(
+        //                                                 n.time
+        //                                             )}{" "}
+        //                                             ago
+        //                                         </p>
+
+        //                                         <p className="company-name">
+        //                                             {n.companyName}
+        //                                         </p>
+        //                                         <p className="title-of-job">
+        //                                             {n.jobTitle}
+        //                                         </p>
+        //                                         <p className="job-description">
+        //                                             {n.jobDescription}
+        //                                         </p>
+        //                                         <div
+        //                                             style={{
+        //                                                 marginTop: "0.5rem",
+        //                                                 display: "flex",
+        //                                                 alignItems: "center",
+        //                                                 gap: "0.4rem",
+        //                                                 fontSize: "0.9rem",
+        //                                                 color: "var(--color-grey-500)",
+        //                                                 fontStyle: "italic",
+        //                                             }}
+        //                                         >
+        //                                             <span>Posted by</span>
+        //                                             <span
+        //                                                 style={{
+        //                                                     fontWeight: "600",
+        //                                                     color: "var(--color-grey-700)",
+        //                                                     fontStyle: "normal",
+        //                                                 }}
+        //                                             >
+        //                                                 {n.employerName}
+        //                                             </span>
+        //                                         </div>
+        //                                     </div>
+
+        //                                     <div className="NotificationActions">
+        //                                         <div className="dots-menu-wrapper">
+        //                                             <button className="dots-btn">
+        //                                                 <HiOutlineDotsHorizontal />
+        //                                             </button>
+        //                                             <div className="context-menu">
+        //                                                 <Link
+        //                                                     to={`/app/allJobs/jobDetails/${n.jobID}`}
+        //                                                     onClick={() =>
+        //                                                         markAsRead(n.id)
+        //                                                     }
+        //                                                 >
+        //                                                     <button>
+        //                                                         <IoMdEye
+        //                                                             style={{
+        //                                                                 display:
+        //                                                                     "flex",
+        //                                                                 alignItems:
+        //                                                                     "center",
+        //                                                             }}
+        //                                                         />{" "}
+        //                                                         <span className="view">
+        //                                                             View Job
+        //                                                         </span>
+        //                                                     </button>
+        //                                                 </Link>
+        //                                                 <button
+        //                                                     onClick={() =>
+        //                                                         markAsRead(n.id)
+        //                                                     }
+        //                                                 >
+        //                                                     <RiDeleteBin6Line />{" "}
+        //                                                     <span className="done">
+        //                                                         Done
+        //                                                     </span>
+        //                                                 </button>
+        //                                             </div>
+        //                                         </div>
+        //                                     </div>
+        //                                 </NotificationItem>
+        //                             ))
+        //                         )}
+        //                     </Content>
+        //                 </RadixDialog.Portal>
+        //             </RadixDialog.Root>
+
+        //             <IoIosMoon className="Icon" />
+        //         </div>
+
+        //         <ProfileDialog>
+        //             <div className="avatar-wrapper">
+        //                 {user?.role === "employer" ? (
+        //                     <img
+        //                         src={
+        //                             user?.data?.user?.company?.logo
+        //                                 ? `http://127.0.0.1:8000/storage/${user.data.user.company.logo}`
+        //                                 : "images/company-default-images2.png"
+        //                         }
+        //                         alt="Profile"
+        //                         className="avatar-img"
+        //                     />
+        //                 ) : (
+        //                     <img
+        //                         src={
+        //                             user?.data?.user?.profile?.profile_image
+        //                                 ? `${BASE_URL}${user.data.user.profile.profile_image}`
+        //                                 : "/profile/default.jpg"
+        //                         }
+        //                         alt="Profile"
+        //                         className="avatar-img"
+        //                     />
+        //                 )}
+        //                 <FaCaretDown className="avatar-caret" />
+        //                 <IconButton>
+        //                     <CloseIcon /> <MenuIcon />
+        //                 </IconButton>
+        //             </div>
+        //         </ProfileDialog>
+        //     </div>
+        // </div>
+        <div className={`navbar-container ${isNavOpen ? "open" : ""}`}>
+            {/* Left */}
             <div className="left">
                 {isEmployerDashboard && (
                     <SiteNameContainer>
@@ -205,10 +427,9 @@ function Navbar() {
                         <StyledNameSite>Remotic</StyledNameSite>
                     </SiteNameContainer>
                 )}
-                <Link to="/employerApp"></Link>
             </div>
 
-            {/* Center search */}
+            {/* Center Search */}
             <div className="center">
                 <input
                     className="headerInput"
@@ -217,9 +438,10 @@ function Navbar() {
                 />
             </div>
 
-            {/* Right icons */}
+            {/* Right */}
             <div className="right">
-                <div className="icons" style={{ position: "relative" }}>
+                <div className="icons">
+                    {/* Notifications */}
                     <RadixDialog.Root>
                         <RadixDialog.Trigger asChild>
                             <NotificationWrapper>
@@ -229,119 +451,13 @@ function Navbar() {
                                 )}
                             </NotificationWrapper>
                         </RadixDialog.Trigger>
-                        <RadixDialog.Portal>
-                            <Overlay />
-                            <Content>
-                                <CloseButton>&times;</CloseButton>
-                                <h4 style={{ textAlign: "center" }}>
-                                    Jobs recently posted!
-                                </h4>
-                                {notifications.length === 0 ? (
-                                    <p>No new notifications</p>
-                                ) : (
-                                    notifications.map((n) => (
-                                        <NotificationItem
-                                            className="NotificationItem"
-                                            key={n.id}
-                                        >
-                                            <img
-                                                src={
-                                                    n?.companyImage ||
-                                                    DefaultCompany
-                                                }
-                                                alt="Company Logo"
-                                            />
-
-                                            <div className="NotificationContent">
-                                                <p className="notification-time">
-                                                    {formatDistanceToNow(
-                                                        n.time
-                                                    )}{" "}
-                                                    ago
-                                                </p>
-
-                                                <p className="company-name">
-                                                    {n.companyName}
-                                                </p>
-                                                <p className="title-of-job">
-                                                    {n.jobTitle}
-                                                </p>
-                                                <p className="job-description">
-                                                    {n.jobDescription}
-                                                </p>
-                                                <div
-                                                    style={{
-                                                        marginTop: "0.5rem",
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        gap: "0.4rem",
-                                                        fontSize: "0.9rem",
-                                                        color: "var(--color-grey-500)",
-                                                        fontStyle: "italic",
-                                                    }}
-                                                >
-                                                    <span>Posted by</span>
-                                                    <span
-                                                        style={{
-                                                            fontWeight: "600",
-                                                            color: "var(--color-grey-700)",
-                                                            fontStyle: "normal",
-                                                        }}
-                                                    >
-                                                        {n.employerName}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div className="NotificationActions">
-                                                <div className="dots-menu-wrapper">
-                                                    <button className="dots-btn">
-                                                        <HiOutlineDotsHorizontal />
-                                                    </button>
-                                                    <div className="context-menu">
-                                                        <Link
-                                                            to={`/app/allJobs/jobDetails/${n.jobID}`}
-                                                            onClick={() =>
-                                                                markAsRead(n.id)
-                                                            }
-                                                        >
-                                                            <button>
-                                                                <IoMdEye
-                                                                    style={{
-                                                                        display:
-                                                                            "flex",
-                                                                        alignItems:
-                                                                            "center",
-                                                                    }}
-                                                                />{" "}
-                                                                <span className="view">
-                                                                    View Job
-                                                                </span>
-                                                            </button>
-                                                        </Link>
-                                                        <button
-                                                            onClick={() =>
-                                                                markAsRead(n.id)
-                                                            }
-                                                        >
-                                                            <RiDeleteBin6Line />{" "}
-                                                            <span className="done">
-                                                                Done
-                                                            </span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </NotificationItem>
-                                    ))
-                                )}
-                            </Content>
-                        </RadixDialog.Portal>
+                        {/* ... Radix Content ... */}
                     </RadixDialog.Root>
 
                     <IoIosMoon className="Icon" />
                 </div>
 
+                {/* Profile */}
                 <ProfileDialog>
                     <div className="avatar-wrapper">
                         {user?.role === "employer" ? (
@@ -349,7 +465,7 @@ function Navbar() {
                                 src={
                                     user?.data?.user?.company?.logo
                                         ? `http://127.0.0.1:8000/storage/${user.data.user.company.logo}`
-                                        : "images/company-default-images2.png"
+                                        : DefaultCompany
                                 }
                                 alt="Profile"
                                 className="avatar-img"
@@ -368,6 +484,18 @@ function Navbar() {
                         <FaCaretDown className="avatar-caret" />
                     </div>
                 </ProfileDialog>
+
+                {/* Mobile Menu Button */}
+                <button className="menu-btn" onClick={toggleNav}>
+                    {isNavOpen ? <TfiClose /> : <TfiMenu />}
+                </button>
+            </div>
+
+            {/* Mobile Dropdown */}
+            <div className={`mobile-menu ${isNavOpen ? "show" : ""}`}>
+                <Link to="/login" onClick={closeNav}>
+                    Log out
+                </Link>
             </div>
         </div>
     );
