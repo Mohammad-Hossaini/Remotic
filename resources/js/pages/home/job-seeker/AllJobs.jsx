@@ -1,3 +1,4 @@
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -19,7 +20,9 @@ import Header from "../../Header";
 import JobsHeader from "../../JobsHeader";
 import SearchBar from "../../SearchBar";
 
-// ================= Styled Components =================
+/* ==============================
+   Styled Components
+============================== */
 const AllJobsWrapper = styled.div`
     min-height: 100vh;
 `;
@@ -42,7 +45,6 @@ const JobStatus = styled.span`
     border-radius: var(--radius-md);
     color: #fff;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
     background-color: ${(props) =>
         props.status === "open"
             ? "var(--color-success)"
@@ -94,6 +96,7 @@ const PostedAt = styled.span`
     color: var(--color-grey-400);
 `;
 
+/* ---------------- Modal Styling ---------------- */
 const ModalOverlay = styled.div`
     position: fixed;
     inset: 0;
@@ -132,6 +135,28 @@ const ModalTitle = styled.h2`
     margin-bottom: 1rem;
 `;
 
+const JobImg = styled.img`
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 3px solid var(--color-primary);
+    background: #fff;
+    transition: transform 0.4s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+
+    @media (max-width: 768px) {
+        width: 60px;
+        height: 60px;
+    }
+
+    @media (max-width: 480px) {
+        width: 55px;
+        height: 55px;
+    }
+`;
+
 const ModalDescription = styled.p`
     font-size: 1.4rem;
     color: var(--color-grey-700);
@@ -150,28 +175,96 @@ const WideButton = styled(Button)`
     font-size: 1.2rem;
     padding: 0.9rem 1.2rem;
 `;
-const JobList = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 2.8rem;
-    padding-top: 2rem;
-    @media (max-width: 1200px) and (min-width: 915px) {
-        grid-template-columns: repeat(2, minmax(360px, 1fr));
-        gap: 1.4rem;
-        justify-items: center;
+
+/* ---------------- Job Card Styling ---------------- */
+const JobTitle = styled.h3`
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-grey-900);
+    margin-bottom: 0.4rem;
+    margin-top: 0.6rem;
+    transition: color 0.3s ease;
+
+    @media (max-width: 768px) {
+        font-size: 1.25rem;
     }
 
-    @media (max-width: 914px) and (min-width: 769px) {
-        grid-template-columns: repeat(2, minmax(320px, 1fr));
-        gap: 2.4rem;
-        justify-items: center;
+    @media (max-width: 480px) {
+        font-size: 1.1rem;
+    }
+`;
+
+const JobDescription = styled.p`
+    margin-top: 0.8rem;
+    font-size: 0.95rem;
+    color: var(--color-grey-600);
+    line-height: 1.5;
+
+    @media (max-width: 768px) {
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 0.85rem;
+    }
+`;
+
+const JobsCard = styled.div`
+    width: 105%;
+    max-width: 400px;
+    min-height: 270px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(145deg, #ffffff, #f3f4f6);
+    padding: 2rem;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-grey-200);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+
+    &:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(145deg, #f8fafc, #ffffff);
+
+        ${JobImg} {
+            transform: scale(1.08) rotate(-2deg);
+        }
+
+        ${JobTitle} {
+            color: var(--color-primary);
+        }
+
+        .hover-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    }
+
+    @media (max-width: 1200px) and (min-width: 769px) {
+        max-width: 550px;
+        padding: 1.6rem;
     }
 
     @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-        gap: 1.6rem;
-        padding: 0 0.8rem;
+        max-width: 100%;
+        padding: 1.2rem;
     }
+
+    @media (max-width: 480px) {
+        padding: 1rem;
+        border-radius: var(--radius-lg);
+    }
+`;
+
+const JobList = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 3.8rem;
+    padding-top: 2rem;
 `;
 
 const HoverOverlay = styled.div`
@@ -200,7 +293,6 @@ const HoverOverlay = styled.div`
         background: none;
         backdrop-filter: none;
         border-top: none;
-        gap: 0.8rem;
     }
 `;
 
@@ -220,7 +312,6 @@ const FancyButton = styled(Button)`
 
     @media (max-width: 768px) {
         width: 100%;
-        text-align: center;
     }
 `;
 
@@ -232,140 +323,25 @@ const HeartIcon = styled(HiMiniHeart)`
     top: 1rem;
     right: 1rem;
     transition: color 0.3s ease;
-
-    @media (max-width: 768px) {
-        font-size: 1.6rem;
-        top: 0.8rem;
-        right: 0.8rem;
-    }
-`;
-const JobsCard = styled.div`
-    width: 100%;
-    max-width: 400px;
-    min-height: 270px;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(145deg, #ffffff, #f3f4f6);
-    padding: 2rem;
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--color-grey-200);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.35s ease;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
-
-    &:hover {
-        transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        background: linear-gradient(145deg, #f8fafc, #ffffff);
-
-        ${JobImg} {
-            transform: scale(1.08) rotate(-2deg);
-            transition: transform 0.3s ease;
-        }
-
-        ${JobTitle} {
-            color: var(--color-primary);
-        }
-
-        .hover-overlay {
-            opacity: 1;
-            pointer-events: auto;
-        }
-    }
-
-    @media (max-width: 1200px) and (min-width: 769px) {
-        max-width: 550px;
-        padding: 1.6rem;
-    }
-
-    @media (max-width: 768px) {
-        max-width: 100%;
-        padding: 1.2rem;
-        min-height: auto;
-        align-items: flex-start;
-        justify-content: flex-start;
-        text-align: left;
-    }
-
-    @media (max-width: 480px) {
-        padding: 1rem;
-        border-radius: var(--radius-lg);
-    }
 `;
 
-const JobImg = styled.img`
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-    border: 3px solid var(--color-primary);
-    background: #fff;
-    transition: transform 0.4s ease, box-shadow 0.3s ease;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-
-    @media (max-width: 768px) {
-        width: 60px;
-        height: 60px;
-    }
-
-    @media (max-width: 480px) {
-        width: 55px;
-        height: 55px;
-    }
-`;
-
-const JobTitle = styled.h3`
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--color-grey-900);
-    margin-bottom: 0.4rem;
-    margin-top: 0.6rem;
-    letter-spacing: 0.3px;
-    transition: color 0.3s ease;
-
-    @media (max-width: 768px) {
-        font-size: 1.25rem;
-    }
-
-    @media (max-width: 480px) {
-        font-size: 1.1rem;
-    }
-`;
-
-const JobDescription = styled.p`
-    margin-top: 0.8rem;
-    font-size: 0.95rem;
-    color: var(--color-grey-600);
-    line-height: 1.5;
-    transition: all 0.3s ease;
-
-    @media (max-width: 768px) {
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
-    }
-
-    @media (max-width: 480px) {
-        font-size: 0.85rem;
-    }
-`;
-
-// ================= Main Component =================
+/* ==============================
+   Main Component
+============================== */
 export default function AllJobs() {
-    const [currentJob, setCurrentJob] = useState(null);
-    const [applyModalOpen, setApplyModalOpen] = useState(false);
-    const [modalData, setModalData] = useState(null);
+    const [filteredJobs, setFilteredJobs] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [locationFilter, setLocationFilter] = useState("");
-    const [savedJobIds, setSavedJobIds] = useState([]);
-    const [filteredJobs, setFilteredJobs] = useState([]);
     const [statusFilter, setStatusFilter] = useState("");
     const [typeFilter, setTypeFilter] = useState("");
     const [educationFilter, setEducationFilter] = useState("");
     const [companyFilter, setCompanyFilter] = useState("");
     const [salaryFilter, setSalaryFilter] = useState("");
     const [sortOption, setSortOption] = useState("date");
+    const [savedJobIds, setSavedJobIds] = useState([]);
+    const [modalData, setModalData] = useState(null);
+    const [applyModalOpen, setApplyModalOpen] = useState(false);
+    const [currentJob, setCurrentJob] = useState(null);
 
     const { user } = useAuth();
     const location = useLocation();
@@ -381,16 +357,16 @@ export default function AllJobs() {
         queryFn: getJobs,
     });
 
+    // Filter + Sort
     useEffect(() => {
         if (!jobs) return;
-
         let result = jobs.filter((job) => {
             return (
                 job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
                 job.location
                     .toLowerCase()
                     .includes(locationFilter.toLowerCase()) &&
-                (statusFilter ? job.status === statusFilter : true) && // <- تغییر این خط
+                (statusFilter ? job.status === statusFilter : true) &&
                 (typeFilter ? job.job_type === typeFilter : true) &&
                 (educationFilter ? job.education === educationFilter : true) &&
                 (companyFilter ? job.company?.name === companyFilter : true) &&
@@ -398,69 +374,6 @@ export default function AllJobs() {
             );
         });
 
-        // Sorting
-        if (sortOption === "date") {
-            result.sort(
-                (a, b) => new Date(b.created_at) - new Date(a.created_at)
-            );
-        } else if (sortOption === "az") {
-            result.sort((a, b) => a.title.localeCompare(b.title));
-        } else if (sortOption === "location") {
-            result.sort((a, b) => a.location.localeCompare(b.location));
-        } else if (sortOption === "type") {
-            result.sort((a, b) => a.job_type.localeCompare(b.job_type));
-        }
-
-        setFilteredJobs(result);
-    }, [
-        jobs,
-        searchTerm,
-        locationFilter,
-        statusFilter, // <- اضافه کردن اینجا
-        typeFilter,
-        educationFilter,
-        companyFilter,
-        salaryFilter,
-        sortOption,
-    ]);
-
-    useEffect(() => {
-        if (!jobs) return;
-        let result = jobs.filter((job) => {
-            const titleMatch = job.title
-                ?.toLowerCase()
-                .includes(searchTerm.toLowerCase());
-            const locationMatch = job.location
-                ?.toLowerCase()
-                .includes(locationFilter.toLowerCase());
-            const statusMatch = statusFilter
-                ? job.status === statusFilter
-                : true;
-            const typeMatch = typeFilter
-                ? job.job_type?.toLowerCase() === typeFilter.toLowerCase()
-                : true;
-            const educationMatch = educationFilter
-                ? job.education === educationFilter
-                : true;
-            const companyMatch = companyFilter
-                ? job.company?.name === companyFilter
-                : true;
-            const salaryMatch = salaryFilter
-                ? job.salary_type === salaryFilter
-                : true;
-
-            return (
-                titleMatch &&
-                locationMatch &&
-                statusMatch &&
-                typeMatch &&
-                educationMatch &&
-                companyMatch &&
-                salaryMatch
-            );
-        });
-
-        // Sorting
         if (sortOption === "date")
             result.sort(
                 (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -485,6 +398,7 @@ export default function AllJobs() {
         sortOption,
     ]);
 
+    // Load Favorites
     useEffect(() => {
         if (!user?.token) return;
         getMyFavorites(user.token)
@@ -535,14 +449,13 @@ export default function AllJobs() {
             setCurrentJob(job);
         }
     };
+
     if (error)
         return (
             <p style={{ textAlign: "center", padding: "2rem" }}>
                 Failed to load jobs 😢
             </p>
         );
-
-    // console.log("Jobs that comes from backend :", jobs);
 
     return (
         <AllJobsWrapper>
@@ -564,6 +477,7 @@ export default function AllJobs() {
                 sortOption={sortOption}
                 setSortOption={setSortOption}
             />
+
             <Header />
 
             {isHomePage && (
@@ -577,7 +491,6 @@ export default function AllJobs() {
 
             <JobsContainer>
                 {isLoading ? (
-                    // 🌀 Loading spinner or skeleton only for job area
                     <div style={{ textAlign: "center", padding: "3rem 0" }}>
                         <div className="spinner" />
                         <p>Loading jobs...</p>
@@ -589,49 +502,44 @@ export default function AllJobs() {
                                 <JobStatus status={job.status}>
                                     {job.status}
                                 </JobStatus>
-                                <JobTop>
-                                    <JobImg
-                                        src={
-                                            job.company?.logo
-                                                ? `http://127.0.0.1:8000/storage/${job.company.logo}`
-                                                : "/popular-logos/logo(4).png"
-                                        }
-                                        alt={
-                                            job.company?.name || "Company Logo"
-                                        }
-                                    />
-
-                                    <JobText>
-                                        <JobTitle>{job.title}</JobTitle>
-                                        <JobPosition>
-                                            {job.company?.name}
-                                        </JobPosition>
-                                        <JobInfo>
-                                            <CompanyName>
-                                                {job.job_type}
-                                            </CompanyName>
-                                            <Location>{job.location}</Location>
-                                            <Salary>
-                                                ${job.salary_min} - $
-                                                {job.salary_max}
-                                            </Salary>
-                                            <PostedAt>
-                                                {new Date(
-                                                    job.created_at
-                                                ).toLocaleDateString("en-US", {
-                                                    month: "short",
-                                                    day: "numeric",
-                                                })}
-                                            </PostedAt>
-                                        </JobInfo>
-                                        <JobDescription>
-                                            {job.description.length > 80
-                                                ? job.description.slice(0, 80) +
-                                                  "..."
-                                                : job.description}
-                                        </JobDescription>
-                                    </JobText>
-                                </JobTop>
+                                <JobImg
+                                    src={
+                                        job.company?.logo
+                                            ? `http://127.0.0.1:8000/storage/${job.company.logo}`
+                                            : "/popular-logos/logo(4).png"
+                                    }
+                                    alt={job.company?.name || "Company Logo"}
+                                />
+                                <JobText>
+                                    <JobTitle>{job.title}</JobTitle>
+                                    <JobPosition>
+                                        {job.company?.name}
+                                    </JobPosition>
+                                    <JobInfo>
+                                        <CompanyName>
+                                            {job.job_type}
+                                        </CompanyName>
+                                        <Location>{job.location}</Location>
+                                        <Salary>
+                                            ${job.salary_min} - $
+                                            {job.salary_max}
+                                        </Salary>
+                                        <PostedAt>
+                                            {new Date(
+                                                job.created_at
+                                            ).toLocaleDateString("en-US", {
+                                                month: "short",
+                                                day: "numeric",
+                                            })}
+                                        </PostedAt>
+                                    </JobInfo>
+                                    <JobDescription>
+                                        {job.description.length > 80
+                                            ? job.description.slice(0, 80) +
+                                              "..."
+                                            : job.description}
+                                    </JobDescription>
+                                </JobText>
 
                                 {(!user?.role ||
                                     user?.role === "job_seeker") && (
