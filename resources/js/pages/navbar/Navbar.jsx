@@ -1,17 +1,18 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
+import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import { IoIosMoon, IoMdNotifications } from "react-icons/io";
 import { TfiClose, TfiMenu } from "react-icons/tfi";
-import { Link } from "react-router-dom";
-import { io } from "socket.io-client";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import DefaultCompany from "../../../../public/images/company-default-images2.png";
 import { useAuth } from "../../hook/AuthContext";
-import { getUserById } from "../../services/apiUsers";
+import { getJobs } from "../../services/apiAllJobs";
 import ProfileDialog from "../../ui/ProfileDialog";
 import "./Navbar.css";
+
 // ===== Styled Components =====
 const Overlay = styled(RadixDialog.Overlay)`
     background: rgba(0, 0, 0, 0.2);
@@ -24,8 +25,8 @@ const Content = styled(RadixDialog.Content)`
     top: 60px;
     right: 20px;
     width: 72rem;
-    height: 30rem;
     max-width: 90vw;
+    height: 30rem;
     overflow-y: auto;
     background: var(--color-grey-0);
     border-radius: var(--radius-lg);
@@ -36,6 +37,7 @@ const Content = styled(RadixDialog.Content)`
     gap: 1rem;
     z-index: 1000;
 `;
+
 const CloseButton = styled(RadixDialog.Close)`
     position: absolute;
     top: 1rem;
@@ -48,18 +50,8 @@ const CloseButton = styled(RadixDialog.Close)`
     justify-content: center;
     font-size: var(--font-xl);
     cursor: pointer;
-    transition: all 0.2s ease;
-
     border: none;
     outline: none;
-    &:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-    &:hover {
-        /* background: var(--color-grey-300); */
-    }
 `;
 
 const NotificationItem = styled.div`
@@ -102,45 +94,26 @@ const Badge = styled.span`
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 `;
 
 const SiteNameContainer = styled.div`
-    position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
     column-gap: 1.4rem;
 `;
+
 const StyledLogoSite = styled.img`
     height: 25px;
     width: auto;
     object-fit: contain;
 `;
+
 const StyledNameSite = styled.p`
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
         sans-serif;
     font-size: 2.8rem;
     font-weight: 600;
     color: #218c6b;
-`;
-const IconButton = styled.button`
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: none;
-    margin-right: 1.8rem;
-    /* outline: none;
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 7px rgba(8, 127, 91, 0.4);
-        transform: scale(1.05);
-    } */
-
-    @media (max-width: 59em) {
-        display: block;
-        z-index: 2000;
-    }
 `;
 
 const iconSize = "3.2rem";
@@ -149,7 +122,6 @@ const MenuIcon = styled(TfiMenu)`
     font-size: ${iconSize};
     color: #114a38;
     transition: all 0.3s;
-
     &:hover {
         transform: scale(1.1);
         color: #087f5b;
@@ -160,265 +132,92 @@ const CloseIcon = styled(TfiClose)`
     font-size: ${iconSize};
     color: #114a38;
     transition: all 0.3s;
-
     &:hover {
         transform: rotate(90deg);
         color: #087f5b;
     }
 `;
+
+const SearchDropdown = styled.div`
+    position: absolute;
+    top: 100%;
+    left: 50%; 
+    transform: translateX(-50%); 
+    background: var(--color-grey-0);
+    border: 1px solid var(--color-grey-200);
+    border-radius: 7px;
+    width: 600px; 
+    max-width: 90vw; 
+    max-height: 20rem;
+    overflow-y: auto;
+    z-index: 999;
+    
+`;
+
+const DropdownItem = styled.div`
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    &:hover {
+        background-color: var(--color-grey-30);
+    }
+`;
+
 function Navbar() {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+
     const [isNavOpen, setIsNavOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredJobs, setFilteredJobs] = useState([]);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+
     const toggleNav = () => setIsNavOpen((prev) => !prev);
     const closeNav = () => setIsNavOpen(false);
 
-    const BASE_URL = "http://127.0.0.1:8000/";
-    const { user } = useAuth();
-    // console.log(user?.role);
-    const [socket, setSocket] = useState(null);
-    const [notifications, setNotifications] = useState([]);
+    const { data: jobs = [] } = useQuery({
+        queryKey: ["jobs"],
+        queryFn: getJobs,
+    });
 
-    // console.log("All the notifications: ", notifications);
+    // ===== Search Filtering (title, company, location) =====
     useEffect(() => {
-        if (!user?.token) return;
-        4;
+        if (!searchQuery.trim()) {
+            setFilteredJobs([]);
+            setShowDropdown(false);
+            return;
+        }
 
-        const newSocket = io("http://localhost:5000", {
-            auth: { token: user.token },
-            reconnection: true,
+        const lowerQuery = searchQuery.toLowerCase();
+        const result = jobs.filter((job) => {
+            const titleMatch = job.title?.toLowerCase().includes(lowerQuery);
+            const companyMatch = job.company?.name
+                ?.toLowerCase()
+                .includes(lowerQuery);
+            const locationMatch = job.location
+                ?.toLowerCase()
+                .includes(lowerQuery);
+            return titleMatch || companyMatch || locationMatch;
         });
 
-        newSocket.on("connect", () => {
-            console.log("✅ Connected to socket server with ID:", newSocket.id);
-        });
+        setFilteredJobs(result.slice(0, 5));
+        setShowDropdown(true);
+    }, [searchQuery, jobs]);
 
-        newSocket.on("connect_error", (err) => {
-            console.error("❌ Socket connection error:", err.message);
-        });
-
-        newSocket.on("disconnect", () => {
-            console.log("🔴 Disconnected from socket server");
-        });
-
-        newSocket.on("newJobPosted", (data) => {
-            console.log("🟡 New job data received from server:", data);
-            setNotifications((prev) => [
-                ...prev,
-                {
-                    id: Date.now(),
-                    employerName: data.employerName,
-                    companyName: data.companyName,
-                    companyImage: data.companyLogo,
-                    jobTitle: data.jobTitle,
-                    jobDescription: data.description,
-                    jobID: data.jobId,
-                    time: new Date(),
-                },
-            ]);
-        });
-
-        setSocket(newSocket);
-        return () => newSocket.disconnect();
-    }, [user?.token]);
-
-    // ===== Fetch full user info =====
-    const { data: fullUser } = useQuery(
-        ["user", user?.id],
-        () => getUserById(user.id),
-        { enabled: !!user?.id, refetchOnWindowFocus: true, staleTime: 0 }
-    );
-
-    const markAsRead = (id) => {
-        setNotifications((prev) => prev.filter((n) => n.id !== id));
+    const handleSearchKey = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            navigate(`/jobs?query=${encodeURIComponent(searchQuery)}`);
+            setShowDropdown(false);
+        }
     };
-    const isEmployerDashboard = location.pathname.includes("employerApp");
-
-    // console.log("nototication data :");
 
     return (
-        // <div className="navbar-container">
-        //     {/* Left links */}
-        //     <div className="left">
-        //         {isEmployerDashboard && (
-        //             <SiteNameContainer>
-        //                 <StyledLogoSite
-        //                     src="/remotic-logo3.png"
-        //                     alt="Remotic Logo"
-        //                 />
-        //                 <StyledNameSite>Remotic</StyledNameSite>
-        //             </SiteNameContainer>
-        //         )}
-        //         <Link to="/employerApp"></Link>
-        //     </div>
-
-        //     {/* Center search */}
-        //     <div className="center">
-        //         <input
-        //             className="headerInput"
-        //             type="search"
-        //             placeholder="Search jobs, applicants..."
-        //         />
-        //     </div>
-
-        //     {/* Right icons */}
-        //     <div className="right">
-        //         <div className="icons" style={{ position: "relative" }}>
-        //             <RadixDialog.Root>
-        //                 <RadixDialog.Trigger asChild>
-        //                     <NotificationWrapper>
-        //                         <IoMdNotifications className="Icon" />
-        //                         {notifications.length > 0 && (
-        //                             <Badge>{notifications.length}</Badge>
-        //                         )}
-        //                     </NotificationWrapper>
-        //                 </RadixDialog.Trigger>
-        //                 <RadixDialog.Portal>
-        //                     <Overlay />
-        //                     <Content>
-        //                         <CloseButton>&times;</CloseButton>
-        //                         <h4 style={{ textAlign: "center" }}>
-        //                             Jobs recently posted!
-        //                         </h4>
-        //                         {notifications.length === 0 ? (
-        //                             <p>No new notifications</p>
-        //                         ) : (
-        //                             notifications.map((n) => (
-        //                                 <NotificationItem
-        //                                     className="NotificationItem"
-        //                                     key={n.id}
-        //                                 >
-        //                                     <img
-        //                                         src={
-        //                                             n?.companyImage ||
-        //                                             DefaultCompany
-        //                                         }
-        //                                         alt="Company Logo"
-        //                                     />
-
-        //                                     <div className="NotificationContent">
-        //                                         <p className="notification-time">
-        //                                             {formatDistanceToNow(
-        //                                                 n.time
-        //                                             )}{" "}
-        //                                             ago
-        //                                         </p>
-
-        //                                         <p className="company-name">
-        //                                             {n.companyName}
-        //                                         </p>
-        //                                         <p className="title-of-job">
-        //                                             {n.jobTitle}
-        //                                         </p>
-        //                                         <p className="job-description">
-        //                                             {n.jobDescription}
-        //                                         </p>
-        //                                         <div
-        //                                             style={{
-        //                                                 marginTop: "0.5rem",
-        //                                                 display: "flex",
-        //                                                 alignItems: "center",
-        //                                                 gap: "0.4rem",
-        //                                                 fontSize: "0.9rem",
-        //                                                 color: "var(--color-grey-500)",
-        //                                                 fontStyle: "italic",
-        //                                             }}
-        //                                         >
-        //                                             <span>Posted by</span>
-        //                                             <span
-        //                                                 style={{
-        //                                                     fontWeight: "600",
-        //                                                     color: "var(--color-grey-700)",
-        //                                                     fontStyle: "normal",
-        //                                                 }}
-        //                                             >
-        //                                                 {n.employerName}
-        //                                             </span>
-        //                                         </div>
-        //                                     </div>
-
-        //                                     <div className="NotificationActions">
-        //                                         <div className="dots-menu-wrapper">
-        //                                             <button className="dots-btn">
-        //                                                 <HiOutlineDotsHorizontal />
-        //                                             </button>
-        //                                             <div className="context-menu">
-        //                                                 <Link
-        //                                                     to={`/app/allJobs/jobDetails/${n.jobID}`}
-        //                                                     onClick={() =>
-        //                                                         markAsRead(n.id)
-        //                                                     }
-        //                                                 >
-        //                                                     <button>
-        //                                                         <IoMdEye
-        //                                                             style={{
-        //                                                                 display:
-        //                                                                     "flex",
-        //                                                                 alignItems:
-        //                                                                     "center",
-        //                                                             }}
-        //                                                         />{" "}
-        //                                                         <span className="view">
-        //                                                             View Job
-        //                                                         </span>
-        //                                                     </button>
-        //                                                 </Link>
-        //                                                 <button
-        //                                                     onClick={() =>
-        //                                                         markAsRead(n.id)
-        //                                                     }
-        //                                                 >
-        //                                                     <RiDeleteBin6Line />{" "}
-        //                                                     <span className="done">
-        //                                                         Done
-        //                                                     </span>
-        //                                                 </button>
-        //                                             </div>
-        //                                         </div>
-        //                                     </div>
-        //                                 </NotificationItem>
-        //                             ))
-        //                         )}
-        //                     </Content>
-        //                 </RadixDialog.Portal>
-        //             </RadixDialog.Root>
-
-        //             <IoIosMoon className="Icon" />
-        //         </div>
-
-        //         <ProfileDialog>
-        //             <div className="avatar-wrapper">
-        //                 {user?.role === "employer" ? (
-        //                     <img
-        //                         src={
-        //                             user?.data?.user?.company?.logo
-        //                                 ? `http://127.0.0.1:8000/storage/${user.data.user.company.logo}`
-        //                                 : "images/company-default-images2.png"
-        //                         }
-        //                         alt="Profile"
-        //                         className="avatar-img"
-        //                     />
-        //                 ) : (
-        //                     <img
-        //                         src={
-        //                             user?.data?.user?.profile?.profile_image
-        //                                 ? `${BASE_URL}${user.data.user.profile.profile_image}`
-        //                                 : "/profile/default.jpg"
-        //                         }
-        //                         alt="Profile"
-        //                         className="avatar-img"
-        //                     />
-        //                 )}
-        //                 <FaCaretDown className="avatar-caret" />
-        //                 <IconButton>
-        //                     <CloseIcon /> <MenuIcon />
-        //                 </IconButton>
-        //             </div>
-        //         </ProfileDialog>
-        //     </div>
-        // </div>
         <div className={`navbar-container ${isNavOpen ? "open" : ""}`}>
             {/* Left */}
             <div className="left">
-                {isEmployerDashboard && (
+                {location.pathname.includes("employerApp") && (
                     <SiteNameContainer>
                         <StyledLogoSite
                             src="/remotic-logo3.png"
@@ -430,12 +229,33 @@ function Navbar() {
             </div>
 
             {/* Center Search */}
-            <div className="center">
+            <div className="center" style={{ position: "relative" }}>
                 <input
                     className="headerInput"
                     type="search"
-                    placeholder="Search jobs, applicants..."
+                    placeholder="Search jobs, companies, locations..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={handleSearchKey}
+                    onFocus={() => searchQuery && setShowDropdown(true)}
+                    onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
                 />
+
+                {showDropdown && filteredJobs.length > 0 && (
+                    <SearchDropdown>
+                        {filteredJobs.map((job) => (
+                            <DropdownItem
+                                key={job.id}
+                                onClick={() =>
+                                    navigate(`/jobDetails/${job.id}`)
+                                }
+                            >
+                                {job.title} - {job.company?.name} (
+                                {job.location})
+                            </DropdownItem>
+                        ))}
+                    </SearchDropdown>
+                )}
             </div>
 
             {/* Right */}
@@ -451,7 +271,69 @@ function Navbar() {
                                 )}
                             </NotificationWrapper>
                         </RadixDialog.Trigger>
-                        {/* ... Radix Content ... */}
+                        <RadixDialog.Portal>
+                            <Overlay />
+                            <Content>
+                                <CloseButton>&times;</CloseButton>
+                                <h4 style={{ textAlign: "center" }}>
+                                    Jobs recently posted!
+                                </h4>
+                                {notifications.length === 0 ? (
+                                    <p>No new notifications</p>
+                                ) : (
+                                    notifications.map((n) => (
+                                        <NotificationItem key={n.id}>
+                                            <img
+                                                src={
+                                                    n?.companyImage ||
+                                                    DefaultCompany
+                                                }
+                                                alt="Company Logo"
+                                            />
+                                            <div className="NotificationContent">
+                                                <p className="notification-time">
+                                                    {formatDistanceToNow(
+                                                        n.time
+                                                    )}{" "}
+                                                    ago
+                                                </p>
+                                                <p className="company-name">
+                                                    {n.companyName}
+                                                </p>
+                                                <p className="title-of-job">
+                                                    {n.jobTitle}
+                                                </p>
+                                                <p className="job-description">
+                                                    {n.jobDescription}
+                                                </p>
+                                                <div
+                                                    style={{
+                                                        marginTop: "0.5rem",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        gap: "0.4rem",
+                                                        fontSize: "0.9rem",
+                                                        color: "var(--color-grey-500)",
+                                                        fontStyle: "italic",
+                                                    }}
+                                                >
+                                                    <span>Posted by</span>
+                                                    <span
+                                                        style={{
+                                                            fontWeight: "600",
+                                                            color: "var(--color-grey-700)",
+                                                            fontStyle: "normal",
+                                                        }}
+                                                    >
+                                                        {n.employerName}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </NotificationItem>
+                                    ))
+                                )}
+                            </Content>
+                        </RadixDialog.Portal>
                     </RadixDialog.Root>
 
                     <IoIosMoon className="Icon" />
@@ -460,34 +342,26 @@ function Navbar() {
                 {/* Profile */}
                 <ProfileDialog>
                     <div className="avatar-wrapper">
-                        {user?.role === "employer" ? (
-                            <img
-                                src={
-                                    user?.data?.user?.company?.logo
+                        <img
+                            src={
+                                user?.role === "employer"
+                                    ? user?.data?.user?.company?.logo
                                         ? `http://127.0.0.1:8000/storage/${user.data.user.company.logo}`
                                         : DefaultCompany
-                                }
-                                alt="Profile"
-                                className="avatar-img"
-                            />
-                        ) : (
-                            <img
-                                src={
-                                    user?.data?.user?.profile?.profile_image
-                                        ? `${BASE_URL}${user.data.user.profile.profile_image}`
-                                        : "/profile/default.jpg"
-                                }
-                                alt="Profile"
-                                className="avatar-img"
-                            />
-                        )}
+                                    : user?.data?.user?.profile?.profile_image
+                                    ? `http://127.0.0.1:8000/${user.data.user.profile.profile_image}`
+                                    : "/profile/default.jpg"
+                            }
+                            alt="Profile"
+                            className="avatar-img"
+                        />
                         <FaCaretDown className="avatar-caret" />
                     </div>
                 </ProfileDialog>
 
-                {/* Mobile Menu Button */}
+                {/* Mobile Menu */}
                 <button className="menu-btn" onClick={toggleNav}>
-                    {isNavOpen ? <TfiClose /> : <TfiMenu />}
+                    {isNavOpen ? <CloseIcon /> : <MenuIcon />}
                 </button>
             </div>
 

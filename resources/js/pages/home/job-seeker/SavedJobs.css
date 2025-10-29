@@ -99,9 +99,17 @@
 }
 
 .unfaveIcon {
-    font-size: 2rem;
+    font-size: 2.2rem;
     cursor: pointer;
+    color: #ef4444;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
+
+.unfaveIcon:hover {
+    transform: scale(1.2);
+    color: #dc2626;
+}
+
 
 .loading,
 .error,
@@ -110,4 +118,28 @@
     color: #6b7280;
     font-size: 1rem;
     padding: 40px 0;
+}
+
+
+@media (max-width: 768px) {
+    .savedJobsCard {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .job-img img {
+        width: 65px;
+        height: 65px;
+    }
+
+    .job-desc {
+        text-align: left;
+    }
+
+    .right {
+        align-self: flex-end;
+    }
 }
