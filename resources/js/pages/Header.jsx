@@ -14,7 +14,7 @@ const HeaderContainer = styled.header`
     justify-content: space-between;
     height: 8rem;
     padding: 0 8rem 0 4.8rem;
-    background-color: #e6f2ef;
+    background-color: var(--color-grey-50);
     position: relative;
     z-index: 1000;
     transition: all 0.3s;
@@ -31,6 +31,15 @@ const HeaderContainer = styled.header`
     @media (max-width: 59em) {
         padding: 0 3.2rem;
     }
+
+    /* 🌙 Dark mode adjustments */
+    [data-theme="dark"] & {
+        background-color: var(--color-grey-30);
+        .sticky {
+            background-color: rgba(30, 30, 30, 0.95);
+            box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.5);
+        }
+    }
 `;
 
 const LogoContainer = styled.div`
@@ -43,12 +52,18 @@ const LogoContainer = styled.div`
         height: auto;
         object-fit: contain;
         display: block;
+        transition: filter 0.3s;
     }
 
     @media (max-width: 59em) {
         img {
             width: 110px;
         }
+    }
+
+    /* 🌙 Dark mode logo filter */
+    [data-theme="dark"] & img {
+        filter: brightness(0) invert(1);
     }
 `;
 
@@ -64,7 +79,7 @@ const Nav = styled.nav`
         position: absolute;
         top: 0;
         right: 0;
-        background-color: rgba(255, 255, 255, 0.96);
+        background-color: var(--color-grey-30);
         backdrop-filter: blur(2px);
         width: 100%;
         height: 100vh;
@@ -87,15 +102,16 @@ const Nav = styled.nav`
     }
 `;
 
+
 const NavItem = styled.a`
     text-decoration: none;
-    color: #111827;
+    color: var(--color-grey-900);
     font-size: 1.4rem;
     font-weight: 600;
     transition: color 0.3s;
 
     &:hover {
-        color: #087f5b;
+        color: var(--color-primary);
     }
 
     &:focus {
@@ -103,8 +119,15 @@ const NavItem = styled.a`
         box-shadow: 0 0 0 7px rgba(8, 127, 91, 0.4);
         transform: scale(1.05);
     }
-`;
 
+    /* 🌙 Dark mode color fix */
+    [data-theme="dark"] & {
+        color: #f3f4f6; 
+        &:hover {
+            color: var(--color-primary);
+        }
+    }
+`;
 const Buttons = styled.div`
     display: flex;
     gap: 2.4rem;
@@ -122,7 +145,17 @@ const NavBtn = styled(Link)`
     border-radius: 5px;
     text-decoration: none;
     transition: all 0.3s;
+
+    /* 🌙 Dark mode adjustments */
+    [data-theme="dark"] & {
+        color: var(--color-grey-100);
+        background-color: var(--color-grey-800);
+        &:hover {
+            background-color: var(--color-grey-700);
+        }
+    }
 `;
+
 
 const LoginBtn = styled(NavBtn)`
     color: #114a38;
@@ -145,14 +178,32 @@ const LoginBtn = styled(NavBtn)`
             background-color: #087f5b;
         }
     }
-`;
 
+    /* 🌙 Dark mode adjustments (fix contrast) */
+    [data-theme="dark"] & {
+        color: #111827; 
+        background-color: var(--color-primary);
+        &:hover {
+            background-color: var(--color-primary-light);
+            box-shadow: none;
+        }
+    }
+`;
 const SignUpBtn = styled(NavBtn)`
     background-color: #114a38;
     color: #fff;
 
     &:hover {
         background-color: #087f5b;
+    }
+
+    /* 🌙 Dark mode adjustments */
+    [data-theme="dark"] & {
+        background-color: var(--color-primary);
+        color: #fff;
+        &:hover {
+            background-color: var(--color-primary-light);
+        }
     }
 `;
 
@@ -202,6 +253,14 @@ const MenuIcon = styled(TfiMenu)`
         transform: scale(1.1);
         color: #087f5b;
     }
+
+    /* 🌙 Dark mode adjustments */
+    [data-theme="dark"] & {
+        color: #fff;
+        &:hover {
+            color: var(--color-primary-light);
+        }
+    }
 `;
 
 const CloseIcon = styled(TfiClose)`
@@ -212,6 +271,14 @@ const CloseIcon = styled(TfiClose)`
     &:hover {
         transform: rotate(90deg);
         color: #087f5b;
+    }
+
+    /* 🌙 Dark mode adjustments */
+    [data-theme="dark"] & {
+        color: #fff;
+        &:hover {
+            color: var(--color-primary-light);
+        }
     }
 `;
 
@@ -241,6 +308,14 @@ const ThemeButton = styled.button`
         top: 2rem;
         left: 2rem;
         z-index: 3000;
+    }
+
+    /* 🌙 Dark mode adjustments */
+    [data-theme="dark"] & {
+        color: #fff;
+        &:hover {
+            color: var(--color-primary-light);
+        }
     }
 `;
 
@@ -329,7 +404,6 @@ export default function Header({ heroRef }) {
                         </Link>
                     </LogoContainer>
 
-                    {/* 🌙 Theme toggle is now OUTSIDE Buttons (visible on all devices) */}
                     <ThemeButton onClick={toggleTheme}>
                         {theme === "light" ? <IoIosMoon /> : <IoIosSunny />}
                     </ThemeButton>
