@@ -13,10 +13,8 @@ import "./SavedJobs.css";
 function SavedJobs() {
     const { user } = useAuth();
     const queryClient = useQueryClient();
-
     const token = user?.token;
 
-    // ✅ Get all companies (for mapping company_id)
     const { data: companies = [], isLoading: loadingCompanies } = useQuery({
         queryKey: ["companies"],
         queryFn: async () => {
@@ -29,13 +27,11 @@ function SavedJobs() {
         staleTime: 5 * 60 * 1000,
     });
 
-    // ✅ Map company_id → company data
     const companyMap = {};
     companies.forEach((c) => {
         companyMap[c.id] = c;
     });
 
-    // ✅ Get favorite jobs
     const {
         data: savedJobs = [],
         isLoading,
@@ -50,7 +46,6 @@ function SavedJobs() {
         staleTime: 0,
     });
 
-    // ✅ Mutation for removing job
     const { mutate: removeJob } = useMutation({
         mutationFn: (jobId) => removeFavoriteJob(jobId, token),
         onSuccess: (jobId) => {
@@ -65,7 +60,7 @@ function SavedJobs() {
     if (isLoading || loadingCompanies)
         return <p className="loading">Loading saved jobs...</p>;
     if (isError) return <p className="error">Failed to fetch saved jobs.</p>;
-    // console.log("saved jobs :", savedJobs);
+
     return (
         <div className="savedJobContainer">
             <Toaster position="top-right" reverseOrder={false} />

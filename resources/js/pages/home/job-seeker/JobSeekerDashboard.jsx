@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { FaChartBar } from "react-icons/fa"; // ✅ اضافه شد
+import { FaChartBar } from "react-icons/fa";
 import { GrFavorite } from "react-icons/gr";
 import {
     HiOutlineBookmark,
@@ -24,53 +24,17 @@ import { getJobs } from "../../../services/apiAllJobs";
 import { getDashboardStats } from "../../../services/apiDashboard";
 
 // ===== Styled Components =====
-const ChartsSection = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    flex-wrap: wrap;
-
-    .chart-card {
-        background: var(--color-grey-0);
-        border-radius: var(--radius-xl);
-        box-shadow: var(--shadow-sm);
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: center;
-
-        h3 {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            color: var(--color-grey-900);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-
-            svg {
-                color: var(--color-primary);
-                font-size: 2rem;
-            }
-        }
-
-        .chart-wrapper {
-            width: 100%;
-            height: 280px;
-        }
-    }
-
-    @media (max-width: 900px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
 const DashboardContainer = styled.div`
     padding: 2rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
     font-family: "Inter", sans-serif;
+
+    [data-theme="dark"] & {
+        background-color: #111827;
+        color: #f3f4f6;
+    }
 `;
 
 const MessageBox = styled.div`
@@ -79,6 +43,11 @@ const MessageBox = styled.div`
     border-radius: var(--radius-xl);
     margin-bottom: 2rem;
     box-shadow: var(--shadow-md);
+
+    [data-theme="dark"] & {
+        background: linear-gradient(90deg, #1f2937, #111827);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
 `;
 
 const WelcomeMessage = styled.h1`
@@ -90,6 +59,13 @@ const WelcomeMessage = styled.h1`
     span {
         color: var(--color-primary);
     }
+
+    [data-theme="dark"] & {
+        color: #f3f4f6;
+        span {
+            color: #34d399;
+        }
+    }
 `;
 
 const DateText = styled.p`
@@ -97,6 +73,10 @@ const DateText = styled.p`
     color: var(--color-grey-600);
     font-weight: 500;
     letter-spacing: 0.5px;
+
+    [data-theme="dark"] & {
+        color: #9ca3af;
+    }
 `;
 
 const StatisticsBox = styled.div`
@@ -129,6 +109,75 @@ const StatisticsBox = styled.div`
             font-size: 1.4rem;
             color: var(--color-grey-600);
         }
+
+        [data-theme="dark"] & {
+            background-color: #1f2937;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+
+            .icon {
+                color: #34d399;
+            }
+
+            .number {
+                color: #f3f4f6;
+            }
+
+            .name {
+                color: #9ca3af;
+            }
+        }
+    }
+`;
+
+const ChartsSection = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    .chart-card {
+        background: var(--color-grey-0);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-sm);
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+
+        h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--color-grey-900);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+
+            svg {
+                color: var(--color-primary);
+                font-size: 2rem;
+            }
+        }
+
+        .chart-wrapper {
+            width: 100%;
+            height: 280px;
+        }
+
+        [data-theme="dark"] & {
+            background-color: #1f2937;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+
+            h3 {
+                color: #f3f4f6;
+                svg {
+                    color: #34d399;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
     }
 `;
 
@@ -143,7 +192,6 @@ export default function JobSeekerDashboard() {
     const { user } = useAuth();
     const token = user?.token;
 
-    // Dynamic date
     const now = new Date();
     const dayName = now.toLocaleDateString("en-US", { weekday: "long" });
     const dayNumber = now.getDate();
@@ -153,12 +201,7 @@ export default function JobSeekerDashboard() {
         dayNumber
     )} of ${monthName}, ${year}`;
 
-    const {
-        data: dashboardData,
-        isLoading,
-        isError,
-        error,
-    } = useQuery({
+    const { data: dashboardData } = useQuery({
         queryKey: ["dashboardStats", token],
         queryFn: () => getDashboardStats(token),
         enabled: !!token,
@@ -169,13 +212,11 @@ export default function JobSeekerDashboard() {
         queryFn: getJobs,
     });
 
-    console.log("All the dashboard data:", dashboardData);
-
     const allJobs = all_jobs ? all_jobs.length : 0;
     const total_jobs =
-        dashboardData?.total_favorite_jobs + dashboardData?.total_applied_jobs;
+        (dashboardData?.total_favorite_jobs || 0) +
+        (dashboardData?.total_applied_jobs || 0);
 
-    // داده‌های تستی اگر چارت خالی بود
     const testApplicationsPerDay = [
         { date: "2025-10-01", count: 2 },
         { date: "2025-10-02", count: 5 },
@@ -202,7 +243,6 @@ export default function JobSeekerDashboard() {
 
     return (
         <DashboardContainer>
-            {/* Welcome Section */}
             <MessageBox>
                 <WelcomeMessage>
                     Welcome back,{" "}
@@ -216,31 +256,27 @@ export default function JobSeekerDashboard() {
                 <DateText>Today is {formattedDate}</DateText>
             </MessageBox>
 
-            {/* Statistics Section */}
             <StatisticsBox>
-                {/* Favorite Jobs */}
                 <div className="box favorites">
                     <GrFavorite className="icon" />
                     <div>
                         <p className="number">
-                            {dashboardData?.total_favorite_jobs}
+                            {dashboardData?.total_favorite_jobs || 0}
                         </p>
                         <p className="name">Favorite Jobs</p>
                     </div>
                 </div>
 
-                {/* Applied Jobs */}
                 <div className="box applied">
                     <HiOutlineBookmark className="icon" />
                     <div>
                         <p className="number">
-                            {dashboardData?.total_applied_jobs}
+                            {dashboardData?.total_applied_jobs || 0}
                         </p>
                         <p className="name">Jobs Applied</p>
                     </div>
                 </div>
 
-                {/* Total Jobs in System */}
                 <div className="box total">
                     <HiOutlineClipboardList className="icon" />
                     <div>
@@ -249,7 +285,6 @@ export default function JobSeekerDashboard() {
                     </div>
                 </div>
 
-                {/* All Jobs Loaded (from API) */}
                 <div className="box all">
                     <HiOutlineBriefcase className="icon" />
                     <div>
@@ -259,9 +294,7 @@ export default function JobSeekerDashboard() {
                 </div>
             </StatisticsBox>
 
-            {/* Charts Section */}
             <ChartsSection>
-                {/* Line Chart - Applications per Day */}
                 <div className="chart-card">
                     <h3>
                         <MdQueryStats /> Applications per Day
@@ -293,6 +326,7 @@ export default function JobSeekerDashboard() {
                                         backgroundColor: "#fff",
                                         borderRadius: "8px",
                                         border: "1px solid #e5e7eb",
+                                        color: "#111827",
                                     }}
                                 />
                                 <Line
@@ -308,7 +342,6 @@ export default function JobSeekerDashboard() {
                     </div>
                 </div>
 
-                {/* Bar Chart - Applications per Month */}
                 <div className="chart-card">
                     <h3>
                         <FaChartBar /> Applications per Month
@@ -340,6 +373,7 @@ export default function JobSeekerDashboard() {
                                         backgroundColor: "#fff",
                                         borderRadius: "8px",
                                         border: "1px solid #e5e7eb",
+                                        color: "#111827",
                                     }}
                                 />
                                 <Bar
