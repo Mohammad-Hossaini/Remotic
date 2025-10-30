@@ -1,105 +1,160 @@
 .appliedJobContainer {
-  padding: 2rem;
-  max-width: 100rem;
-  margin: 0 auto;
+    padding: 2rem;
+    max-width: 100rem;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .appliedJobContainer {
+    background-color: #111827;
 }
 
 .favHeader {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 }
 
 .favHeader h2 {
-  font-size: 2.4rem;
-  font-weight: 600;
-  color: var(--color-grey-900);
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--color-grey-900);
+}
+
+[data-theme="dark"] .favHeader h2 {
+    color: #f3f4f6;
 }
 
 .appliedJobsCard {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--color-grey-0);
-  border: 1px solid var(--color-grey-200);
-  border-radius: var(--radius-lg);
-  padding: 1.6rem 2rem;
-  margin-bottom: 1.6rem;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-grey-0);
+    border: 1px solid var(--color-grey-200);
+    border-radius: var(--radius-lg);
+    padding: 1.6rem 2rem;
+    margin-bottom: 1.6rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-theme="dark"] .appliedJobsCard {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
 .appliedJobsCard:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .appliedJobsCard:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
 }
 
 .left {
-  display: flex;
-  column-gap: 2rem;
-  align-items: center;
-  flex: 1;
+    display: flex;
+    column-gap: 2rem;
+    align-items: center;
+    flex: 1;
 }
 
 .job-img img {
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-grey-200);
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-grey-200);
+}
+
+[data-theme="dark"] .job-img img {
+    border: 1px solid #4b5563;
+    background-color: #1f2937;
 }
 
 .job-desc {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
 }
 
 .job-title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--color-grey-900);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--color-grey-900);
+}
+
+[data-theme="dark"] .job-title {
+    color: #f3f4f6;
 }
 
 .job-company {
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: var(--color-grey-700);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--color-grey-700);
+}
+
+[data-theme="dark"] .job-company {
+    color: #34d399;
 }
 
 .job-meta {
-  font-size: 1.2rem;
-  color: var(--color-grey-500);
+    font-size: 1.2rem;
+    color: var(--color-grey-500);
+}
+
+[data-theme="dark"] .job-meta {
+    color: #9ca3af;
+}
+
+.job-status {
+    font-size: 1.2rem;
+    color: var(--color-grey-600);
+}
+
+[data-theme="dark"] .job-status {
+    color: #d1d5db;
 }
 
 .right {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  column-gap: 0.8rem;
-  width: 80px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: 0.8rem;
+    width: 80px;
 }
 
 .userIcon {
-  font-size: 2.2rem;
-  color: #2b8a3e;
+    font-size: 2.2rem;
+    color: #2b8a3e;
+}
+
+[data-theme="dark"] .userIcon {
+    color: #34d399;
 }
 
 .deleteIcon {
-  font-size: 2rem;
-  color: #b91c1c;
-  cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
+    font-size: 2rem;
+    color: #b91c1c;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .deleteIcon:hover {
-  transform: scale(1.1);
-  color: #f87171;
+    transform: scale(1.1);
+    color: #f87171;
 }
 
 .loading,
 .error,
 .no-jobs {
-  text-align: center;
-  margin-top: 2rem;
-  font-size: 1.4rem;
-  color: var(--color-grey-600);
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.4rem;
+    color: var(--color-grey-600);
+}
+
+[data-theme="dark"] .loading,
+[data-theme="dark"] .error,
+[data-theme="dark"] .no-jobs {
+    color: #d1d5db;
 }

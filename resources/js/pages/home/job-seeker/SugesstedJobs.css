@@ -1,10 +1,12 @@
-/**************************
-  Suggested Jobs Styling
-**************************/
 .sugessted-jobs {
     max-width: 1200px;
     margin: 3rem auto;
     padding: 0 1.6rem;
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .sugessted-jobs {
+    background-color: #111827;
 }
 
 .sugess-header {
@@ -18,24 +20,26 @@
     color: var(--color-grey-900);
 }
 
+[data-theme="dark"] .sugess-header h2 {
+    color: #f3f4f6;
+}
+
 .sugess-header p {
     font-size: 1rem;
     color: var(--color-grey-600);
     margin-top: 0.4rem;
 }
 
-/**************************
-  Job Cards Grid
-**************************/
+[data-theme="dark"] .sugess-header p {
+    color: #d1d5db;
+}
+
 .sugessted-job-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
 }
 
-/**************************
-  Job Card
-**************************/
 .sugessted-card {
     background: var(--color-grey-0);
     border-radius: var(--radius-md);
@@ -49,14 +53,21 @@
     min-height: 220px;
 }
 
+[data-theme="dark"] .sugessted-card {
+    background-color: #1f2937;
+    border-left-color: #10b981;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
 .sugessted-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
 }
 
-/**************************
-  Left Section
-**************************/
+[data-theme="dark"] .sugessted-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
 .sugessted-left {
     display: flex;
     align-items: flex-start;
@@ -74,15 +85,27 @@
     box-shadow: var(--shadow-sm);
 }
 
+[data-theme="dark"] .company-image {
+    background: #374151;
+}
+
 .left-desc .job-title {
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--color-grey-900);
 }
 
+[data-theme="dark"] .left-desc .job-title {
+    color: #f3f4f6;
+}
+
 .left-desc .company {
     font-size: 0.95rem;
     color: var(--color-grey-700);
+}
+
+[data-theme="dark"] .left-desc .company {
+    color: #34d399;
 }
 
 .left-desc .location,
@@ -91,9 +114,11 @@
     color: var(--color-grey-600);
 }
 
-/**************************
-  Right Section
-**************************/
+[data-theme="dark"] .left-desc .location,
+[data-theme="dark"] .left-desc .salary {
+    color: #d1d5db;
+}
+
 .sugessted-right {
     border-top: 1px solid var(--color-grey-200);
     padding-top: 1rem;
@@ -102,6 +127,10 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
+}
+
+[data-theme="dark"] .sugessted-right {
+    border-top-color: #374151;
 }
 
 .sugessted-right .type span {
@@ -116,6 +145,10 @@
 .sugessted-right .posted {
     font-size: 0.85rem;
     color: var(--color-grey-600);
+}
+
+[data-theme="dark"] .sugessted-right .posted {
+    color: #9ca3af;
 }
 
 .learn-more-btn {
@@ -133,9 +166,6 @@
     background: var(--color-primary);
 }
 
-/**************************
-  Responsive Design
-**************************/
 @media (max-width: 768px) {
     .sugessted-card {
         padding: 1.4rem;

@@ -1,10 +1,14 @@
 .savedJobContainer {
     padding: 32px 20px;
-    /* max-width: 950px; */
     margin: 0 auto;
     font-family: "Inter", sans-serif;
     background-color: #f9fafb;
     min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .savedJobContainer {
+    background-color: #111827;
 }
 
 .favHeader {
@@ -18,6 +22,10 @@
     font-size: 1.6rem;
     font-weight: 700;
     color: #1f2937;
+}
+
+[data-theme="dark"] .favHeader h2 {
+    color: #f3f4f6;
 }
 
 .savedJobsCard {
@@ -34,10 +42,21 @@
     border: 1px solid #e5e7eb;
 }
 
+[data-theme="dark"] .savedJobsCard {
+    background: #1f2937;
+    border: 1px solid #374151;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
 .savedJobsCard:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     border-color: #d1d5db;
+}
+
+[data-theme="dark"] .savedJobsCard:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+    border-color: #4b5563;
 }
 
 .left {
@@ -54,6 +73,11 @@
     border: 2px solid #f3f4f6;
     background: #f9fafb;
     transition: transform 0.3s ease;
+}
+
+[data-theme="dark"] .job-img img {
+    border: 2px solid #374151;
+    background: #1f2937;
 }
 
 .savedJobsCard:hover .job-img img {
@@ -73,11 +97,19 @@
     margin-bottom: 4px;
 }
 
+[data-theme="dark"] .job-title {
+    color: var(--color-grey-500);
+}
+
 .job-company {
     font-size: 1.4rem;
     font-weight: 600;
     color: #2b8a3e;
     margin-bottom: 4px;
+}
+
+[data-theme="dark"] .job-company {
+    color: #34d399;
 }
 
 .job-meta {
@@ -88,8 +120,16 @@
     gap: 6px;
 }
 
+[data-theme="dark"] .job-meta {
+    color: var(--color-grey-400);
+}
+
 .job-meta svg {
     color: #2b8a3e;
+}
+
+[data-theme="dark"] .job-meta svg {
+    color: #34d399;
 }
 
 .right {
@@ -110,7 +150,6 @@
     color: #dc2626;
 }
 
-
 .loading,
 .error,
 .no-jobs {
@@ -120,6 +159,11 @@
     padding: 40px 0;
 }
 
+[data-theme="dark"] .loading,
+[data-theme="dark"] .error,
+[data-theme="dark"] .no-jobs {
+    color: #d1d5db;
+}
 
 @media (max-width: 768px) {
     .savedJobsCard {
