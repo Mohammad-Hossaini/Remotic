@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "./Footer";
@@ -11,7 +11,6 @@ const LogoContainer = styled.div`
     align-items: center;
     justify-content: center;
     margin-bottom: 1.8rem;
-    /* gap: 1rem; */
 
     img {
         width: 80px;
@@ -27,6 +26,7 @@ const LogoContainer = styled.div`
         }
     }
 `;
+
 function SignUpPage() {
     const [selectedRole, setSelectedRole] = useState("");
     const [agree, setAgree] = useState(false);
@@ -55,11 +55,15 @@ function SignUpPage() {
     return (
         <>
             <Header />
+            {/* Toaster added here so toast messages show */}
+            <Toaster position="top-center" reverseOrder={false} />
+
             <div className="sign-up">
                 <div className="sign-up-container">
                     <LogoContainer>
                         <img src="/remotic-logo3.png" alt="Remotic Logo" />
                     </LogoContainer>
+
                     <h2 className="sign-up-title">
                         Sign up to Remote Work Hub
                     </h2>
