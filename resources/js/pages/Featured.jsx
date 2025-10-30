@@ -1,4 +1,4 @@
-// Featured.jsx
+
 import styled, { keyframes } from "styled-components";
 
 // Animation for smooth scrolling logos
@@ -9,11 +9,14 @@ const scroll = keyframes`
 
 // Section container
 const FeaturedSection = styled.section`
-    background-color: #ffffff;
+    background-color: ${({ theme }) =>
+        theme.mode === "dark" ? theme.bgDark : "#1f2937"};
     padding: 2.8rem 0 1.8rem 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-top: 1px solid
+        ${({ theme }) => (theme.mode === "dark" ? "#2d2d2d" : "#e5e7eb")};
 `;
 
 // Inner container for centering content
@@ -28,8 +31,10 @@ const FeaturedContainer = styled.div`
 const FeaturedTitle = styled.p`
     font-size: var(--font-base);
     font-weight: 900;
-    color: #1f2937;
+    color: ${({ theme }) =>
+        theme.mode === "dark" ? theme.textPrimary : "#1f2937"};
     margin-bottom: 1.4rem;
+    transition: color 0.3s ease;
 `;
 
 // Scrolling logo box
@@ -50,7 +55,13 @@ const Logos = styled.div`
     img {
         height: 3.6rem;
         object-fit: contain;
-        transition: all 0.3s ease;
+        transition: filter 0.3s ease, transform 0.3s ease;
+        filter: ${({ theme }) =>
+            theme.mode === "dark" ? "brightness(0) invert(1)" : "none"};
+
+        &:hover {
+            transform: scale(1.05);
+        }
     }
 
     /* Responsiveness for logo sizes */
@@ -109,6 +120,7 @@ export default function Featured({ id }) {
                         />
                         <img src="/logos/forbes.png" alt="Forbes logo" />
                         <img src="/logos/usa-today.png" alt="USA Today logo" />
+
                         {/* Repeat for smooth animation */}
                         <img
                             src="/logos/techcrunch.png"
