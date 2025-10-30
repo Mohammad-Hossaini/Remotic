@@ -1,12 +1,13 @@
+
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
-
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import styled from "styled-components";
 import { useAuth } from "../hook/AuthContext";
+
 // ===== Styled Components =====
 const Overlay = styled(RadixDialog.Overlay)`
     position: fixed;
@@ -20,7 +21,9 @@ const Content = styled(RadixDialog.Content)`
     left: 50%;
     transform: translate(-50%, -50%);
     width: 70rem;
+    max-width: 95%;
     height: 33rem;
+    max-height: 90%;
     background: var(--color-grey-900);
     padding: 2rem;
     border-radius: var(--radius-md);
@@ -30,57 +33,60 @@ const Content = styled(RadixDialog.Content)`
     flex-direction: column;
     gap: 1rem;
     text-align: center;
+    overflow-y: auto;
+
+    @media screen and (max-width: 1200px) {
+        width: 60rem;
+        padding: 1.8rem;
+    }
+    @media screen and (max-width: 944px) {
+        width: 50rem;
+        height: auto;
+        padding: 1.5rem;
+    }
+    @media screen and (max-width: 704px) {
+        width: 90%;
+        padding: 1.2rem;
+    }
+    @media screen and (max-width: 544px) {
+        width: 95%;
+        padding: 1rem;
+    }
 `;
 
-const TitleLine = styled.div`
-    border-bottom: 1px solid var(--color-grey-200);
-    margin-bottom: 1rem;
-`;
-
-const ImagePreview = styled.img`
-    width: 100%;
-    height: 22rem;
-    object-fit: cover;
-    border: 1px solid var(--color-grey-200);
-`;
-
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-top: 1rem;
-`;
-
-const ChooseButton = styled.button`
-    display: flex;
-    font-size: 2.4rem;
-    align-items: center;
-    gap: 0.3rem;
-    color: #fff;
-    padding: 0rem 1rem;
-    border-radius: var(--radius-xxl);
-    cursor: pointer;
-    border: var(--color-grey-0);
-    transition: 0.2s ease;
-`;
 const Header = styled.div`
     position: relative;
-    padding: 0 0 2rem 0;
-    margin: -2rem -2rem 1rem -2rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
     border-bottom: 1px solid var(--color-grey-0);
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    @media screen and (max-width: 944px) {
+        padding-bottom: 0.8rem;
+        margin-bottom: 0.8rem;
+    }
+    @media screen and (max-width: 544px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding-bottom: 0.6rem;
+    }
 `;
 
-// Title
 const StyledH2 = styled.h2`
     color: var(--color-grey-0);
     font-size: 1.6rem;
-    line-height: 1.02;
+    line-height: 1.2;
     font-weight: 400;
-    padding-top: 1rem;
-    padding-left: 2rem;
+
+    @media screen and (max-width: 944px) {
+        font-size: 1.4rem;
+    }
+    @media screen and (max-width: 544px) {
+        font-size: 1.2rem;
+    }
 `;
 
 const CloseButton = styled(RadixDialog.Close)`
@@ -93,20 +99,73 @@ const CloseButton = styled(RadixDialog.Close)`
     color: var(--color-grey-0);
     cursor: pointer;
     font-size: 2.4rem;
+
+    @media screen and (max-width: 944px) {
+        font-size: 2rem;
+    }
+    @media screen and (max-width: 544px) {
+        font-size: 1.8rem;
+    }
 `;
 
-const DeleteButton = styled.button`
-    color: #fff;
+const ImagePreview = styled.img`
+    width: 100%;
+    height: 22rem;
+    object-fit: cover;
+    border: 1px solid var(--color-grey-200);
+
+    @media screen and (max-width: 944px) {
+        height: 18rem;
+    }
+    @media screen and (max-width: 704px) {
+        height: 15rem;
+    }
+    @media screen and (max-width: 544px) {
+        height: 12rem;
+    }
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 1rem;
+
+    @media screen and (max-width: 544px) {
+        /* flex-direction: column; */
+        gap: 0.6rem;
+        margin-top: 0.8rem;
+    }
+`;
+
+const ChooseButton = styled.button`
+    display: flex;
     font-size: 2.4rem;
+    align-items: center;
+    gap: 0.3rem;
+    color: #fff;
     padding: 0.5rem 1rem;
     border-radius: var(--radius-xxl);
     cursor: pointer;
-    border: none;
-    display: flex;
-    align-items: center;
+    border: var(--color-grey-0);
     transition: 0.2s ease;
+
+    @media screen and (max-width: 944px) {
+        font-size: 2rem;
+    }
+    @media screen and (max-width: 544px) {
+        font-size: 1.8rem;
+        padding: 0.4rem 0.8rem;
+    }
 `;
 
+const DeleteButton = styled(ChooseButton)`
+    background: transparent;
+    border: none;
+    justify-content: center;
+`;
+
+// ===== Component =====
 export default function EditImagesDialog({ trigger, onBgUpdate }) {
     const { user, setUser } = useAuth();
     const [previewImage, setPreviewImage] = useState(
@@ -126,9 +185,7 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
         }
     }, [user]);
 
-    const handleChooseClick = () => {
-        fileInputRef.current.click();
-    };
+    const handleChooseClick = () => fileInputRef.current.click();
 
     const handleFileChange = async (e) => {
         const file = e.target.files[0];
@@ -142,15 +199,14 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
                 `http://127.0.0.1:8000/api/profiles/${user.data.user.profile.id}`,
                 {
                     method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
-                    },
+                    headers: { Authorization: `Bearer ${user.token}` },
                     body: formData,
                 }
             );
 
             if (!res.ok) throw new Error("Failed to upload background image");
             const updatedProfile = await res.json();
+
             const updatedUser = {
                 ...user,
                 data: {
@@ -161,49 +217,34 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
                     },
                 },
             };
+
             setUser(updatedUser);
             sessionStorage.setItem("authUser", JSON.stringify(updatedUser));
-
             setPreviewImage(URL.createObjectURL(file));
 
             if (onBgUpdate) onBgUpdate(updatedProfile.background_image);
-
             toast.success("Background image updated!");
         } catch (err) {
             console.error(err);
             toast.error("Failed to update background image.");
         }
     };
+
     const handleDelete = async () => {
         try {
             const profileId = user?.data?.user?.profile?.id;
             if (!profileId) throw new Error("Profile ID not found");
+
             const res = await fetch(
                 `http://127.0.0.1:8000/api/profiles/${profileId}/background-image`,
                 {
                     method: "DELETE",
-                    headers: {
-                        Authorization: `Bearer ${user.token}`,
-                    },
+                    headers: { Authorization: `Bearer ${user.token}` },
                 }
             );
 
             if (!res.ok && res.status !== 404)
                 throw new Error("Failed to delete background image");
-
-            setUser((prevUser) => ({
-                ...prevUser,
-                data: {
-                    ...prevUser.data,
-                    user: {
-                        ...prevUser.data.user,
-                        profile: {
-                            ...prevUser.data.user.profile,
-                            background_image: null,
-                        },
-                    },
-                },
-            }));
 
             const updatedUser = {
                 ...user,
@@ -218,11 +259,12 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
                     },
                 },
             };
+
+            setUser(updatedUser);
             sessionStorage.setItem("authUser", JSON.stringify(updatedUser));
-
             setPreviewImage("/background_images/default-bg.jpg");
-            if (onBgUpdate) onBgUpdate("/background_images/default-bg.jpg");
 
+            if (onBgUpdate) onBgUpdate("/background_images/default-bg.jpg");
             toast.success("Background image reset to default!");
         } catch (err) {
             console.error(err);
