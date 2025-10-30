@@ -42,6 +42,7 @@ import PostedNewJobs from "./pages/home/employer/PostedNewJobs";
 // ✅ Layouts
 import AppLayout from "./ui/AppLayout";
 import EmployerAppLayout from "./ui/EmployerAppLayout";
+import { ThemeProvider } from "./hook/hemeContext";
 
 // =======================================================
 // ✅ React Query Client
@@ -97,7 +98,7 @@ function SocketHandler() {
 // ✅ Main App Component
 // =======================================================
 export default function App() {
-    return (
+    return (<ThemeProvider>
         <AuthProvider>
             <QueryClientProvider client={queryClient}>
                 <BrowserRouter>
@@ -227,5 +228,6 @@ export default function App() {
                 <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </AuthProvider>
+        </ThemeProvider>
     );
 }
