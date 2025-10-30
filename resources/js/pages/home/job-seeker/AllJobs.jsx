@@ -1,4 +1,3 @@
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -405,7 +404,6 @@ export default function AllJobs() {
             .then((favorites) => setSavedJobIds(favorites.map((f) => f.job.id)))
             .catch(console.error);
     }, [user, queryClient]);
-
     const toggleFavorite = async (job) => {
         if (!user?.token) {
             setModalData({
@@ -421,18 +419,26 @@ export default function AllJobs() {
             const isFavorite = savedJobIds.includes(job.id);
             if (isFavorite) {
                 await removeFavoriteJob(job.id, user.token);
-                toast.error("Removed from favorites 💔");
+                toast.success("Removed from favorites 💔");
                 setSavedJobIds((prev) => prev.filter((id) => id !== job.id));
             } else {
                 await addFavoriteJob(job.id, user.token);
                 toast.success("Added to favorites ❤️");
                 setSavedJobIds((prev) => [...prev, job.id]);
             }
+        } catch (err) {
+            console.error(err);
+            const message =
+                err?.message ||
+                "Failed to update favorite. Please try again later.";
+            toast.error(message);
+        }
+
+        try {
             const updatedFavorites = await getMyFavorites(user.token);
             setSavedJobIds(updatedFavorites.map((f) => f.job.id));
         } catch (err) {
-            console.error(err);
-            toast.error(err.message || "Failed to update favorite");
+            console.error("Failed to refresh favorites", err);
         }
     };
 

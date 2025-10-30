@@ -8,8 +8,8 @@ const SectionHero = styled.section`
     padding: 7.2rem 0 4.4rem 0;
     background-color: #e6f2ef;
     font-family: "Rubik", sans-serif;
-    min-height: 85rem;
-
+    /* min-height: 85rem; */
+    height: 100vh;
     @media (min-width: 84em) {
         min-height: 55rem;
     }
