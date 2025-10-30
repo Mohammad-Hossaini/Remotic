@@ -1,10 +1,13 @@
+
 import { FaStar } from "react-icons/fa";
 import styled from "styled-components";
 
 const StyledAllContainer = styled.div`
     font-family: "Rubik", sans-serif;
-    background: linear-gradient(to bottom, #e6f2ef 0%, #f9f9f9 100%);
+    background: var(--color-grey-0);
+    color: var(--text-color);
     padding: 6.4rem 0;
+    transition: all 0.3s ease;
 `;
 
 const TestimonialSection = styled.div`
@@ -25,43 +28,21 @@ const TestimonialTitle = styled.div`
         font-weight: 900;
         line-height: 1.2;
         text-align: center;
-        color: #1f2937;
-        position: relative;
-        z-index: 1;
-        background-color: transparent;
-        padding: 0 1rem;
+        color: var(--text-color);
+        transition: color 0.3s ease;
 
-        /**************************/
-        /* BELOW 1344px (Smaller desktops) */
-        /**************************/
         @media (max-width: 1344px) {
             font-size: 2.8rem;
         }
-
-        /**************************/
-        /* BELOW 1200px (Landscape Tablets) */
-        /**************************/
         @media (max-width: 1200px) {
             font-size: 2.4rem;
         }
-
-        /**************************/
-        /* BELOW 944px (Tablets) */
-        /**************************/
         @media (max-width: 944px) {
             font-size: 2rem;
         }
-
-        /**************************/
-        /* BELOW 704px (Smaller tablets) */
-        /**************************/
         @media (max-width: 704px) {
             font-size: 1.8rem;
         }
-
-        /**************************/
-        /* BELOW 544px (Phones) */
-        /**************************/
         @media (max-width: 544px) {
             font-size: 1.6rem;
         }
@@ -69,9 +50,10 @@ const TestimonialTitle = styled.div`
 
     p {
         font-size: 1.6rem;
-        color: #555;
+        color: var(--color-grey-500);
         line-height: 1.6;
         max-width: 60rem;
+        transition: color 0.3s ease;
     }
 `;
 
@@ -85,17 +67,14 @@ const TestimonialContainer = styled.div`
     @media (max-width: 1344px) {
         padding: 0 5rem;
     }
-
     @media (max-width: 1200px) {
         grid-template-columns: repeat(2, 1fr);
         padding: 0 4rem;
     }
-
     @media (max-width: 944px) {
         grid-template-columns: 1fr;
         padding: 0 3rem;
     }
-
     @media (max-width: 544px) {
         padding: 0 2rem;
     }
@@ -106,11 +85,11 @@ const TestimonialBox = styled.div`
     flex-direction: column;
     align-items: center;
     padding: 2.4rem;
-    background: #fff;
+    background: var(--color-grey-200);
     border-radius: 1.6rem;
     text-align: center;
-    transition: all 0.3s ease;
     cursor: pointer;
+    transition: all 0.3s ease;
     box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.08);
 
     &:hover {
@@ -122,6 +101,15 @@ const TestimonialBox = styled.div`
         font-size: 1.3rem;
         padding: 2.2rem;
     }
+
+    /* Dark theme overrides */
+    [data-theme="dark"] & {
+        background: var(--color-grey-30);
+        box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.4);
+        &:hover {
+            box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.6);
+        }
+    }
 `;
 
 const CustomerProfile = styled.img`
@@ -130,10 +118,15 @@ const CustomerProfile = styled.img`
     border-radius: 50%;
     margin-bottom: 1.6rem;
     object-fit: cover;
+    border: 2px solid var(--color-primary);
 
     @media (max-width: 59em) {
         width: 5.6rem;
         height: 5.6rem;
+    }
+
+    [data-theme="dark"] & {
+        border-color: var(--color-primary-light);
     }
 `;
 
@@ -142,25 +135,46 @@ const TestimonialIcon = styled.div`
     gap: 0.4rem;
     justify-content: center;
     margin-bottom: 1.2rem;
-    color: #087f5b;
+    color: var(--color-primary);
     font-size: 1.8rem;
 `;
 
 const CustomerMessage = styled.p`
     font-size: 1.4rem;
-    color: #333;
+    color: var(--text-color);
     line-height: 1.6;
     margin-bottom: 1.6rem;
+    transition: color 0.3s ease;
+    [data-theme="dark"] & {
+        color: var(--color-grey-400);
+    }
 
     @media (max-width: 59em) {
         font-size: 1.3rem;
     }
 `;
+const FeaturePrimary = styled.h3`
+    font-size: var(--font-xl);
+    font-weight: 900;
+    text-align: center;
+    color: #1f2937;
+    margin-bottom: 6rem;
+    letter-spacing: 0.5px;
 
+    /* 🌙 Dark mode title color */
+    [data-theme="dark"] & {
+        color: var(--color-grey-400);
+    }
+
+    @media (max-width: 59em) {
+        font-size: 2.4rem;
+        margin-bottom: 4rem;
+    }
+`;
 const CustomerName = styled.p`
     font-size: 1.6rem;
     font-weight: 600;
-    color: #087f5b;
+    color: var(--color-primary);
 
     @media (max-width: 59em) {
         font-size: 1.4rem;
@@ -172,7 +186,13 @@ export default function Testimonial({ id }) {
         <StyledAllContainer id={id}>
             <TestimonialSection>
                 <TestimonialTitle>
-                    <h3>Hear What Our Users Are Saying</h3>
+                    <FeaturePrimary>
+                        Hear What Our Users Are Saying
+                    </FeaturePrimary>
+                    <p>
+                        Real feedback from remote professionals who have
+                        achieved global success through our platform.
+                    </p>
                 </TestimonialTitle>
 
                 <TestimonialContainer>
@@ -201,7 +221,7 @@ export default function Testimonial({ id }) {
                     <TestimonialBox>
                         <CustomerProfile
                             src="/profile/profile-8.jpg"
-                            alt="Mohammad Rahimi"
+                            alt="Sofia Johnson"
                         />
                         <TestimonialIcon>
                             <FaStar />
