@@ -108,7 +108,7 @@
     text-decoration: underline;
 }
 .checkbox-container input[type="checkbox"] {
-    appearance: none; 
+    appearance: none;
     -webkit-appearance: none;
     width: 20px;
     height: 20px;
@@ -231,4 +231,32 @@
         font-size: var(--font-sm);
         padding: var(--space-8);
     }
+}
+/* 🌙 Dark mode overrides */
+[data-theme="dark"] .sign-up-container {
+    background-color: #1f2937; 
+}
+
+[data-theme="dark"] .role-card {
+    background-color: #1f2937;
+    border-color: #4b5563;
+}
+
+[data-theme="dark"] .role-card:hover {
+    background-color: #374151;
+    border-color: var(--color-primary);
+}
+
+[data-theme="dark"] .role-card.active {
+    background-color: #374151; 
+    border-color: var(--color-primary);
+}
+
+[data-theme="dark"] .descriptions h3,
+[data-theme="dark"] .descriptions p {
+    color: #d1d5db;
+}
+
+[data-theme="dark"] .sign-up-title {
+    color: var(--color-grey-500); 
 }

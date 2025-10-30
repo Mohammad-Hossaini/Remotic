@@ -3,6 +3,10 @@
     background-color: var(--color-grey-30);
 }
 
+[data-theme="dark"] .allContainer {
+    background-color: #1f2937;
+}
+
 .welcome-container {
     background-color: var(--color-grey-30);
     display: flex;
@@ -16,6 +20,10 @@
     padding: 0 3rem;
 }
 
+[data-theme="dark"] .welcome-container {
+    background-color: #1f2937;
+}
+
 .text-box {
     width: 40%;
 }
@@ -25,6 +33,11 @@
     line-height: 1.2;
     letter-spacing: 1.5px;
     font-weight: 500;
+    color: var(--color-grey-900);
+}
+
+[data-theme="dark"] .text-box h1 {
+    color: #f3f4f6;
 }
 
 .image-box {
@@ -54,6 +67,12 @@
     margin: var(--space-4);
     color: var(--color-grey-900);
     background: transparent;
+    transition: all 0.3s;
+}
+
+[data-theme="dark"] .loginButtons button {
+    border-color: #d1d5db;
+    color: #d1d5db;
 }
 
 .Btn {
@@ -71,6 +90,11 @@
 }
 
 .Btn:hover {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+[data-theme="dark"] .Btn:hover {
     background-color: var(--color-primary);
     color: #fff;
 }
@@ -125,37 +149,41 @@
     text-align: center;
 }
 
+[data-theme="dark"] .loginButtons p {
+    color: #d1d5db;
+}
+
 .loginButtons p strong {
     font-size: 14px;
     color: #054834;
     font-weight: 700;
 }
 
-/* ===================== Below 1200px (Tablets) ===================== */
+[data-theme="dark"] .loginButtons p strong {
+    color: #34d399; /* greenish for dark mode */
+}
+
+/* ===================== Responsive adjustments ===================== */
+/* Below 1200px */
 @media (max-width: 75em) {
     .welcome-container {
         flex-direction: row;
         padding: 0 4rem;
         column-gap: 2rem;
     }
-
     .text-box {
         width: 40%;
     }
-
     .text-box h1 {
         font-size: 2.7rem;
     }
-
     .image-box {
         width: 45%;
     }
-
     .Btn {
         font-size: 1.2rem;
         padding: 0 2.5rem;
     }
-
     .btn-icon,
     .microsoft-image,
     .email-icon {
@@ -163,14 +191,14 @@
     }
 }
 
-/* ===================== Below 850px (custom adjustment) ===================== */
+/* Below 850px */
 @media (max-width: 53.125em) {
     .text-box h1 {
         font-size: 2.3rem;
     }
 }
 
-/* ===================== Small Tablets (535px ~ 820px) ===================== */
+/* Small Tablets */
 @media (max-width: 51.25em) and (min-width: 33.4375em) {
     .welcome-container {
         flex-direction: column;
@@ -180,31 +208,25 @@
         padding: 3rem 1.5rem;
         text-align: center;
     }
-
     .text-box {
         width: 80%;
     }
-
     .text-box h1 {
         font-size: 2.2rem;
         line-height: 1.3;
     }
-
     .image-box {
         width: 70%;
         margin-top: 2rem;
     }
-
     .loginButtons {
         max-width: 100%;
         gap: 1rem;
     }
-
     .Btn {
         font-size: 1.1rem;
         padding: 0 2rem;
     }
-
     .btn-icon,
     .microsoft-image,
     .email-icon {
@@ -212,7 +234,7 @@
     }
 }
 
-/* ===================== Mobile (<= 535px) ===================== */
+/* Mobile */
 @media (max-width: 33.4375em) {
     .welcome-container {
         flex-direction: column;
@@ -223,60 +245,50 @@
         text-align: center;
         row-gap: 2rem;
     }
-
     .text-box {
         width: 100%;
     }
-
     .text-box h1 {
         font-size: 1.8rem;
         line-height: 1.3;
     }
-
     .image-box {
         width: 80%;
     }
-
     .loginButtons {
         max-width: 100%;
         gap: 0.8rem;
     }
-
     .Btn {
         font-size: 1rem;
         padding: 0.6rem 1.5rem;
     }
-
     .btn-icon,
     .microsoft-image,
     .email-icon {
         position: static;
         transform: none;
     }
-
     .Btn span,
     .microsoft-image,
     .email-icon {
         margin-right: 0.6rem;
     }
-
     .loginButtons p {
         font-size: 0.85rem;
         line-height: 1.4;
     }
 }
 
-/* ===================== Very Small Devices (<= 360px) ===================== */
+/* Very Small Devices */
 @media (max-width: 22.5em) {
     .text-box h1 {
         font-size: 1.6rem;
     }
-
     .Btn {
         font-size: 0.9rem;
         padding: 0.5rem 1rem;
     }
-
     .loginButtons p {
         font-size: 0.75rem;
     }
