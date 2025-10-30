@@ -100,9 +100,7 @@ function Navbar() {
                             alt="Remotic Logo"
                             height={25}
                         />
-                        <p style={{ fontSize: "2.4rem", color: "#218c6b" }}>
-                            Remotic
-                        </p>
+                        <p className="websiteName">Remotic</p>
                     </div>
                 )}
             </div>
