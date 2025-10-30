@@ -1,3 +1,4 @@
+
 import { BsTwitterX } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
 import { IoLogoGithub } from "react-icons/io";
@@ -8,6 +9,11 @@ const FooterContainer = styled.footer`
     padding: 6rem 1.6rem;
     border-top: 1px solid #e5e7eb;
     background-color: #f9fafb;
+
+    [data-theme="dark"] & {
+        background-color: var(--color-grey-30);
+        border-top: 1px solid var(--color-grey-700);
+    }
 `;
 
 const FooterGrid = styled.div`
@@ -51,6 +57,9 @@ const LogoCol = styled.div`
             @media (max-width: 480px) {
                 width: 100px;
             }
+            [data-theme="dark"] & {
+                color: var(--color-grey-900);
+            }
         }
     }
 
@@ -70,6 +79,14 @@ const LogoCol = styled.div`
                 color: #087f5b;
             }
 
+            [data-theme="dark"] & {
+                color: var(--color-grey-500);
+
+                &:hover {
+                    color: var(--color-primary);
+                }
+            }
+
             @media (max-width: 480px) {
                 height: 2rem;
                 width: 2rem;
@@ -82,6 +99,10 @@ const LogoCol = styled.div`
         line-height: 1.6;
         color: #6b7280;
         margin-top: auto;
+
+        [data-theme="dark"] & {
+            color: var(--color-grey-500);
+        }
 
         @media (max-width: 768px) {
             font-size: 1.2rem;
@@ -99,6 +120,10 @@ const FooterCol = styled.div`
         margin-bottom: 2rem;
         color: #111827;
 
+        [data-theme="dark"] & {
+            color: var(--color-grey-500);
+        }
+
         @media (max-width: 768px) {
             font-size: 1.6rem;
             margin-bottom: 1.5rem;
@@ -114,6 +139,10 @@ const FooterCol = styled.div`
         font-size: 1.6rem;
         line-height: 1.6;
         color: #374151;
+
+        [data-theme="dark"] & {
+            color: var(--color-grey-500);
+        }
 
         @media (max-width: 768px) {
             font-size: 1.4rem;
@@ -134,6 +163,14 @@ const FooterCol = styled.div`
 
             &:hover {
                 color: #087f5b;
+            }
+
+            [data-theme="dark"] & {
+                color: var(--color-grey-500);
+
+                &:hover {
+                    color: var(--color-primary);
+                }
             }
 
             @media (max-width: 768px) {
@@ -159,6 +196,14 @@ const FooterCol = styled.div`
 
             &:hover {
                 color: #087f5b;
+            }
+
+            [data-theme="dark"] & {
+                color: var(--color-grey-500);
+
+                &:hover {
+                    color: var(--color-primary);
+                }
             }
 
             @media (max-width: 768px) {
