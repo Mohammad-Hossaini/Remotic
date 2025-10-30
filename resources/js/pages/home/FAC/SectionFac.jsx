@@ -16,50 +16,69 @@ const SectionFAQWrapper = styled.section`
         font-weight: 900;
         text-align: center;
         margin-bottom: 3rem;
-        color: #114a38;
+        color: var(--color-grey-800);
 
         @media (max-width: 44em) {
             font-size: 2.4rem;
         }
+
+        /* 🌙 Dark mode */
+        [data-theme="dark"] & {
+            color: var(--color-grey-300);
+        }
     }
 
     .accordion-item {
-        box-shadow: 0 0 2.4rem rgba(0, 0, 0, 0.1);
+        background: var(--color-grey-0);
+        box-shadow: var(--shadow-md);
         padding: 1.4rem 2rem;
         display: grid;
         grid-template-columns: auto 1fr auto;
         align-items: center;
-        border-radius: 0.5rem;
+        border-radius: var(--radius-sm);
         position: relative;
-        background: #fff;
         transition: all 0.3s ease;
         cursor: pointer;
 
         &:hover {
             transform: translateY(-0.3rem);
-            box-shadow: 0 0 4rem rgba(0, 0, 0, 0.12);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* 🌙 Dark mode */
+        [data-theme="dark"] & {
+            background: var(--color-grey-200);
+            box-shadow: 0 0 2rem rgba(255, 255, 255, 0.08);
         }
 
         .number {
             font-weight: 500;
             font-size: 2.4rem;
-            color: #ced4da;
+            color: var(--color-grey-400);
+
+            [data-theme="dark"] & {
+                color: var(--color-grey-500);
+            }
         }
 
         .question {
             margin-left: 2.5rem;
             font-weight: 500;
             font-size: 2.4rem;
-            color: #1f2937;
+            color: var(--color-grey-800);
 
             @media (max-width: 44em) {
                 font-size: 2rem;
+            }
+
+            [data-theme="dark"] & {
+                color: var(--color-grey-400);
             }
         }
 
         .icon {
             font-size: 2rem;
-            color: #087f5b;
+            color: var(--color-primary);
             transition: transform 0.3s ease;
         }
 
@@ -85,16 +104,24 @@ const SectionFAQWrapper = styled.section`
                 font-size: 1.6rem;
                 line-height: 1.6;
                 margin-bottom: 1.6rem;
-                color: #343a40;
+                color: var(--color-grey-700);
+
+                [data-theme="dark"] & {
+                    color: var(--color-grey-500);
+                }
             }
 
             ul {
-                color: #868e96;
+                color: var(--color-grey-500);
                 margin-left: 2rem;
                 display: flex;
                 flex-direction: column;
                 gap: 1.2rem;
                 font-size: 1.6rem;
+
+                [data-theme="dark"] & {
+                    color: var(--color-grey-500);
+                }
 
                 li {
                     display: flex;
