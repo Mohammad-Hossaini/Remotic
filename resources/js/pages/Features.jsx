@@ -30,6 +30,11 @@ const FeaturePrimary = styled.h3`
     margin-bottom: 6rem;
     letter-spacing: 0.5px;
 
+    /* 🌙 Dark mode title color */
+    [data-theme="dark"] & {
+        color: var(--color-grey-400);
+    }
+
     @media (max-width: 59em) {
         font-size: 2.4rem;
         margin-bottom: 4rem;
@@ -56,7 +61,6 @@ const FeatureBox = styled.div`
         padding: 5rem 0;
     }
 
-    /* Below 944px (59em) */
     @media (max-width: 59em) {
         grid-template-columns: 1fr;
         text-align: center;
@@ -81,7 +85,6 @@ const FeatureImage = styled.div`
     align-items: center;
     padding: 2rem;
 
-    /* Decorative rings */
     &::before,
     &::after {
         content: "";
@@ -109,7 +112,6 @@ const FeatureImage = styled.div`
         z-index: -1;
     }
 
-    /* Image styling */
     img {
         width: 100%;
         max-width: clamp(220px, 35vw, 420px);
@@ -120,7 +122,6 @@ const FeatureImage = styled.div`
         transition: all 0.3s ease;
     }
 
-    /* Below 944px */
     @media (max-width: 59em) {
         &::before {
             width: 240px;
@@ -136,7 +137,6 @@ const FeatureImage = styled.div`
         }
     }
 
-    /* Below 544px */
     @media (max-width: 34em) {
         &::before {
             width: 200px;
@@ -198,6 +198,11 @@ const StyledH3 = styled.p`
     color: var(--color-grey-700);
     font-size: 1.8rem;
     font-weight: 700;
+
+    /* 🌙 Dark mode title color */
+    [data-theme="dark"] & {
+        color: var(--color-grey-300);
+    }
 `;
 
 const StyledDescription = styled.p`
@@ -205,7 +210,11 @@ const StyledDescription = styled.p`
     font-weight: 400;
     line-height: 1.8;
     color: var(--color-grey-600);
+    [data-theme="dark"] & {
+        color: var(--color-grey-400);
+    }
 `;
+
 const BtnLearnMore = styled.button`
     display: inline-block;
     background-color: #114a38;
@@ -218,6 +227,9 @@ const BtnLearnMore = styled.button`
     font-weight: 600;
     margin-top: 2rem;
     transition: all 0.3s ease;
+    [data-theme="dark"] & {
+        color: var(--color-grey-500);
+    }
 
     &:hover {
         background-color: #087f5b;
@@ -272,6 +284,7 @@ export default function Features({ id }) {
                     />
                 </FeatureImage>
             </FeatureBox>
+
             <FeatureBox>
                 <FeatureContent>
                     <FeatureTitle>
