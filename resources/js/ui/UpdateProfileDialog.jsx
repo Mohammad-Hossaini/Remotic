@@ -20,12 +20,22 @@ const DialogContent = styled(RadixDialog.Content)`
     left: 50%;
     transform: translate(-50%, -50%);
     width: 60rem;
-    max-height: 80vh;
+    max-width: 95%;
+    max-height: 90vh;
     background-color: #fff;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding: 0;
+
+    @media screen and (max-width: 768px) {
+        width: 90%;
+    }
+
+    @media screen and (max-width: 480px) {
+        width: 95%;
+    }
 `;
 
 const Header = styled.div`
@@ -37,6 +47,14 @@ const Header = styled.div`
     h2 {
         font-size: 2rem;
         font-weight: 600;
+
+        @media screen and (max-width: 768px) {
+            font-size: 1.6rem;
+        }
+
+        @media screen and (max-width: 480px) {
+            font-size: 1.4rem;
+        }
     }
 `;
 
@@ -46,10 +64,21 @@ const CloseIcon = styled(RxCross1)`
     right: 2rem;
     font-size: 2rem;
     cursor: pointer;
+
+    @media screen and (max-width: 768px) {
+        top: 1.5rem;
+        right: 1.5rem;
+        font-size: 1.6rem;
+    }
+
+    @media screen and (max-width: 480px) {
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.4rem;
+    }
 `;
 
 const Body = styled.div`
-    /* flex: 1; */
     flex: 1 1 auto;
     overflow-y: auto;
     padding: 2rem;
@@ -60,20 +89,35 @@ const Body = styled.div`
     label {
         font-weight: 600;
         font-size: 1.4rem;
+
+        @media screen and (max-width: 768px) {
+            font-size: 1.2rem;
+        }
+
+        @media screen and (max-width: 480px) {
+            font-size: 1rem;
+        }
     }
 
-    input {
+    input,
+    textarea {
         padding: 0.8rem;
         border-radius: 0.5rem;
         border: 1px solid #ced4da;
         font-size: 1.4rem;
         width: 100%;
+
+        @media screen and (max-width: 768px) {
+            font-size: 1.2rem;
+        }
+
+        @media screen and (max-width: 480px) {
+            font-size: 1rem;
+            padding: 0.6rem;
+        }
     }
+
     textarea {
-        border-radius: 0.5rem;
-        border: 1px solid #ced4da;
-        padding: 0.8rem;
-        width: 100%;
         min-height: 10rem;
         resize: vertical;
     }
@@ -85,6 +129,8 @@ const Footer = styled.div`
     border-top: 1px solid #ced4da;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
 
     button {
         padding: 0.8rem 1.5rem;
@@ -92,6 +138,18 @@ const Footer = styled.div`
         border-radius: 0.5rem;
         border: none;
         cursor: pointer;
+
+        @media screen and (max-width: 768px) {
+            font-size: 1.2rem;
+            padding: 0.6rem 1.2rem;
+            flex: 1 1 45%;
+        }
+
+        @media screen and (max-width: 480px) {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            flex: 1 1 100%;
+        }
     }
 
     .cancel {
@@ -205,7 +263,6 @@ export default function UpdateProfileDialog({ trigger, onUpdate }) {
                         style={{
                             display: "flex",
                             flexDirection: "column",
-                            // flex: 1,
                             flex: "1 1 auto",
                             minHeight: 0,
                         }}
@@ -215,8 +272,6 @@ export default function UpdateProfileDialog({ trigger, onUpdate }) {
                             <input {...register("firstName")} />
                             <label>Last Name</label>
                             <input {...register("lastName")} />
-                            {/* <label>Education</label>
-                            <input {...register("education")} /> */}
                             <label>Email</label>
                             <input {...register("email")} />
                             <label>Mobile</label>
@@ -248,7 +303,7 @@ export default function UpdateProfileDialog({ trigger, onUpdate }) {
                                     alignItems: "center",
                                     justifyContent: "center",
                                     gap: "0.5rem",
-                                    minWidth: "80px", 
+                                    minWidth: "80px",
                                 }}
                             >
                                 {isSubmitting ? (
