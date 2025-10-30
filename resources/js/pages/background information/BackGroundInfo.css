@@ -1,214 +1,12 @@
 .profile-container {
-    /* max-width: 110rem; */
     margin: 0 auto;
     background-color: var(--color-grey-0);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
-    height: 88vh;
+    overflow: hidden;
 }
 
-.profile-header {
-    position: relative;
-    width: 100%;
-    height: 18rem;
-}
-
-.bg-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.profile-photo {
-    width: 10rem;
-    height: 10rem;
-    border-radius: 50%;
-    border: 3px solid var(--color-grey-500);
-    position: absolute;
-    bottom: -5rem;
-    left: 2rem;
-    object-fit: cover;
-    background: var(--color-grey-0);
-}
-
-/* EDIT BUTTONS */
-.edit-btn {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    border-radius: 50%;
-    border: 1px solid var(--color-grey-200);
-    padding: 0.6rem;
-    cursor: pointer;
-    font-size: 1.4rem;
-    transition: all 0.2s ease;
-}
-
-.edit-btn:hover {
-    background-color: var(--color-primary);
-    color: #fff;
-}
-
-.edit-bg {
-    top: 1rem;
-    right: 1rem;
-}
-
-.edit-photo {
-    bottom: -1rem;
-    left: 10rem; /* adjust based on photo position */
-}
-
-/* MAIN GRID */
-.profile-box {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-    padding: 6rem 2rem 2rem;
-}
-
-/* LEFT SECTION */
-.user-details {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-.user-name {
-    font-size: var(--font-lg);
-    font-weight: 700;
-    color: var(--color-grey-900);
-}
-
-.user-description {
-    font-size: var(--font-sm);
-    color: var(--color-grey-600);
-    line-height: 1.5;
-}
-
-/* TAGS */
-.user-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-}
-
-.tag {
-    padding: 0.4rem 1.2rem;
-    font-size: var(--font-xs);
-    background-color: var(--color-grey-50);
-    color: var(--color-grey-700);
-    border-radius: var(--radius-xxl);
-    transition: background 0.2s ease;
-}
-
-.tag:hover {
-    background-color: var(--color-primary-light);
-    color: #fff;
-}
-
-/* RIGHT SECTION */
-.profile-right {
-    background-color: var(--color-grey-50);
-    border-radius: var(--radius-md);
-    padding: 2rem;
-}
-
-/* Bottom Sections */
-.profile-bottom {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-    gap: 2rem;
-    margin: 2rem 2rem 4rem;
-}
-
-.activity-box,
-.community-box {
-    background-color: var(--color-grey-50);
-    border-radius: var(--radius-md);
-    padding: 2rem;
-    box-shadow: var(--shadow-sm);
-}
-
-.activity-box h3,
-.community-box h3 {
-    margin-bottom: 1.5rem;
-    font-size: var(--font-lg);
-    color: var(--color-grey-900);
-}
-
-.activity-stats {
-    display: flex;
-    justify-content: space-between;
-}
-
-.stat h4 {
-    font-size: var(--font-xl);
-    font-weight: 700;
-    color: var(--color-primary);
-    margin-bottom: 0.4rem;
-}
-
-.stat p {
-    font-size: var(--font-sm);
-    color: var(--color-grey-600);
-}
-
-/* Community list */
-.community-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.community-list li {
-    font-size: var(--font-sm);
-    color: var(--color-grey-700);
-    padding: 0.6rem 1rem;
-    background-color: var(--color-grey-100);
-    border-radius: var(--radius-lg);
-    transition: background 0.2s ease;
-}
-
-.community-list li:hover {
-    background-color: var(--color-primary-light);
-    color: #fff;
-}
-
-.section-box {
-    background-color: var(--color-grey-50);
-    border-radius: var(--radius-md);
-    padding: 2rem;
-    margin: 2rem;
-    box-shadow: var(--shadow-sm);
-}
-
-.section-box h3 {
-    font-size: var(--font-lg);
-    margin-bottom: 1.5rem;
-    color: var(--color-grey-900);
-}
-
-.experience-card,
-.education-card {
-    background-color: var(--color-grey-100);
-    padding: 1rem 1.5rem;
-    border-radius: var(--radius-md);
-    margin-bottom: 1rem;
-    transition: background 0.2s ease;
-}
-
-.experience-card:hover,
-.education-card:hover {
-    background-color: var(--color-primary-light);
-    color: #fff;
-}
-
-/* =========================== */
+/* ================= HEADER ================= */
 .profile-header {
     position: relative;
     width: 100%;
@@ -218,9 +16,10 @@
 .bg-image {
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: cover;
 }
 
+/* PROFILE PHOTO */
 .profile-photo {
     position: absolute;
     bottom: -50px;
@@ -228,10 +27,12 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 2px solid var(--color-grey-50);
+    border: 3px solid var(--color-grey-50);
     object-fit: cover;
+    background: var(--color-grey-0);
 }
 
+/* ================= EDIT BUTTONS ================= */
 .edit-btn {
     position: absolute;
     background: white;
@@ -243,22 +44,196 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
 }
 
+.edit-btn:hover {
+    background-color: var(--color-primary);
+    color: #fff;
+}
 
+/* Edit background camera (top right on bg) */
 .edit-bg-bottom {
-    bottom: 200px;
+    top: 10px;
     right: 10px;
 }
 
-
+/* Edit profile photo camera */
 .edit-profile {
     bottom: -10px;
     left: 100px;
 }
-/* Edit button for user info (name, desc, skills …) */
+
+/* Edit info button (bottom-right of info area) */
 .edit-info {
     bottom: -25px;
-    right: 10px;
+    right: 2px;
     transform: translateY(50%);
+}
+
+/* ================= MAIN CONTENT ================= */
+.profile-box {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 6rem 2rem 2rem;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.user-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-grey-900);
+}
+
+.user-description {
+    font-size: 1.4rem;
+    color: var(--color-grey-600);
+    line-height: 1.5;
+}
+
+.user-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.tag {
+    padding: 0.4rem 1.2rem;
+    font-size: 1.2rem;
+    background-color: var(--color-grey-50);
+    color: var(--color-grey-700);
+    border-radius: 50px;
+    transition: background 0.2s ease;
+}
+
+.tag:hover {
+    background-color: var(--color-primary-light);
+    color: #fff;
+}
+
+/* RIGHT SIDE */
+.profile-right {
+    background-color: var(--color-grey-50);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+}
+
+.profile-right h3 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: var(--color-grey-900);
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Tablets */
+@media (max-width: 1024px) {
+    .profile-box {
+        grid-template-columns: 1fr;
+        padding: 6rem 1.5rem 2rem;
+    }
+
+    .user-details {
+        text-align: center;
+        align-items: center;
+    }
+
+    .user-tags {
+        justify-content: center;
+    }
+
+    /* Center profile photo */
+    .profile-photo {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Center camera icon correctly below photo */
+    .edit-profile {
+        left: 53%;
+        bottom: -12px;
+        transform: translateX(40%);
+    }
+
+    /* Keep edit info visible but near top */
+    .edit-info {
+        bottom: -20px;
+        right: 15px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .profile-header {
+        height: 200px;
+    }
+
+    .profile-photo {
+        width: 80px;
+        height: 80px;
+        bottom: -40px;
+    }
+
+    .edit-profile {
+        bottom: -12px;
+        transform: translateX(35%);
+    }
+
+    .edit-bg-bottom {
+        top: 8px;
+        right: 8px;
+    }
+
+    .edit-info {
+        bottom: -25px;
+        right: 10px;
+    }
+
+    .user-name {
+        font-size: 1.8rem;
+    }
+
+    .user-description {
+        font-size: 1.3rem;
+    }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+    .profile-box {
+        padding: 5rem 1rem 1rem;
+    }
+
+    .profile-photo {
+        width: 70px;
+        height: 70px;
+        bottom: -35px;
+    }
+
+    .edit-profile {
+        bottom: -10px;
+        transform: translateX(30%);
+    }
+
+    .edit-bg-bottom {
+        top: 5px;
+        right: 5px;
+    }
+
+    .edit-info {
+        bottom: -20px;
+        right: 8px;
+    }
+
+    .edit-btn {
+        font-size: 14px;
+        padding: 4px;
+    }
 }
