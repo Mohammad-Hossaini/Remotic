@@ -22,12 +22,19 @@ const DialogContent = styled(RadixDialog.Content)`
     width: 60rem;
     max-width: 95%;
     max-height: 90vh;
-    background-color: #fff;
+    background-color: var(--color-grey-0);
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    /* 🌙 Dark mode */
+    [data-theme="dark"] & {
+        background-color: var(--color-grey-300);
+        color: var(--color-grey-500);
+    }
 
     @media screen and (max-width: 768px) {
         width: 90%;
@@ -41,12 +48,17 @@ const DialogContent = styled(RadixDialog.Content)`
 const Header = styled.div`
     position: relative;
     padding: 2rem;
-    border-bottom: 1px solid #ced4da;
-    flex-shrink: 0;
+    border-bottom: 1px solid var(--color-grey-200);
 
     h2 {
         font-size: 2rem;
         font-weight: 600;
+        color: var(--color-grey-900);
+        transition: color 0.3s ease;
+
+        [data-theme="dark"] & {
+            color: var(--color-grey-600);
+        }
 
         @media screen and (max-width: 768px) {
             font-size: 1.6rem;
@@ -64,6 +76,12 @@ const CloseIcon = styled(RxCross1)`
     right: 2rem;
     font-size: 2rem;
     cursor: pointer;
+    color: var(--color-grey-900);
+    transition: color 0.3s ease;
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-600);
+    }
 
     @media screen and (max-width: 768px) {
         top: 1.5rem;
@@ -89,6 +107,12 @@ const Body = styled.div`
     label {
         font-weight: 600;
         font-size: 1.4rem;
+        color: var(--color-grey-900);
+        transition: color 0.3s ease;
+
+        [data-theme="dark"] & {
+            color: var(--color-grey-500);
+        }
 
         @media screen and (max-width: 768px) {
             font-size: 1.2rem;
@@ -103,9 +127,23 @@ const Body = styled.div`
     textarea {
         padding: 0.8rem;
         border-radius: 0.5rem;
-        border: 1px solid #ced4da;
+        border: 1px solid var(--color-grey-300);
         font-size: 1.4rem;
         width: 100%;
+        background-color: var(--color-grey-0);
+        color: var(--color-grey-900);
+        transition: all 0.3s ease;
+
+        &:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+
+        [data-theme="dark"] & {
+            background-color: var(--color-grey-200);
+            border-color: var(--color-grey-200);
+            color: var(--color-grey-600);
+        }
 
         @media screen and (max-width: 768px) {
             font-size: 1.2rem;
@@ -126,11 +164,15 @@ const Body = styled.div`
 const Footer = styled.div`
     flex-shrink: 0;
     padding: 1.5rem 2rem;
-    border-top: 1px solid #ced4da;
+    border-top: 1px solid var(--color-grey-200);
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
+
+    [data-theme="dark"] & {
+        border-top-color: var(--color-grey-700);
+    }
 
     button {
         padding: 0.8rem 1.5rem;
@@ -138,6 +180,7 @@ const Footer = styled.div`
         border-radius: 0.5rem;
         border: none;
         cursor: pointer;
+        transition: all 0.3s ease;
 
         @media screen and (max-width: 768px) {
             font-size: 1.2rem;
@@ -153,16 +196,26 @@ const Footer = styled.div`
     }
 
     .cancel {
-        background-color: #f1f3f5;
-        color: #495057;
+        background-color: var(--color-grey-200);
+        color: var(--color-grey-900);
+
+        [data-theme="dark"] & {
+            background-color: var(--color-grey-700);
+            color: var(--color-grey-0);
+        }
     }
 
     .save {
-        background-color: #087f5b;
+        background-color: var(--color-primary);
         color: #fff;
 
         &:hover {
-            background-color: #066f4b;
+            background-color: var(--color-primary-dark);
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
     }
 `;
