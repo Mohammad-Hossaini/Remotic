@@ -17,6 +17,11 @@ const RegisterWrapper = styled.div`
     padding: var(--space-48) var(--space-16);
     background-color: var(--color-grey-30);
     min-height: 100vh;
+
+    /* 🌙 Dark mode */
+    [data-theme="dark"] & {
+        background-color: #1f2937; /* dark bg */
+    }
 `;
 
 const RegisterCard = styled.div`
@@ -26,6 +31,12 @@ const RegisterCard = styled.div`
     width: 100%;
     max-width: 60rem;
     box-shadow: var(--shadow-sm);
+
+    /* 🌙 Dark mode */
+    [data-theme="dark"] & {
+        background-color: #374151; /* dark card */
+        color: #d1d5db;
+    }
 `;
 
 const Title = styled.h2`
@@ -33,12 +44,20 @@ const Title = styled.h2`
     font-size: var(--font-xl);
     color: var(--color-grey-900);
     margin-bottom: var(--space-12);
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-500);
+    }
 `;
 
 const SubText = styled.p`
     text-align: center;
     color: var(--color-grey-600);
     margin-bottom: var(--space-32);
+
+    [data-theme="dark"] & {
+        color: #d1d5db;
+    }
 `;
 
 const FormGrid = styled.div`
@@ -62,6 +81,10 @@ const Label = styled.label`
     font-size: var(--font-sm);
     font-weight: 600;
     color: var(--color-grey-900);
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-600);
+    }
 `;
 
 const Input = styled.input`
@@ -70,7 +93,22 @@ const Input = styled.input`
     border-radius: var(--radius-md);
     font-size: var(--font-sm);
     outline: none;
+    background-color: var(--color-grey-0);
+    color: var(--color-grey-900);
+    transition: all 0.2s ease;
+
     &:focus {
+        border-color: var(--color-primary);
+    }
+
+    /* 🌙 Dark mode */
+    [data-theme="dark"] & {
+        background-color: #1f2937;
+        border-color: #4b5563;
+        color: #d1d5db;
+    }
+
+    [data-theme="dark"] &:focus {
         border-color: var(--color-primary);
     }
 `;
@@ -82,8 +120,19 @@ const TextArea = styled.textarea`
     font-size: var(--font-sm);
     resize: vertical;
     outline: none;
+    background-color: var(--color-grey-0);
+    color: var(--color-grey-900);
+    transition: all 0.2s ease;
+
     &:focus {
         border-color: var(--color-primary);
+    }
+
+    /* 🌙 Dark mode */
+    [data-theme="dark"] & {
+        background-color: #1f2937;
+        border-color: #4b5563;
+        color: #d1d5db;
     }
 `;
 
@@ -111,6 +160,10 @@ const Button = styled.button`
 
     &:hover {
         background-color: var(--color-primary-dark);
+    }
+
+    [data-theme="dark"] & {
+        color: #fff;
     }
 `;
 
