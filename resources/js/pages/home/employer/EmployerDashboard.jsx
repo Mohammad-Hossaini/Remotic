@@ -16,6 +16,11 @@ const Container = styled.div`
     margin: 0 auto;
     padding: 2rem;
     height: auto;
+    background-color: var(--color-grey-30);
+
+    [data-theme="dark"] & {
+        background-color: #111827;
+    }
 
     @media (max-width: 768px) {
         padding: 1rem;
@@ -52,6 +57,17 @@ const PostJobButton = styled.button`
         font-size: 1.4rem;
         padding: 0.8rem 1.6rem;
     }
+
+    [data-theme="dark"] & {
+        background-color: #0f3a2c;
+        color: #d1d5db;
+    }
+
+    [data-theme="dark"] &:hover {
+        background-color: #145d44;
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
 `;
 
 const StatsGrid = styled.div`
@@ -67,6 +83,11 @@ const StatCard = styled(motion.div)`
     padding: 2rem;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    [data-theme="dark"] & {
+        background: #1f2937;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
 `;
 
 const BoxNumber = styled.p`
@@ -74,12 +95,21 @@ const BoxNumber = styled.p`
     font-weight: 700;
     color: #114a38;
     margin-bottom: 0.5rem;
+
+    [data-theme="dark"] & {
+        color: #34d399;
+    }
 `;
 
 const BoxName = styled.p`
     font-size: 1.4rem;
     font-weight: 500;
     color: #666;
+
+    [data-theme="dark"] & {
+        color: #d1d5db;
+    }
+
     @media (max-width: 600px) {
         font-size: 1.2rem;
     }
@@ -103,6 +133,11 @@ const LeftBox = styled.div`
     overflow-y: auto;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 
+    [data-theme="dark"] & {
+        background: #1f2937;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
     @media (max-width: 768px) {
         padding: 1.5rem;
     }
@@ -123,6 +158,10 @@ const SectionTitle = styled.h2`
     font-weight: 600;
     margin-bottom: 1.5rem;
     color: #114a38;
+
+    [data-theme="dark"] & {
+        color: #34d399;
+    }
 `;
 
 const RecentBox = styled.div`
@@ -131,6 +170,10 @@ const RecentBox = styled.div`
     align-items: flex-start;
     border-bottom: 1px solid #eee;
     padding: 1rem 0;
+
+    [data-theme="dark"] & {
+        border-color: #374151;
+    }
 
     @media (max-width: 600px) {
         flex-direction: column;
@@ -144,6 +187,10 @@ const JobInfo = styled.div`
         font-weight: 600;
         margin-bottom: 0.4rem;
         color: #222;
+
+        [data-theme="dark"] & {
+            color: #f3f4f6;
+        }
     }
 
     p {
@@ -152,12 +199,20 @@ const JobInfo = styled.div`
         line-height: 1.4;
         max-width: 45ch;
         word-break: break-word;
+
+        [data-theme="dark"] & {
+            color: #d1d5db;
+        }
     }
 `;
 
 const DeadlineText = styled.p`
     font-size: 1.2rem;
     color: #777;
+
+    [data-theme="dark"] & {
+        color: #9ca3af;
+    }
 
     @media (max-width: 600px) {
         align-self: flex-end;
@@ -170,11 +225,20 @@ const ChartBox = styled.div`
     padding: 2rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 
+    [data-theme="dark"] & {
+        background: #1f2937;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
     h3 {
         font-size: 1.6rem;
         font-weight: 600;
         margin-bottom: 1rem;
         color: #114a38;
+
+        [data-theme="dark"] & {
+            color: #34d399;
+        }
     }
 `;
 

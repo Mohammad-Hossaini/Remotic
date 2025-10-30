@@ -8,6 +8,19 @@
 }
 
 /* Left links */
+.site-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 1.4rem;
+}
+.websiteName {
+    font-size: 2.8rem;
+    color: #218c6b;
+    font-weight: 600;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
 .left {
     display: flex;
     align-items: center;
