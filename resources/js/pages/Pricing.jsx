@@ -5,7 +5,8 @@ import styled from "styled-components";
 const SectionPricing = styled.section`
     font-family: "Rubik", sans-serif;
     padding: 9.6rem 0;
-    background-color: #fff;
+    background-color: var(--color-grey-0);
+    transition: all 0.3s ease;
 `;
 
 const PricingTitle = styled.div`
@@ -13,7 +14,7 @@ const PricingTitle = styled.div`
     margin-bottom: 6.4rem;
 
     .subheading {
-        color: #087f5b;
+        color: var(--color-primary);
         font-weight: 500;
         font-size: 1.8rem;
     }
@@ -22,9 +23,10 @@ const PricingTitle = styled.div`
         margin-top: 1.4rem;
         font-size: 4rem;
         font-weight: 700;
-        color: #114a38;
+        color: var(--text-color);
     }
 `;
+
 const PricingContainer = styled.div`
     max-width: 120rem;
     padding: 0 3.2rem;
@@ -49,12 +51,12 @@ const PricingPlan = styled.div`
     width: 80%;
     padding: ${(props) => (props.variant === "starter" ? "4.6rem" : "4.8rem")};
     background-color: ${(props) =>
-        props.variant === "complete" ? "#e6f2ef" : "transparent"};
+        props.variant === "complete" ? "var(--color-grey-50)" : "transparent"};
     border: ${(props) =>
-        props.variant === "starter" ? "2px solid #e6f2ef" : "none"};
-
+        props.variant === "starter"
+            ? "2px solid var(--color-grey-50)"
+            : "none"};
     justify-self: center;
-
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -73,7 +75,7 @@ const PricingPlan = styled.div`
         text-transform: uppercase;
         font-size: 1.4rem;
         font-weight: 700;
-        color: #333;
+        color: var(--text-color);
         background-color: #ffd43b;
         padding: 0.8rem 8rem;
         transform: rotate(45deg);
@@ -106,6 +108,29 @@ const PricingPlan = styled.div`
             right: -17%;
         }
     }
+
+    /* Dark Mode */
+    [data-theme="dark"] & {
+        background-color: ${(props) =>
+            props.variant === "complete"
+                ? "var(--color-grey-100)"
+                : "var(--color-grey-100)"};
+        border-color: ${(props) =>
+            props.variant === "starter" ? "var(--color-grey-100)" : "none"};
+        color: var(--text-color);
+
+        &::after {
+            color: var(--color-grey-900);
+            background-color: #fbbf24;
+        }
+
+        &:hover {
+            box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.6);
+        }
+    }
+    [data-theme="dark"] & {
+        color: var(--color-grey-500);
+    }
 `;
 
 const PlanHeader = styled.header`
@@ -114,7 +139,7 @@ const PlanHeader = styled.header`
 `;
 
 const PlanName = styled.p`
-    color: #087f5b;
+    color: var(--color-primary);
     font-weight: 600;
     font-size: 2rem;
     text-transform: uppercase;
@@ -125,7 +150,7 @@ const PlanName = styled.p`
 const PlanPrice = styled.p`
     font-size: 6rem;
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
     margin-bottom: 1.6rem;
 
     span {
@@ -137,7 +162,7 @@ const PlanPrice = styled.p`
 
 const PlanText = styled.p`
     font-size: 1.6rem;
-    color: #555;
+    color: var(--color-grey-500);
 `;
 
 const List = styled.ul`
@@ -157,7 +182,7 @@ const ListItem = styled.li`
     .list-icon {
         width: 2.4rem;
         height: 2.4rem;
-        color: #087f5b;
+        color: var(--color-primary);
     }
 `;
 
@@ -172,24 +197,42 @@ const PlanSignUp = styled.div`
         font-size: 1.6rem;
         color: #fff;
         border-radius: 5px;
-        background-color: #114a38;
+        background-color: var(--color-primary-dark);
         text-decoration: none;
         transition: all 0.3s ease;
 
         &:hover {
-            background-color: #087f5b;
+            background-color: var(--color-primary);
         }
+    }
+`;
+const FeaturePrimary = styled.h3`
+    font-size: var(--font-xl);
+    font-weight: 900;
+    text-align: center;
+    color: #1f2937;
+    margin-bottom: 6rem;
+    letter-spacing: 0.5px;
+
+    /* 🌙 Dark mode title color */
+    [data-theme="dark"] & {
+        color: var(--color-grey-400);
+    }
+
+    @media (max-width: 59em) {
+        font-size: 2.4rem;
+        margin-bottom: 4rem;
     }
 `;
 
 export default function Pricing({ id }) {
     return (
-        <SectionPricing>
-            <PricingTitle id={id}>
+        <SectionPricing id={id}>
+            <PricingTitle>
                 <span className="subheading">Pricing</span>
-                <h2 className="heading-secondary">
+                <FeaturePrimary className="heading-secondary">
                     Choose the perfect plan for your hiring needs
-                </h2>
+                </FeaturePrimary>
             </PricingTitle>
 
             <PricingContainer>
