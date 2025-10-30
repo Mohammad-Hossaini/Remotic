@@ -8,8 +8,13 @@ const SectionHero = styled.section`
     padding: 7.2rem 0 4.4rem 0;
     background-color: #e6f2ef;
     font-family: "Rubik", sans-serif;
-    /* min-height: 85rem; */
     height: 100vh;
+
+    /* ===== 🌙 Dark Mode ===== */
+    [data-theme="dark"] & {
+        background-color: var(--color-grey-30);
+    }
+
     @media (min-width: 84em) {
         min-height: 55rem;
     }
@@ -31,40 +36,25 @@ const Hero = styled.div`
     gap: 8rem;
     align-items: center;
 
-    /**************************/
-    /* BELOW 1344px (Smaller desktops) */
-    /**************************/
     @media (max-width: 84em) {
         gap: 6rem;
     }
 
-    /**************************/
-    /* BELOW 1200px (Landscape Tablets) */
-    /**************************/
     @media (max-width: 75em) {
         grid-template-columns: 1fr 1fr;
         gap: 4rem;
     }
 
-    /**************************/
-    /* BELOW 944px (Tablets) */
-    /**************************/
     @media (max-width: 59em) {
         grid-template-columns: 1fr;
         gap: 3rem;
         text-align: center;
     }
 
-    /**************************/
-    /* BELOW 704px (Smaller tablets) */
-    /**************************/
     @media (max-width: 44em) {
         gap: 2.5rem;
     }
 
-    /**************************/
-    /* BELOW 544px (Phones) */
-    /**************************/
     @media (max-width: 34em) {
         gap: 2rem;
     }
@@ -75,9 +65,8 @@ const HeroTextBox = styled.div`
     flex-direction: column;
     align-items: flex-start;
 
-    /* Add some left padding for mid-sized screens */
     @media (max-width: 75em) and (min-width: 59em) {
-        padding-left: 5rem; // adjust as needed
+        padding-left: 5rem;
     }
 
     @media (max-width: 59em) {
@@ -93,6 +82,10 @@ const HeadingPrimary = styled.h1`
     line-height: 1.1;
     letter-spacing: 1px;
     color: var(--color-grey-800);
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-400);
+    }
 
     @media (max-width: 84em) {
         font-size: 3.5rem;
@@ -115,6 +108,10 @@ const HeroDescription = styled.p`
     color: var(--color-grey-700);
     line-height: 1.4;
     font-weight: 500;
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-300);
+    }
 
     @media (max-width: 59em) {
         font-size: 1.4rem;
@@ -142,6 +139,18 @@ const CTAButton = styled(Link)`
         background-color: #087f5b;
     }
 
+    /* 🌙 Dark mode button */
+    [data-theme="dark"] & {
+        background-color: var(--color-primary);
+        color: #fff;
+
+        &:hover,
+        &:active {
+            background-color: #0ca678;
+            box-shadow: 0 0 12px rgba(12, 166, 120, 0.4);
+        }
+    }
+
     @media (max-width: 59em) {
         padding: 1rem 4rem;
         font-size: 1.3rem;
@@ -160,6 +169,10 @@ const Profiles = styled.div`
         height: 5.6rem;
         border-radius: 50%;
         border: 3px solid #e6f2ef;
+
+        [data-theme="dark"] & {
+            border: 3px solid var(--color-grey-700);
+        }
     }
 
     img + img {
@@ -181,6 +194,14 @@ const Statistic = styled.p`
     strong {
         color: #087f5b;
         font-size: var(--font-base);
+    }
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-200);
+
+        strong {
+            color: var(--color-primary);
+        }
     }
 
     @media (max-width: 59em) {
@@ -219,6 +240,15 @@ const HeroImageBox = styled.div`
         );
         box-shadow: 0 0 60px rgba(8, 127, 91, 0.4);
         z-index: -2;
+
+        [data-theme="dark"] & {
+            background: radial-gradient(
+                circle at center,
+                #0ca67833,
+                transparent 70%
+            );
+            box-shadow: 0 0 60px rgba(12, 166, 120, 0.3);
+        }
     }
 
     &::after {
@@ -229,6 +259,10 @@ const HeroImageBox = styled.div`
         border-radius: 50%;
         border: 2px dashed rgba(8, 127, 91, 0.4);
         z-index: -1;
+
+        [data-theme="dark"] & {
+            border: 2px dashed rgba(12, 166, 120, 0.3);
+        }
     }
 `;
 
@@ -239,6 +273,10 @@ const HeroImage = styled.img`
     z-index: 10;
     filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.15));
     object-fit: cover;
+
+    [data-theme="dark"] & {
+        filter: drop-shadow(0 10px 30px rgba(12, 166, 120, 0.3));
+    }
 
     @media (max-width: 59em) {
         max-width: 300px;
