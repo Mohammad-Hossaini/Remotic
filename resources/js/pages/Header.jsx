@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { IoIosMoon, IoIosSunny } from "react-icons/io";
 import { TfiClose, TfiMenu } from "react-icons/tfi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -56,6 +57,7 @@ const Nav = styled.nav`
         display: flex;
         list-style: none;
         gap: 2.4rem;
+        align-items: center;
     }
 
     @media (max-width: 59em) {
@@ -95,6 +97,7 @@ const NavItem = styled.a`
     &:hover {
         color: #087f5b;
     }
+
     &:focus {
         outline: none;
         box-shadow: 0 0 0 7px rgba(8, 127, 91, 0.4);
@@ -212,6 +215,35 @@ const CloseIcon = styled(TfiClose)`
     }
 `;
 
+const ThemeButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2.4rem;
+    color: #114a38;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        color: #087f5b;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 7px rgba(8, 127, 91, 0.4);
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 59em) {
+        display: flex;
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+        z-index: 3000;
+    }
+`;
+
 /* ==============================
    HEADER COMPONENT
 ============================== */
@@ -226,9 +258,20 @@ export default function Header({ heroRef }) {
 
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isSticky, setIsSticky] = useState(false);
+    const [theme, setTheme] = useState(
+        localStorage.getItem("theme") || "light"
+    );
     const headerRef = useRef(null);
 
-    // ✅ Toggle mobile nav
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(theme === "light" ? "dark" : "light");
+    };
+
     const toggleNav = () => {
         setIsNavOpen((prev) => {
             document.body.style.overflow = !prev ? "hidden" : "auto";
@@ -236,34 +279,25 @@ export default function Header({ heroRef }) {
         });
     };
 
-    // ✅ Close mobile nav when link clicked
     const closeNav = () => {
         setIsNavOpen(false);
         document.body.style.overflow = "auto";
     };
 
-    // ✅ Smooth scroll or navigate for Home
     const handleHomeClick = (e) => {
         e.preventDefault();
-
         if (isMainPage) {
             const hero = document.querySelector("#hero");
             if (hero) hero.scrollIntoView({ behavior: "smooth" });
-        } else if (isHomePage) {
-            navigate("/home");
         } else {
             navigate("/home");
         }
-
         closeNav();
     };
 
     useEffect(() => {
         const handleScroll = () => {
-            if (!heroRef?.current) {
-                // fallback: stick header after 80px scroll
-                setIsSticky(window.scrollY > 80);
-            }
+            if (!heroRef?.current) setIsSticky(window.scrollY > 80);
         };
 
         const observer = heroRef?.current
@@ -294,6 +328,11 @@ export default function Header({ heroRef }) {
                             <img src="/remotic-logo2.png" alt="Remotic Logo" />
                         </Link>
                     </LogoContainer>
+
+                    {/* 🌙 Theme toggle is now OUTSIDE Buttons (visible on all devices) */}
+                    <ThemeButton onClick={toggleTheme}>
+                        {theme === "light" ? <IoIosMoon /> : <IoIosSunny />}
+                    </ThemeButton>
 
                     <Nav isOpen={isNavOpen}>
                         <ul>
