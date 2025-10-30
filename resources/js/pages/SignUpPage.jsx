@@ -127,7 +127,7 @@ function SignUpPage() {
                             <div className="content">
                                 <div className="job-seeker-profiles">
                                     <img
-                                        src="/company-images/image(5).jfif"
+                                        src="/company-images/image(7).png"
                                         alt=""
                                         className="profile-img small"
                                     />
