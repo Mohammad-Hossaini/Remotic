@@ -3,10 +3,10 @@
     background-color: var(--color-grey-0);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
-    overflow: hidden;
+    min-height: 88vh;
 }
 
-/* ================= HEADER ================= */
+/* HEADER */
 .profile-header {
     position: relative;
     width: 100%;
@@ -19,33 +19,31 @@
     object-fit: cover;
 }
 
-/* PROFILE PHOTO */
 .profile-photo {
-    position: absolute;
-    bottom: -50px;
-    left: 20px;
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 3px solid var(--color-grey-50);
+    border: 3px solid var(--color-grey-500);
+    position: absolute;
+    bottom: -50px;
+    left: 20px;
     object-fit: cover;
     background: var(--color-grey-0);
 }
 
-/* ================= EDIT BUTTONS ================= */
+/* EDIT BUTTONS */
 .edit-btn {
     position: absolute;
-    background: white;
-    border-radius: 50%;
-    border: 1px solid #ccc;
-    padding: 6px;
-    cursor: pointer;
-    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 2;
+    background-color: #fff;
+    border-radius: 50%;
+    border: 1px solid var(--color-grey-200);
+    padding: 6px;
+    cursor: pointer;
+    font-size: 1.4rem;
+    transition: all 0.2s ease;
 }
 
 .edit-btn:hover {
@@ -53,26 +51,23 @@
     color: #fff;
 }
 
-/* Edit background camera (top right on bg) */
 .edit-bg-bottom {
-    top: 10px;
+    bottom: 200px;
     right: 10px;
 }
 
-/* Edit profile photo camera */
 .edit-profile {
     bottom: -10px;
     left: 100px;
 }
 
-/* Edit info button (bottom-right of info area) */
 .edit-info {
     bottom: -25px;
-    right: 2px;
+    right: 10px;
     transform: translateY(50%);
 }
 
-/* ================= MAIN CONTENT ================= */
+/* MAIN GRID */
 .profile-box {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -80,37 +75,38 @@
     padding: 6rem 2rem 2rem;
 }
 
+/* LEFT SECTION */
 .user-details {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1rem;
 }
 
 .user-name {
-    font-size: 2rem;
+    font-size: var(--font-lg);
     font-weight: 700;
     color: var(--color-grey-900);
 }
 
 .user-description {
-    font-size: 1.4rem;
+    font-size: var(--font-sm);
     color: var(--color-grey-600);
     line-height: 1.5;
 }
 
+/* TAGS */
 .user-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.8rem;
+    gap: 0.5rem;
 }
 
 .tag {
-    padding: 0.4rem 1.2rem;
-    font-size: 1.2rem;
+    padding: 0.4rem 1rem;
+    font-size: var(--font-xs);
     background-color: var(--color-grey-50);
     color: var(--color-grey-700);
-    border-radius: 50px;
-    transition: background 0.2s ease;
+    border-radius: var(--radius-xxl);
 }
 
 .tag:hover {
@@ -118,122 +114,124 @@
     color: #fff;
 }
 
-/* RIGHT SIDE */
+/* RIGHT SECTION */
 .profile-right {
     background-color: var(--color-grey-50);
     border-radius: var(--radius-md);
-    padding: 2rem;
+    padding: 1.5rem;
 }
 
-.profile-right h3 {
-    margin-bottom: 1rem;
-    font-size: 1.6rem;
-    color: var(--color-grey-900);
-}
+/* ========== RESPONSIVE BREAKPOINTS ========== */
 
-/* ================= RESPONSIVE ================= */
-
-/* Tablets */
-@media (max-width: 1024px) {
+/* BELOW 1344px (Smaller desktops) */
+@media screen and (max-width: 1344px) {
     .profile-box {
-        grid-template-columns: 1fr;
-        padding: 6rem 1.5rem 2rem;
+        grid-template-columns: 1.8fr 1fr;
     }
+}
 
-    .user-details {
-        text-align: center;
-        align-items: center;
+/* BELOW 1200px (Landscape Tablets) */
+@media screen and (max-width: 1200px) {
+    .profile-box {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        padding: 5rem 1.5rem 1.5rem;
     }
-
-    .user-tags {
-        justify-content: center;
-    }
-
-    /* Center profile photo */
     .profile-photo {
-        left: 50%;
-        transform: translateX(-50%);
+        width: 90px;
+        height: 90px;
+        left: 15px;
+        bottom: -45px;
     }
-
-    /* Center camera icon correctly below photo */
     .edit-profile {
-        left: 53%;
-        bottom: -12px;
-        transform: translateX(40%);
+        left: 85px;
+        bottom: -5px;
     }
-
-    /* Keep edit info visible but near top */
     .edit-info {
         bottom: -20px;
-        right: 15px;
     }
 }
 
-/* Mobile */
-@media (max-width: 768px) {
+/* BELOW 944px (Tablets) */
+@media screen and (max-width: 944px) {
+    .profile-box {
+        grid-template-columns: 1fr;
+        padding: 5rem 1rem 1rem;
+    }
+    .profile-right {
+        margin-top: 2rem;
+    }
+    .profile-photo {
+        left: 55%;
+        transform: translateX(-50%);
+        bottom: -50px;
+    }
+
+    /* FIX: Keep edit-profile icon aligned to profile photo */
+    .edit-profile {
+        left: 53.5%;
+        transform: translateX(40px); /* shift relative to photo */
+        bottom: -5px;
+    }
+
+    .edit-info {
+        right: 10px;
+    }
+    .edit-bg-bottom {
+        bottom: 200px;
+        right: 10px;
+    }
+}
+
+/* BELOW 704px (Smaller tablets) */
+@media screen and (max-width: 704px) {
     .profile-header {
         height: 200px;
     }
-
     .profile-photo {
         width: 80px;
         height: 80px;
         bottom: -40px;
     }
-
     .edit-profile {
-        bottom: -12px;
-        transform: translateX(35%);
+        left: 52.5%;
+        bottom: -5px;
     }
-
     .edit-bg-bottom {
-        top: 8px;
-        right: 8px;
+        bottom: 156px;
     }
-
     .edit-info {
         bottom: -25px;
-        right: 10px;
-    }
-
-    .user-name {
-        font-size: 1.8rem;
-    }
-
-    .user-description {
-        font-size: 1.3rem;
     }
 }
 
-/* Small Phones */
-@media (max-width: 480px) {
-    .profile-box {
-        padding: 5rem 1rem 1rem;
+/* BELOW 544px (Phones) */
+@media screen and (max-width: 544px) {
+    .profile-container {
+        padding: 1rem;
     }
-
+    .profile-header {
+        height: 180px;
+    }
     .profile-photo {
         width: 70px;
         height: 70px;
         bottom: -35px;
     }
-
-    .edit-profile {
-        bottom: -10px;
-        transform: translateX(30%);
-    }
-
     .edit-bg-bottom {
-        top: 5px;
-        right: 5px;
+        bottom: 140px;
+        right: 10px;
     }
-
+    .edit-profile {
+        bottom: -5px;
+        left: 62%;
+        transform: translateX(-50%);
+    }
     .edit-info {
         bottom: -20px;
-        right: 8px;
+        right: 10px;
     }
-
-    .edit-btn {
-        font-size: 14px;
-        padding: 4px;
+    .profile-box {
+        padding: 4rem 0.5rem 1rem;
     }
 }
