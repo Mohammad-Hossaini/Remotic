@@ -147,7 +147,6 @@ const StyledWarning = styled.div`
 // ===== Component =====
 export default function JobModal({ open, onOpenChange, job }) {
     const { user } = useAuth();
-    // console.log("Employer Logo :", user?.data?.user?.company?.logo);
     const [socket, setSocket] = useState(null);
     const queryClient = useQueryClient();
 
@@ -158,52 +157,46 @@ export default function JobModal({ open, onOpenChange, job }) {
         handleSubmit,
         formState: { errors },
         reset,
+        watch,
     } = useForm({
-        defaultValues: job || {},
+        defaultValues: {
+            title: job?.title || "",
+            description: job?.description || "",
+            requirements: job?.requirements || "",
+            salary_min: job?.salary_min || "",
+            salary_max: job?.salary_max || "",
+            job_type: job?.job_type || "",
+            location: job?.location || "",
+            status: job?.status || "draft",
+            deadline: job?.deadline || "",
+        },
     });
 
-    // 🔹 اتصال سوکت
+    const salaryMinValue = watch("salary_min");
+
     useEffect(() => {
         if (!user?.token) return;
-
         const newSocket = io("http://localhost:5000", {
             auth: { token: user.token },
         });
-
-        newSocket.on("getResponse", (data) => {
-            // console.log("all the data", data);
-        });
-
         setSocket(newSocket);
-
-        return () => {
-            newSocket.disconnect();
-        };
+        return () => newSocket.disconnect();
     }, [user?.token]);
 
-    // 🔹 Mutation ایجاد یا ویرایش شغل
     const mutation = useMutation({
-        mutationFn: async (data) => {
-            if (isEditMode) return updateJob(job.id, data);
-            return createJob(data);
-        },
-
+        mutationFn: async (data) =>
+            isEditMode ? updateJob(job.id, data) : createJob(data),
         onSuccess: (response) => {
             const createdJob = response.job || response;
-            // console.log("✅ Created Job:", createdJob);
-            // console.log("🆔 Job ID:", createdJob?.id);
-
             queryClient.invalidateQueries(["jobs"]);
             queryClient.invalidateQueries(["postedJobs"]);
-
             toast.success(
                 isEditMode
                     ? "Job updated successfully!"
                     : "Job created successfully!"
             );
-
             if (!isEditMode && socket) {
-                const payload = {
+                socket.emit("postedJob", {
                     jobId: createdJob?.id,
                     employerName: user?.data?.user?.name,
                     companyName:
@@ -218,16 +211,11 @@ export default function JobModal({ open, onOpenChange, job }) {
                     salaryRange: `${createdJob?.salary_min} - ${createdJob?.salary_max}`,
                     deadline: createdJob?.deadline,
                     createdAt: new Date().toISOString(),
-                };
-
-                // console.log("📤 Emitting postedJob payload:", payload);
-                socket.emit("postedJob", payload);
+                });
             }
-
             reset();
             onOpenChange(false);
         },
-
         onError: (err) => {
             console.error(err);
             toast.error(err.message || "Failed to save job!");
@@ -235,38 +223,12 @@ export default function JobModal({ open, onOpenChange, job }) {
     });
 
     const onSubmit = (data) => {
-        const jobData = {
+        mutation.mutate({
             company_id: user?.data?.user?.company?.id,
-            title: data.title,
-            description: data.description,
-            requirements: data.requirements || "",
+            ...data,
             salary_min: parseInt(data.salary_min),
             salary_max: parseInt(data.salary_max),
-            job_type: data.job_type,
-            location: data.location,
-            status: data.status || "draft",
-            deadline: data.deadline || null,
-        };
-
-        mutation.mutate(jobData);
-
-        if (socket) {
-            const payload = {
-                employerName: user?.data?.user?.name,
-                companyName:
-                    user?.data?.user?.company?.name || "Unknown Company",
-                companyLogo: user?.data?.user?.company?.logo,
-                jobTitle: data.title,
-                location: data.location,
-                description: data.description,
-                jobType: data.job_type,
-                salaryRange: `${data.salary_min} - ${data.salary_max}`,
-                deadline: data.deadline,
-                createdAt: new Date().toISOString(),
-            };
-        } else {
-            console.warn("⚠️ No socket connection!");
-        }
+        });
     };
 
     const today = new Date().toISOString().split("T")[0];
@@ -311,7 +273,6 @@ export default function JobModal({ open, onOpenChange, job }) {
 
                             <label>Description</label>
                             <textarea
-                                rows={4}
                                 {...register("description", {
                                     required: "Description is required",
                                 })}
@@ -323,23 +284,51 @@ export default function JobModal({ open, onOpenChange, job }) {
                             )}
 
                             <label>Requirements</label>
-                            <textarea rows={3} {...register("requirements")} />
+                            <textarea
+                                {...register("requirements", {
+                                    required: "Requirements is required",
+                                })}
+                            />
+                            {errors.requirements && (
+                                <StyledWarning>
+                                    <CiWarning /> {errors.requirements.message}
+                                </StyledWarning>
+                            )}
 
                             <label>Salary Min</label>
                             <input
                                 type="number"
                                 {...register("salary_min", {
                                     required: "Salary min required",
+                                    min: {
+                                        value: 101,
+                                        message:
+                                            "Salary min must be greater than 100",
+                                    },
                                 })}
                             />
+                            {errors.salary_min && (
+                                <StyledWarning>
+                                    <CiWarning /> {errors.salary_min.message}
+                                </StyledWarning>
+                            )}
 
                             <label>Salary Max</label>
                             <input
                                 type="number"
                                 {...register("salary_max", {
                                     required: "Salary max required",
+                                    validate: (value) =>
+                                        parseInt(value) >
+                                            parseInt(salaryMinValue) ||
+                                        "Salary max must be greater than min salary",
                                 })}
                             />
+                            {errors.salary_max && (
+                                <StyledWarning>
+                                    <CiWarning /> {errors.salary_max.message}
+                                </StyledWarning>
+                            )}
 
                             <label>Job Type</label>
                             <select
@@ -354,6 +343,11 @@ export default function JobModal({ open, onOpenChange, job }) {
                                 <option value="internship">Internship</option>
                                 <option value="remote">Remote</option>
                             </select>
+                            {errors.job_type && (
+                                <StyledWarning>
+                                    <CiWarning /> {errors.job_type.message}
+                                </StyledWarning>
+                            )}
 
                             <label>Location</label>
                             <input
@@ -361,20 +355,45 @@ export default function JobModal({ open, onOpenChange, job }) {
                                     required: "Location is required",
                                 })}
                             />
+                            {errors.location && (
+                                <StyledWarning>
+                                    <CiWarning /> {errors.location.message}
+                                </StyledWarning>
+                            )}
 
                             <label>Status</label>
-                            <select {...register("status")}>
+                            <select
+                                {...register("status", {
+                                    required: "Please select status",
+                                })}
+                            >
+                                <option value="">-- Select Status --</option>
                                 <option value="draft">Draft</option>
                                 <option value="open">Open</option>
                                 <option value="closed">Closed</option>
                             </select>
+                            {errors.status && (
+                                <StyledWarning>
+                                    <CiWarning /> {errors.status.message}
+                                </StyledWarning>
+                            )}
 
                             <label>Deadline</label>
                             <input
                                 type="date"
                                 min={today}
-                                {...register("deadline")}
+                                {...register("deadline", {
+                                    required: "Select a deadline",
+                                    validate: (value) =>
+                                        new Date(value) > new Date() ||
+                                        "Deadline must be a future date",
+                                })}
                             />
+                            {errors.deadline && (
+                                <StyledWarning>
+                                    <CiWarning /> {errors.deadline.message}
+                                </StyledWarning>
+                            )}
                         </Body>
 
                         <Footer>
@@ -385,7 +404,6 @@ export default function JobModal({ open, onOpenChange, job }) {
                             >
                                 Cancel
                             </button>
-
                             <button
                                 type="submit"
                                 className="save"
