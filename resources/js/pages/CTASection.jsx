@@ -52,6 +52,7 @@ const CTALeft = styled.div`
         color: #fff;
         font-size: 1.6rem;
         margin-bottom: 1rem;
+
         @media (max-width: 44em) {
             font-size: 1.4rem;
         }
@@ -77,6 +78,11 @@ const RightLeft = styled.div`
     background-color: #fff;
     padding: 1.2rem 2.8rem;
 
+    /* 🌙 Dark mode fix — only affects RightLeft background */
+    [data-theme="dark"] & {
+        background-color: var(--color-grey-300);
+    }
+
     .cta-label {
         display: flex;
         align-items: center;
@@ -85,6 +91,10 @@ const RightLeft = styled.div`
         font-weight: 500;
         color: #555;
         margin-bottom: 0.5rem;
+    }
+    [data-theme="dark"] & {
+        background-color: var(--color-grey-30);
+        color: var(--color-grey-500);
     }
 
     .cta-icon {
@@ -105,18 +115,29 @@ const RightLeft = styled.div`
         &:focus {
             border-color: #087f5b;
         }
+
+        /* 🌙 optional input color adjustment */
+        [data-theme="dark"] & {
+            background-color: var(--color-grey-200);
+            color: var(--color-grey-100);
+            border-color: var(--color-grey-500);
+
+            &::placeholder {
+                color: var(--color-grey-100);
+            }
+        }
     }
 `;
 
 const RightRight = styled.div`
     border-radius: 7px;
-    padding: 0.6rem 1.2rem; /* decreased padding */
+    padding: 0.6rem 1.2rem;
     background-color: #087f5b;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem; /* decreased gap */
+    gap: 0.4rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 
