@@ -26,7 +26,7 @@ const MenuButton = styled.button`
     color: #218c6b;
     font-size: 2.4rem;
     cursor: pointer;
-    z-index: 1000; 
+    /* z-index: 1000;  */
     transition: all 0.3s ease;
     outline: none;
     &:focus {
