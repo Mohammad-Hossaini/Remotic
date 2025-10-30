@@ -1,111 +1,167 @@
+/**************************
+  Suggested Jobs Styling
+**************************/
 .sugessted-jobs {
-    max-width: 100rem;
-    margin: var(--space-32) auto;
-    padding: 0 var(--space-16);
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1.6rem;
 }
 
-.sugessted-job-cards {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
 .sugess-header {
-    margin-bottom: var(--space-16);
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .sugess-header h2 {
-    font-size: var(--font-lg);
+    font-size: 2rem;
+    font-weight: 700;
     color: var(--color-grey-900);
 }
 
 .sugess-header p {
-    font-size: var(--font-sm);
+    font-size: 1rem;
     color: var(--color-grey-600);
-    margin-top: var(--space-4);
+    margin-top: 0.4rem;
 }
 
-/* Job Card */
+/**************************
+  Job Cards Grid
+**************************/
+.sugessted-job-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+/**************************
+  Job Card
+**************************/
 .sugessted-card {
-    margin-top: var(--space-16);
-    border-left: 4px solid var(--color-primary-light);
+    background: var(--color-grey-0);
     border-radius: var(--radius-md);
-    background-color: var(--color-grey-0);
+    box-shadow: var(--shadow-md);
+    padding: 1.6rem 2rem;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: space-between;
-    padding: var(--space-16) var(--space-20);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 42rem;
+    transition: all 0.3s ease;
+    border-left: 6px solid var(--color-primary-light);
+    min-height: 220px;
 }
 
 .sugessted-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
 }
 
-/* Left Section */
+/**************************
+  Left Section
+**************************/
 .sugessted-left {
     display: flex;
-    align-items: center;
-    gap: var(--space-16);
-    flex: 1;
-}
-
-.left-image {
-    flex-shrink: 0;
+    align-items: flex-start;
+    gap: 1.2rem;
+    margin-bottom: 1.4rem;
 }
 
 .company-image {
-    width: 6rem;
-    height: 6rem;
+    width: 70px;
+    height: 70px;
     object-fit: contain;
     border-radius: var(--radius-sm);
     background: var(--color-grey-100);
-    padding: var(--space-4);
+    padding: 0.4rem;
     box-shadow: var(--shadow-sm);
 }
 
 .left-desc .job-title {
-    font-size: var(--font-md);
+    font-size: 1.2rem;
     font-weight: 600;
     color: var(--color-grey-900);
 }
 
 .left-desc .company {
-    font-size: var(--font-sm);
+    font-size: 0.95rem;
+    color: var(--color-grey-700);
+}
+
+.left-desc .location,
+.left-desc .salary {
+    font-size: 0.9rem;
     color: var(--color-grey-600);
 }
 
-.left-desc .location {
-    font-size: var(--font-sm);
-    color: var(--color-grey-500);
-}
-
-/* Right Section */
+/**************************
+  Right Section
+**************************/
 .sugessted-right {
-    text-align: center;
-    flex-shrink: 0;
+    border-top: 1px solid var(--color-grey-200);
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
-.posted {
-    font-size: var(--font-xs);
-    color: var(--color-grey-500);
+.sugessted-right .type span {
+    background: var(--color-primary-light);
+    color: #fff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.sugessted-right .posted {
+    font-size: 0.85rem;
+    color: var(--color-grey-600);
 }
 
 .learn-more-btn {
-    display: inline-block;
-    margin-top: var(--space-4); /* smaller margin */
-    padding: var(--space-4) var(--space-12); /* smaller padding */
-    background-color: var(--color-primary-light);
+    background: var(--color-primary-light);
     color: #fff;
+    padding: 0.6rem 1.2rem;
     border-radius: var(--radius-sm);
-    font-size: var(--font-xs); /* smaller font size */
-    font-weight: 500;
+    font-size: 0.9rem;
+    font-weight: 600;
     text-decoration: none;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition: background 0.2s ease;
 }
 
 .learn-more-btn:hover {
-    background-color: var(--color-primary);
-    transform: translateY(-2px);
+    background: var(--color-primary);
+}
+
+/**************************
+  Responsive Design
+**************************/
+@media (max-width: 768px) {
+    .sugessted-card {
+        padding: 1.4rem;
+    }
+
+    .company-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .left-desc .job-title {
+        font-size: 1rem;
+    }
+
+    .sugessted-right {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .sugessted-job-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .sugess-header h2 {
+        font-size: 1.6rem;
+    }
 }

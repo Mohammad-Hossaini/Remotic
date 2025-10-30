@@ -1,4 +1,3 @@
-
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -181,7 +180,7 @@ export default function EditImagesDialog({ trigger, onBgUpdate }) {
                 `http://127.0.0.1:8000/${user.data.user.profile.background_image}`
             );
         } else {
-            setPreviewImage("/background_images/default-bg.jpg");
+            setPreviewImage("/background_images/linkedin-bg2.jpg");
         }
     }, [user]);
 
