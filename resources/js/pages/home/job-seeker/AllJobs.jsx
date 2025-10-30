@@ -24,6 +24,11 @@ import SearchBar from "../../SearchBar";
 ============================== */
 const AllJobsWrapper = styled.div`
     min-height: 100vh;
+
+    /* 🌙 Dark Mode */
+    [data-theme="dark"] & {
+        background-color: var(--color-grey-30);
+    }
 `;
 
 const JobsContainer = styled.div`
@@ -58,12 +63,20 @@ const JobText = styled.div`
     display: flex;
     flex-direction: column;
     flex: 1;
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-100);
+    }
 `;
 
 const JobPosition = styled.p`
     font-size: var(--font-base);
     font-weight: 500;
     color: var(--color-grey-700);
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-300);
+    }
 `;
 
 const JobInfo = styled.div`
@@ -73,26 +86,46 @@ const JobInfo = styled.div`
     margin-top: 0.8rem;
     font-size: var(--font-sm);
     color: var(--color-grey-500);
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-400);
+    }
 `;
 
 const CompanyName = styled.span`
     font-weight: 700;
     color: var(--color-grey-900);
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-300);
+    }
 `;
 
 const Location = styled.span`
     font-weight: 600;
     color: var(--color-grey-700);
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-300);
+    }
 `;
 
 const Salary = styled.span`
     font-weight: 600;
     color: var(--color-success);
+
+    [data-theme="dark"] & {
+        color: var(--color-success);
+    }
 `;
 
 const PostedAt = styled.span`
     font-size: var(--font-xs);
     color: var(--color-grey-400);
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-500);
+    }
 `;
 
 /* ---------------- Modal Styling ---------------- */
@@ -115,6 +148,11 @@ const ModalContent = styled.div`
     max-height: 500px;
     text-align: center;
     position: relative;
+
+    [data-theme="dark"] & {
+        background-color: var(--color-grey-800);
+        color: var(--color-grey-100);
+    }
 `;
 
 const CloseButton = styled.button`
@@ -126,6 +164,10 @@ const CloseButton = styled.button`
     font-size: 2rem;
     color: var(--color-grey-600);
     cursor: pointer;
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-200);
+    }
 `;
 
 const ModalTitle = styled.h2`
@@ -145,6 +187,10 @@ const JobImg = styled.img`
     transition: transform 0.4s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 
+    [data-theme="dark"] & {
+        background: var(--color-grey-900);
+    }
+
     @media (max-width: 768px) {
         width: 60px;
         height: 60px;
@@ -160,6 +206,10 @@ const ModalDescription = styled.p`
     font-size: 1.4rem;
     color: var(--color-grey-700);
     margin-bottom: 2rem;
+
+    [data-theme="dark"] & {
+        color: var(--color-grey-200);
+    }
 `;
 
 const ModalButtons = styled.div`
@@ -184,6 +234,10 @@ const JobTitle = styled.h3`
     margin-top: 0.6rem;
     transition: color 0.3s ease;
 
+    [data-theme="dark"] & {
+        color: var(--color-grey-400);
+    }
+
     @media (max-width: 768px) {
         font-size: 1.25rem;
     }
@@ -199,6 +253,10 @@ const JobDescription = styled.p`
     color: var(--color-grey-600);
     line-height: 1.5;
 
+    [data-theme="dark"] & {
+        color: var(--color-grey-400);
+    }
+
     @media (max-width: 768px) {
         font-size: 0.9rem;
         margin-top: 0.5rem;
@@ -208,7 +266,6 @@ const JobDescription = styled.p`
         font-size: 0.85rem;
     }
 `;
-
 const JobsCard = styled.div`
     width: 105%;
     max-width: 400px;
@@ -223,6 +280,12 @@ const JobsCard = styled.div`
     overflow: hidden;
     transition: all 0.35s ease;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+
+    [data-theme="dark"] & {
+        background: var(--color-grey-0); /* 🌙 dark mode default bg */
+        border: 1px solid var(--color-grey-700);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
 
     &:hover {
         transform: translateY(-8px) scale(1.02);
@@ -240,6 +303,10 @@ const JobsCard = styled.div`
         .hover-overlay {
             opacity: 1;
             pointer-events: auto;
+        }
+
+        [data-theme="dark"] & {
+            background: var(--color-grey-0); /* 🌙 dark mode hover bg */
         }
     }
 
@@ -282,6 +349,11 @@ const HoverOverlay = styled.div`
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(25px);
     border-top: 1px solid var(--color-grey-200);
+
+    [data-theme="dark"] & {
+        background: rgba(0, 0, 0, 0.5);
+        border-top: 1px solid var(--color-grey-700);
+    }
 
     @media (max-width: 768px) {
         flex-direction: column;
