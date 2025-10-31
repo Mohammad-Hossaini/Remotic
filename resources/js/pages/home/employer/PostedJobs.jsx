@@ -4,6 +4,7 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import Loader from "../../../components/loader/Loader";
 import { useAuth } from "../../../hook/AuthContext";
 import { deleteJob, userPostedJobs } from "../../../services/apiAllJobs";
 import DeleteConfirmModal from "../../../ui/DeleteConfirmModal";
@@ -52,7 +53,12 @@ export default function PostedJobs() {
         }
     }
     // console.log("All the posted jobs", jobs);
-    if (isLoading) return <p className="loading">Loading your jobs...</p>;
+    if (isLoading)
+        return (
+            <div style={{ height: "70vh" }}>
+                <Loader center />
+            </div>
+        );
     if (isError)
         return <p className="error">Failed to load jobs. Try again.</p>;
 

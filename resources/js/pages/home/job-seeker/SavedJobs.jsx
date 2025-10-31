@@ -4,6 +4,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { useAuth } from "../../../hook/AuthContext";
 
+import Loader from "../../../components/loader/Loader";
 import {
     getMyFavorites,
     removeFavoriteJob,
@@ -58,7 +59,11 @@ function SavedJobs() {
     });
 
     if (isLoading || loadingCompanies)
-        return <p className="loading">Loading saved jobs...</p>;
+        return (
+            <div style={{ height: "70vh" }}>
+                <Loader center />
+            </div>
+        );
     if (isError) return <p className="error">Failed to fetch saved jobs.</p>;
 
     return (

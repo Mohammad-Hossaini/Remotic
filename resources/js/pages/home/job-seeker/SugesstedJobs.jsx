@@ -95,6 +95,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { SlCalender } from "react-icons/sl";
 import { Link } from "react-router-dom";
+import Loader from "../../../components/loader/Loader";
 import { getJobs } from "../../../services/apiAllJobs";
 import "./SugesstedJobs.css";
 
@@ -109,7 +110,12 @@ function SugesstedJobs() {
         queryFn: getJobs,
     });
 
-    if (isLoading) return <p className="loading">Loading suggested jobs...</p>;
+    if (isLoading)
+        return (
+            <div style={{ height: "70vh" }}>
+                <Loader center />
+            </div>
+        );
     if (isError) return <p className="error">Error: {error.message}</p>;
 
     return (

@@ -114,6 +114,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { HiOutlineTrash, HiOutlineUser } from "react-icons/hi";
+import Loader from "../../../components/loader/Loader";
 import {
     deleteAppliedJob,
     getAppliedJobsByUser,
@@ -163,7 +164,11 @@ export default function AppliedJobs() {
     });
 
     if (isLoading || loadingCompanies)
-        return <p className="loading">Loading applied jobs...</p>;
+        return (
+            <div style={{ height: "70vh" }}>
+                <Loader center />
+            </div>
+        );
     if (isError) return <p className="error">Failed to fetch applied jobs.</p>;
 
     return (
