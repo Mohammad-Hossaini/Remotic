@@ -378,6 +378,56 @@
 .mobile-icons {
     margin-right: 1.8rem;
 }
+/* Search Dropdown */
+.search-dropdown {
+    position: absolute;
+    top: 110%; /* کمی پایین تر از input */
+    left: 0;
+    width: 100%;
+    max-width: 500px; /* می‌توانید تنظیم کنید */
+    background-color: var(--color-grey-0);
+    border: 1px solid var(--color-grey-300);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Dropdown Item */
+.dropdown-item {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: var(--color-grey-900);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-item:hover {
+    background-color: var(--color-grey-100);
+    color: var(--color-primary);
+}
+
+/* Rtl / Dark Mode adjustment (optional) */
+[data-theme="dark"] .search-dropdown {
+    background-color: var(--color-grey-30);
+    border-color: var(--color-grey-500);
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: var(--color-grey-50);
+}
+
+/* [data-theme="dark"] .dropdown-item:hover {
+    background-color: var(--color-grey-300);
+    color: var(--color-primary);
+} */
+
 /* ✅ Base navbar stays grid in desktop */
 .navbar-container {
     /* background-color: red; */
