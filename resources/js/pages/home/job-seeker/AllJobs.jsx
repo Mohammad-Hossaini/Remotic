@@ -5,6 +5,7 @@ import { HiMiniHeart } from "react-icons/hi2";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+import Loader from "../../../components/loader/Loader";
 import { useAuth } from "../../../hook/AuthContext";
 import { getJobs } from "../../../services/apiAllJobs";
 import {
@@ -223,6 +224,20 @@ const WideButton = styled(Button)`
     width: 100%;
     font-size: 1.2rem;
     padding: 0.9rem 1.2rem;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+
+    [data-theme="dark"] & {
+        background-color: #374151;
+        color: #d1d5db;
+        border: 1px solid #4b5563;
+
+        &:hover {
+            background-color: #4b5563;
+            color: #fff;
+            border-color: #4b5563;
+        }
+    }
 `;
 
 /* ---------------- Job Card Styling ---------------- */
@@ -355,15 +370,25 @@ const HoverOverlay = styled.div`
         border-top: 1px solid var(--color-grey-700);
     }
 
+    /* 📱 Mobile Fix */
     @media (max-width: 768px) {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         height: auto;
-        padding: 1rem;
+        padding: 0.8rem 1rem;
         position: static;
         opacity: 1;
         background: none;
         backdrop-filter: none;
         border-top: none;
+        gap: 0.8rem;
+    }
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 0.6rem 0;
     }
 `;
 
@@ -390,13 +415,22 @@ const FancyButton = styled(Button)`
 
         &:hover {
             background-color: var(--color-primary);
-            color: #fff; /* keeps text visible */
+            color: #fff;
             border-color: var(--color-primary);
         }
     }
 
+    /* 📱 Mobile button alignment */
     @media (max-width: 768px) {
+        flex: 1;
+        width: auto;
+        font-size: 0.95rem;
+        padding: 0.7rem 1rem;
+    }
+
+    @media (max-width: 480px) {
         width: 100%;
+        font-size: 0.9rem;
     }
 `;
 
@@ -585,7 +619,9 @@ export default function AllJobs() {
                 {isLoading ? (
                     <div style={{ textAlign: "center", padding: "3rem 0" }}>
                         <div className="spinner" />
-                        <p>Loading jobs...</p>
+                        <div style={{ height: "70vh" }}>
+                            <Loader center />
+                        </div>
                     </div>
                 ) : filteredJobs.length > 0 ? (
                     <JobList>
