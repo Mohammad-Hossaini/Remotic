@@ -374,11 +374,25 @@ const FancyButton = styled(Button)`
     border-radius: var(--radius-sm);
     padding: var(--space-12) var(--space-20);
     box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease,
+        background-color 0.3s ease, color 0.3s ease;
 
     &:hover {
         transform: translateY(-2px);
         box-shadow: var(--shadow-md);
+    }
+
+    /* 🌙 Dark mode hover fix */
+    [data-theme="dark"] & {
+        background-color: var(--color-grey-900);
+        color: var(--color-grey-100);
+        border: 1px solid var(--color-primary);
+
+        &:hover {
+            background-color: var(--color-primary);
+            color: #fff; /* keeps text visible */
+            border-color: var(--color-primary);
+        }
     }
 
     @media (max-width: 768px) {
