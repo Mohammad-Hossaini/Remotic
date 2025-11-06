@@ -159,7 +159,6 @@ function Navbar() {
                             </Content>
                         </RadixDialog.Portal>
                     </RadixDialog.Root>
-
                     {/* 🌙 / ☀️ Theme Toggle */}
                     <button onClick={toggleTheme} className="theme-btn">
                         {theme === "light" ? (
