@@ -1,9 +1,7 @@
 import { BsBriefcase } from "react-icons/bs";
 import { FaRegUser } from "react-icons/fa6";
 import { HiOutlineHeart } from "react-icons/hi";
-import { IoFolderOpenOutline } from "react-icons/io5";
 import { MdOutlineBookmarkAdded } from "react-icons/md";
-import { TbMessage2Share } from "react-icons/tb";
 
 import { HiOutlineCheckCircle, HiOutlineHome } from "react-icons/hi2";
 
@@ -86,16 +84,16 @@ function MainNav({ isOpen, role = "jobseeker" }) {
                         icon: <MdOutlineBookmarkAdded />,
                         label: "Suggested Jobs",
                     },
-                    {
-                        path: "/app/application",
-                        icon: <IoFolderOpenOutline />,
-                        label: "Application",
-                    },
-                    {
-                        path: "/app/messages",
-                        icon: <TbMessage2Share />,
-                        label: "Messages",
-                    },
+                    // {
+                    //     path: "/app/application",
+                    //     icon: <IoFolderOpenOutline />,
+                    //     label: "Application",
+                    // },
+                    // {
+                    //     path: "/app/messages",
+                    //     icon: <TbMessage2Share />,
+                    //     label: "Messages",
+                    // },
                     {
                         path: profilePath,
                         icon: <FaRegUser />,
