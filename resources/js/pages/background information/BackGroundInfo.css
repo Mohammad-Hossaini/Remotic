@@ -76,7 +76,7 @@
 
 .edit-profile {
     bottom: -10px;
-    left: 105px;
+    left: 104px;
 }
 
 .edit-info {
@@ -223,7 +223,7 @@
         bottom: -40px;
     }
     .edit-profile {
-        left: 48%;
+        left: 47%;
         bottom: -5px;
     }
     .edit-bg-bottom {
@@ -252,7 +252,7 @@
     }
     .edit-profile {
         bottom: -5px;
-        left: 50%;
+        left: 57.5%;
         transform: translateX(-50%);
     }
     .edit-info {
