@@ -65,6 +65,11 @@ const LogoContainer = styled.div`
     [data-theme="dark"] & img {
         filter: brightness(0) invert(1);
     }
+    @media (max-width: 34em) {
+        img {
+            display: none;
+        }
+    }
 `;
 
 const Nav = styled.nav`
@@ -102,7 +107,6 @@ const Nav = styled.nav`
     }
 `;
 
-
 const NavItem = styled.a`
     text-decoration: none;
     color: var(--color-grey-900);
@@ -122,7 +126,7 @@ const NavItem = styled.a`
 
     /* 🌙 Dark mode color fix */
     [data-theme="dark"] & {
-        color: #f3f4f6; 
+        color: #f3f4f6;
         &:hover {
             color: var(--color-primary);
         }
@@ -156,7 +160,6 @@ const NavBtn = styled(Link)`
     }
 `;
 
-
 const LoginBtn = styled(NavBtn)`
     color: #114a38;
     background-color: #fff;
@@ -167,7 +170,7 @@ const LoginBtn = styled(NavBtn)`
     }
 
     @media (max-width: 75em) {
-        display: none;
+        /* display: none; */
     }
 
     @media (max-width: 59em) {
@@ -181,7 +184,7 @@ const LoginBtn = styled(NavBtn)`
 
     /* 🌙 Dark mode adjustments (fix contrast) */
     [data-theme="dark"] & {
-        color: #111827; 
+        color: #111827;
         background-color: var(--color-primary);
         &:hover {
             background-color: var(--color-primary-light);
