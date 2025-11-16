@@ -1,6 +1,22 @@
 const BASE_URL = "http://127.0.0.1:8000/api";
+// export async function getJobs() {
+//     const res = await fetch(`${BASE_URL}/jobs`, {
+//         method: "GET",
+//         headers: {
+//             Accept: "application/json",
+//         },
+//     });
+
+//     const data = await res.json();
+//     if (!res.ok) {
+//         // console.log("Server Error:", data);
+//         throw new Error(data.message || "Failed to fetch jobs");
+//     }
+//     return data;
+// }
 export async function getJobs() {
-    const res = await fetch(`${BASE_URL}/jobs`, {
+    const res = await fetch(`${BASE_URL}/jobsforall`, {
+        // <-- updated route
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -8,10 +24,11 @@ export async function getJobs() {
     });
 
     const data = await res.json();
+
     if (!res.ok) {
-        // console.log("Server Error:", data);
         throw new Error(data.message || "Failed to fetch jobs");
     }
+
     return data;
 }
 
