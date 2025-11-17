@@ -11,7 +11,7 @@ import { getJobs } from "../../../services/apiAllJobs";
 import {
     addFavoriteJob,
     getMyFavorites,
-    removeFavoriteJob,
+    removeFavoriteJob
 } from "../../../services/apiFavorites";
 import Button from "../../../ui/Button";
 import DialogDemo from "../../../ui/DialogDemo";
