@@ -17,7 +17,9 @@ class ApplicationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'cover_letter' => 'nullable|string|max:2000',
-            'resume_path'  => 'required|mimes:pdf,doc,docx|max:2048',
+            // 'resume_path'  => 'required|mimes:pdf,doc,docx|max:2048',
+            'resume_path'  => 'nullable|file|mimes:pdf,doc,docx|max:2048', // تغییر داده شد
+
         ]);
 
         if ($validator->fails()) {
@@ -33,13 +35,22 @@ class ApplicationController extends Controller
         }
 
         // 🔹 Handle resume upload
-        $resumePath = null;
-        if ($request->hasFile('resume_path')) {
-            $file = $request->file('resume_path');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('resumes'), $filename);
-            $resumePath = 'resumes/' . $filename;
-        }
+        // $resumePath = null;
+        // if ($request->hasFile('resume_path')) {
+        //     $file = $request->file('resume_path');
+        //     $filename = time() . '_' . $file->getClientOriginalName();
+        //     $file->move(public_path('resumes'), $filename);
+        //     $resumePath = 'resumes/' . $filename;
+        // }
+// پیش‌فرض: رزومه قبلی یا null
+$resumePath = $user->profile->resume ?? null;
+
+if ($request->hasFile('resume_path')) {
+    $file = $request->file('resume_path');
+    $filename = time() . '_' . $file->getClientOriginalName();
+    $file->move(public_path('resumes'), $filename);
+    $resumePath = 'resumes/' . $filename;
+}
 
         // 🔹 Create application
         $application = Application::create([

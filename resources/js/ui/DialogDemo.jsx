@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { CiWarning } from "react-icons/ci";
 import styled from "styled-components";
+import { useAuth } from "../hook/AuthContext";
 import { applyForJob } from "../services/application";
 import Spinner from "./Spinner";
 
@@ -77,16 +78,12 @@ const Body = styled.div`
         font-size: 1.4rem;
     }
 
-    textarea,
-    input {
+    textarea {
         padding: 0.8rem;
         border-radius: 0.5rem;
         border: 1px solid #ced4da;
         font-size: 1.4rem;
         width: 100%;
-    }
-
-    textarea {
         min-height: 6rem;
         resize: vertical;
     }
@@ -146,13 +143,55 @@ const StyledWarning = styled.div`
     color: #b91c1c;
 `;
 
-const FileName = styled.span`
-    font-size: 1.3rem;
-    color: #555;
+const FileInputWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+`;
+
+const ResumeBox = styled.div`
+    width: 100%;
+    border: 1px dashed #cbd5e1;
+    background: #f8fafc;
+    padding: 1.4rem;
+    border-radius: 0.7rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    text-align: center;
+`;
+
+const CustomResumeButton = styled.button`
+    background-color: #eef2ff;
+    border: 1px solid #c7d2fe;
+    padding: 0.9rem 1.6rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+    transition: 0.2s ease;
+
+    &:hover {
+        background-color: #e0e7ff;
+    }
+`;
+
+const SelectedFileName = styled.span`
+    font-size: 1.35rem;
+    color: #374151;
+    font-style: italic;
 `;
 
 // ===== Main Component =====
 export default function JobApplyDialog({ open, onOpenChange, jobId }) {
+    const { user } = useAuth();
+    const hasResume = !!user?.data?.user?.profile?.resume;
+
     const {
         register,
         handleSubmit,
@@ -161,24 +200,25 @@ export default function JobApplyDialog({ open, onOpenChange, jobId }) {
     } = useForm();
 
     const [fileName, setFileName] = useState("");
-
     const onSubmit = async (values) => {
         try {
+            toast.success("Submitting your application...");
+
             const formData = new FormData();
             formData.append("cover_letter", values.cover_letter);
-            if (values.resume_path[0])
-                formData.append("resume_path", values.resume_path[0]);
+            if (fileName) {
+                formData.append("resume_path", fileName);
+            }
 
-            const response = await applyForJob(jobId, formData);
-            toast.success(
-                response.message || "Application submitted successfully!"
-            );
+            await applyForJob(jobId, formData);
+            // toast.success("Application submitted successfully!");
+
             onOpenChange(false);
             reset();
             setFileName("");
         } catch (err) {
             console.error(err);
-            toast.error(err.message || "Failed to apply");
+            toast.error("Failed to apply");
         }
     };
 
@@ -209,41 +249,74 @@ export default function JobApplyDialog({ open, onOpenChange, jobId }) {
                                 display: "flex",
                                 flexDirection: "column",
                                 flex: "1 1 auto",
-                                minHeight: 0,
                             }}
                         >
                             <Body>
+                                {/* Cover Letter */}
                                 <label htmlFor="cover_letter">
                                     Cover Letter
                                 </label>
                                 <textarea
                                     id="cover_letter"
                                     placeholder="Write a short cover letter..."
-                                    {...register("cover_letter")}
-                                />
-
-                                <label htmlFor="resume_path">
-                                    Upload Resume (PDF/DOC)
-                                </label>
-                                <input
-                                    id="resume_path"
-                                    type="file"
-                                    accept=".pdf,.doc,.docx"
-                                    {...register("resume_path", {
-                                        required: "Please upload your resume",
-                                        onChange: (e) =>
-                                            setFileName(
-                                                e.target.files[0]?.name || ""
-                                            ),
+                                    {...register("cover_letter", {
+                                        required: "Cover letter is required",
                                     })}
                                 />
-                                {fileName && <FileName>📄 {fileName}</FileName>}
-                                {errors.resume_path && (
+                                {errors.cover_letter && (
                                     <StyledWarning>
-                                        <CiWarning />
-                                        {errors.resume_path.message}
+                                        <CiWarning />{" "}
+                                        {errors.cover_letter.message}
                                     </StyledWarning>
                                 )}
+
+                                {/* Resume */}
+                                <FileInputWrapper>
+                                    <label>Resume</label>
+                                    <ResumeBox>
+                                        <CustomResumeButton
+                                            type="button"
+                                            onClick={() =>
+                                                document
+                                                    .getElementById(
+                                                        "resume_input"
+                                                    )
+                                                    .click()
+                                            }
+                                        >
+                                            {hasResume
+                                                ? "📄 Upload Another Resume"
+                                                : "📄 Upload Resume"}
+                                        </CustomResumeButton>
+
+                                        <input
+                                            id="resume_input"
+                                            type="file"
+                                            accept=".pdf,.doc,.docx"
+                                            style={{ display: "none" }}
+                                            onChange={(e) => {
+                                                if (e.target.files.length > 0) {
+                                                    setFileName(
+                                                        e.target.files[0]
+                                                    );
+                                                }
+                                            }}
+                                        />
+
+                                        {fileName && (
+                                            <SelectedFileName>
+                                                Selected: {fileName.name}
+                                            </SelectedFileName>
+                                        )}
+
+                                        {hasResume && !fileName && (
+                                            <SelectedFileName>
+                                                Current Resume:{" "}
+                                                {user.data.user.profile.resume}
+                                            </SelectedFileName>
+                                        )}
+                                    </ResumeBox>
+                                </FileInputWrapper>
                             </Body>
 
                             <Footer>

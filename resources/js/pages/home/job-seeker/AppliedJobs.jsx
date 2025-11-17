@@ -188,9 +188,14 @@ export default function AppliedJobs() {
                             <div className="left">
                                 <div className="job-img">
                                     <img
+                                        // src={
+                                        //     company?.logo ||
+                                        //     "/company-images/image(6).jfif"
+                                        // }
                                         src={
-                                            company?.logo ||
-                                            "/company-images/image(6).jfif"
+                                            company?.logo
+                                                ? `http://127.0.0.1:8000/storage/${company.logo}`
+                                                : "/company-images/default.png"
                                         }
                                         alt={company?.name || "Company Logo"}
                                     />

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { HiMiniHeart } from "react-icons/hi2";
 import { RxCross2 } from "react-icons/rx";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Loader from "../../../components/loader/Loader";
 import { useAuth } from "../../../hook/AuthContext";
@@ -11,7 +11,7 @@ import { getJobs } from "../../../services/apiAllJobs";
 import {
     addFavoriteJob,
     getMyFavorites,
-    removeFavoriteJob
+    removeFavoriteJob,
 } from "../../../services/apiFavorites";
 import Button from "../../../ui/Button";
 import DialogDemo from "../../../ui/DialogDemo";
@@ -463,10 +463,10 @@ export default function AllJobs() {
     const [currentJob, setCurrentJob] = useState(null);
 
     const { user } = useAuth();
-    const location = useLocation();
+    // console.log("User in AllJobs:", user?.data?.user?.profile?.resume);
+    // const location = useLocation();
     const queryClient = useQueryClient();
     const isHomePage = location.pathname === "/";
-
     const {
         data: jobs = [],
         isLoading,
@@ -535,31 +535,23 @@ export default function AllJobs() {
             return;
         }
 
-        try {
-            const isFavorite = savedJobIds.includes(job.id);
-            if (isFavorite) {
-                await removeFavoriteJob(job.id, user.token);
-                toast.success("Removed from favorites 💔");
-                setSavedJobIds((prev) => prev.filter((id) => id !== job.id));
-            } else {
-                await addFavoriteJob(job.id, user.token);
-                toast.success("Added to favorites ❤️");
-                setSavedJobIds((prev) => [...prev, job.id]);
-            }
-        } catch (err) {
-            console.error(err);
-            const message =
-                err?.message ||
-                "Failed to update favorite. Please try again later.";
-            toast.error(message);
-        }
+        const isFavorite = savedJobIds.includes(job.id);
+        setSavedJobIds((prev) =>
+            isFavorite ? prev.filter((id) => id !== job.id) : [...prev, job.id]
+        );
 
-        try {
-            const updatedFavorites = await getMyFavorites(user.token);
-            setSavedJobIds(updatedFavorites.map((f) => f.job.id));
-        } catch (err) {
-            console.error("Failed to refresh favorites", err);
-        }
+        await toast.promise(
+            isFavorite
+                ? removeFavoriteJob(job.id, user.token)
+                : addFavoriteJob(job.id, user.token),
+            {
+                loading: isFavorite ? "Removing..." : "Adding...",
+                success: isFavorite
+                    ? "Removed from favorites 💔"
+                    : "Added to favorites ❤️",
+                error: "Failed to update favorite",
+            }
+        );
     };
 
     const handleApplyNow = (job) => {
