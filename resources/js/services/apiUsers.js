@@ -114,7 +114,7 @@ export async function createNewUser(userData) {
                 );
             }
 
-            console.log("✅ Company created successfully:", companyResult);
+            // console.log("✅ Company created successfully:", companyResult);
         }
 
         return createdUser;
@@ -140,7 +140,7 @@ export async function getUserById(id) {
 // Update user (optional, depends on your Laravel routes)
 export async function updateUser(userId, updatedData) {
     const res = await fetch(`${BASE_URL}/users/${userId}`, {
-        method: "PUT", 
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
             Accept: "application/json",

@@ -4,11 +4,13 @@ import toast from "react-hot-toast";
 import { TiWarningOutline } from "react-icons/ti";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { loginUser } from "../features/authintication/apiLogin";
+import { useAuth } from "../hook/AuthContext";
+
 import { createNewUser } from "../services/apiUsers";
 import Spinner from "../ui/Spinner";
 import Footer from "./Footer";
 import Header from "./Header";
-
 const RegisterWrapper = styled.div`
     font-family: "Rubik", sans-serif;
     display: flex;
@@ -176,12 +178,22 @@ export default function RegisterEmployer() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-
+    const { login } = useAuth();
     const { mutate, isLoading } = useMutation(createNewUser, {
-        onSuccess: () => {
-            toast.success("Employer account created successfully!");
-            queryClient.invalidateQueries(["users"]);
-            navigate("/login");
+        onSuccess: async (_, formData) => {
+            // <-- formData is the object you sent
+            toast.success("Account created successfully!");
+
+            // Auto login using the original form data
+            const loginResponse = await loginUser({
+                email: formData.email,
+                password: formData.password,
+            });
+
+            login(loginResponse);
+
+            if (loginResponse.role === "employer") navigate("/employerApp");
+            else navigate("/app");
         },
         onError: (err) => toast.error(err.message),
     });
