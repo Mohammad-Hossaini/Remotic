@@ -626,7 +626,7 @@ export default function AllJobs() {
                                     src={
                                         job.company?.logo
                                             ? `http://127.0.0.1:8000/storage/${job.company.logo}`
-                                            : "/popular-logos/logo(4).png"
+                                            : "/images/company-default-images2.png"
                                     }
                                     alt={job.company?.name || "Company Logo"}
                                 />

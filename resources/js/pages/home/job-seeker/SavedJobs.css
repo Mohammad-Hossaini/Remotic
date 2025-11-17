@@ -165,6 +165,56 @@
     color: #d1d5db;
 }
 
+/* Apply Button */
+.applyBtn {
+    background-color: var(--color-primary, #16a34a);
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+    border: none;
+}
+
+.applyBtn:hover {
+    background-color: var(--color-primary-dark, #15803d);
+}
+
+.applyBtn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* Positioning Apply button inside card */
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 100%;
+    gap: 1rem;
+}
+
+[data-theme="dark"] .applyBtn {
+    background-color: #22c55e;
+    color: #111827;
+}
+
+[data-theme="dark"] .applyBtn:hover {
+    background-color: #16a34a;
+}
+
+@media (max-width: 768px) {
+    .right {
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 0.8rem;
+    }
+}
+
 @media (max-width: 768px) {
     .savedJobsCard {
         flex-direction: column;

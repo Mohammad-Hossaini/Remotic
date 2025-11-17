@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FaRegHeart } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
@@ -9,12 +10,16 @@ import {
     getMyFavorites,
     removeFavoriteJob,
 } from "../../../services/apiFavorites";
+import JobApplyDialog from "../../../ui/DialogDemo";
 import "./SavedJobs.css";
 
 function SavedJobs() {
     const { user } = useAuth();
     const queryClient = useQueryClient();
     const token = user?.token;
+
+    const [selectedJobId, setSelectedJobId] = useState(null);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const { data: companies = [], isLoading: loadingCompanies } = useQuery({
         queryKey: ["companies"],
@@ -64,7 +69,13 @@ function SavedJobs() {
                 <Loader center />
             </div>
         );
+
     if (isError) return <p className="error">Failed to fetch saved jobs.</p>;
+
+    const handleApplyClick = (jobId) => {
+        setSelectedJobId(jobId);
+        setIsDialogOpen(true);
+    };
 
     return (
         <div className="savedJobContainer">
@@ -86,11 +97,13 @@ function SavedJobs() {
                                 <div className="job-img">
                                     <img
                                         src={
-                                            company?.logo
-                                                ? `http://127.0.0.1:8000/storage/${company.logo}`
-                                                : "/company-images/default.png"
+                                            job.company?.logo
+                                                ? `http://127.0.0.1:8000/storage/${job.company.logo}`
+                                                : "/images/company-default-images2.png"
                                         }
-                                        alt={company?.name || "Company Logo"}
+                                        alt={
+                                            job.company?.name || "Company Logo"
+                                        }
                                     />
                                 </div>
 
@@ -114,6 +127,12 @@ function SavedJobs() {
                             </div>
 
                             <div className="right">
+                                <button
+                                    className="applyBtn"
+                                    onClick={() => handleApplyClick(job.id)}
+                                >
+                                    Apply
+                                </button>
                                 <FaRegHeart
                                     className="unfaveIcon"
                                     onClick={() => removeJob(job.id)}
@@ -122,6 +141,15 @@ function SavedJobs() {
                         </div>
                     );
                 })
+            )}
+
+            {/* Job Apply Dialog */}
+            {selectedJobId && (
+                <JobApplyDialog
+                    open={isDialogOpen}
+                    onOpenChange={(open) => setIsDialogOpen(open)}
+                    jobId={selectedJobId}
+                />
             )}
         </div>
     );
