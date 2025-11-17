@@ -59,4 +59,7 @@ class User extends Authenticatable
     public function applications() {
         return $this->hasMany(Application::class);
     }
+    public function favoriteJobs() {
+        return $this->hasMany(FavoriteJob::class);
+    }
 }
