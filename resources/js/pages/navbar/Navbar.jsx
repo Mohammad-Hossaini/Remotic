@@ -2,7 +2,8 @@ import * as RadixDialog from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { FaCaretDown } from "react-icons/fa";
-import { IoIosMoon, IoIosSunny, IoMdNotifications } from "react-icons/io";
+import { HiOutlineMoon } from "react-icons/hi2";
+import { IoIosSunny, IoMdNotificationsOutline } from "react-icons/io";
 import { TfiClose, TfiMenu } from "react-icons/tfi";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -141,7 +142,8 @@ function Navbar() {
                     <RadixDialog.Root>
                         <RadixDialog.Trigger asChild>
                             <div className="notification-wrapper">
-                                <IoMdNotifications className="Icon" />
+                                {/* <IoMdNotifications className="Icon" /> */}
+                                <IoMdNotificationsOutline className="Icon" />
                                 {notifications.length > 0 && (
                                     <span className="badge">
                                         {notifications.length}
@@ -162,7 +164,8 @@ function Navbar() {
                     {/* 🌙 / ☀️ Theme Toggle */}
                     <button onClick={toggleTheme} className="theme-btn">
                         {theme === "light" ? (
-                            <IoIosMoon className="Icon" />
+                            // <IoIosMoon className="Icon" />
+                            <HiOutlineMoon className="Icon" />
                         ) : (
                             <IoIosSunny className="Icon" />
                         )}

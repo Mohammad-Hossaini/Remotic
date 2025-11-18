@@ -68,12 +68,16 @@
 .right {
     justify-self: end;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    gap: var(--space-16);
+    justify-content: center;
+    gap: var(--space-12);
 }
 
 .icons {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: var(--space-12);
 }
 
@@ -81,7 +85,7 @@
     font-size: var(--font-lg);
     cursor: pointer;
     transition: color 0.3s ease, transform 0.2s ease;
-    color: var(--color-grey-500);
+    color: var(--color-grey-600);
     &:focus {
         outline: none;
         box-shadow: 0 0 0 7px rgba(8, 127, 91, 0.4);
@@ -94,10 +98,10 @@
     transform: scale(1.05);
 }
 
-.Icon:hover {
+/* .Icon:hover {
     color: var(--color-primary);
     transform: scale(1.1);
-}
+} */
 
 .Avatar {
     display: flex;
@@ -128,7 +132,7 @@
     align-items: center;
     gap: var(--space-12);
     cursor: pointer;
-    padding: 0.4rem 0.8rem;
+    padding: 0.4rem 0.1rem;
     border-radius: var(--radius-sm);
     transition: background-color 0.2s ease;
 }
