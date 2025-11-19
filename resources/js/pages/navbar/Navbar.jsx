@@ -1,10 +1,13 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { BiMessageRounded } from "react-icons/bi";
 import { FaCaretDown } from "react-icons/fa";
+import { FaRegCircleCheck } from "react-icons/fa6";
+import { HiDotsVertical } from "react-icons/hi";
 import { HiOutlineMoon } from "react-icons/hi2";
 import { IoIosSunny, IoMdNotificationsOutline } from "react-icons/io";
-import { IoCloseOutline } from "react-icons/io5";
+import { RiDeleteBinLine } from "react-icons/ri";
 import { TfiClose, TfiMenu } from "react-icons/tfi";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -30,10 +33,9 @@ const Overlay = styled(RadixDialog.Overlay)`
 const Content = styled(RadixDialog.Content)`
     position: fixed;
     top: 60px;
-    right: 20px;
-    width: 380px;
-    max-width: 90vw;
-    height: 400px;
+    right: 30px;
+    width: 430px;
+    max-height: 90vh;
     overflow-y: auto;
     background: var(--color-grey-0);
     border-radius: var(--radius-lg);
@@ -43,6 +45,7 @@ const Content = styled(RadixDialog.Content)`
     flex-direction: column;
     gap: 0;
     z-index: 1000;
+    /* background-color: red; */
 `;
 
 const CloseButton = styled(RadixDialog.Close)`
@@ -115,8 +118,6 @@ function Navbar() {
         setFilteredJobs(result.slice(0, 5));
         setShowDropdown(true);
     }, [searchQuery, jobs]);
-
-    // تابع اصلاح پیام نوتیفیکیشن و کوتاه کردن آن
     function formatNotificationMessage(message, maxLength = 50) {
         if (!message) return "";
         return message.length <= maxLength
@@ -197,10 +198,13 @@ function Navbar() {
                         <RadixDialog.Portal>
                             <Overlay />
                             <Content className="radix-content">
-                                <CloseButton>
-                                    <IoCloseOutline />
-                                </CloseButton>
-                                <h4>Notifications</h4>
+                                <div className="title">
+                                    <IoMdNotificationsOutline className="notiveIcon" />
+                                    <p className="notiveTitile">
+                                        Notifications
+                                    </p>
+                                    <BiMessageRounded className="messageIcon" />
+                                </div>
                                 <div>
                                     {isLoadingNotifications && (
                                         <p>Loading...</p>
@@ -218,6 +222,12 @@ function Navbar() {
                                             }`}
                                             key={n.id}
                                         >
+                                            <div className="notiveImage">
+                                                <img
+                                                    src="/image(7).png"
+                                                    alt=""
+                                                />
+                                            </div>
                                             <div className="NotificationContent">
                                                 <strong className="company-name">
                                                     {n.title}
@@ -237,7 +247,7 @@ function Navbar() {
                                             <div className="NotificationActions">
                                                 <div className="dots-menu-wrapper">
                                                     <button className="dots-btn">
-                                                        ⋮
+                                                        <HiDotsVertical />
                                                     </button>
                                                     <div className="context-menu">
                                                         {!n.is_read && (
@@ -248,6 +258,7 @@ function Navbar() {
                                                                     )
                                                                 }
                                                             >
+                                                                <FaRegCircleCheck />
                                                                 Done
                                                             </button>
                                                         )}
@@ -258,6 +269,7 @@ function Navbar() {
                                                                 )
                                                             }
                                                         >
+                                                            <RiDeleteBinLine />
                                                             Delete
                                                         </button>
                                                     </div>
@@ -266,10 +278,12 @@ function Navbar() {
                                         </div>
                                     ))}
                                 </div>
+                                {/* <div className="navFooter">
+                                    <button>show all the messages</button>
+                                </div> */}
                             </Content>
                         </RadixDialog.Portal>
                     </RadixDialog.Root>
-
                     {/* Theme Toggle */}
                     <button onClick={toggleTheme} className="theme-btn">
                         {theme === "light" ? (
