@@ -132,6 +132,7 @@ const StyledWarning = styled.div`
 // ===== Component =====
 export default function JobModal({ open, onOpenChange, job }) {
     const { user } = useAuth();
+    console.log("Company image :", user?.data?.user?.company?.logo);
     const queryClient = useQueryClient();
 
     const isEditMode = Boolean(job);
@@ -183,7 +184,7 @@ export default function JobModal({ open, onOpenChange, job }) {
                         user?.data?.user?.company?.name || "your company"
                     }.`,
                 });
-                toast.success("Notification sent successfully!");
+                // toast.success("Notification sent successfully!");
             }
 
             reset();
