@@ -6,9 +6,9 @@ import toast, { Toaster } from "react-hot-toast";
 import { CiWarning } from "react-icons/ci";
 import styled from "styled-components";
 import { useAuth } from "../hook/AuthContext";
+import { sendNotification } from "../services/apiNotifications";
 import { applyForJob } from "../services/application";
 import Spinner from "./Spinner";
-
 // ===== Styled Components =====
 const DialogOverlay = styled(RadixDialog.Overlay)`
     background: rgba(0, 0, 0, 0.5);
@@ -204,21 +204,47 @@ export default function JobApplyDialog({ open, onOpenChange, jobId }) {
         try {
             toast.success("Submitting your application...");
 
+            // ارسال اپلیکیشن
             const formData = new FormData();
             formData.append("cover_letter", values.cover_letter);
-            if (fileName) {
-                formData.append("resume_path", fileName);
-            }
+            if (fileName) formData.append("resume_path", fileName);
 
-            await applyForJob(jobId, formData);
-            // toast.success("Application submitted successfully!");
+            const appliedJob = await applyForJob(jobId, formData);
+            try {
+                const allUsersResponse = await fetch(
+                    "http://127.0.0.1:8000/api/users",
+                    { credentials: "include" }
+                );
+
+                if (allUsersResponse.ok) {
+                    const allUsers = await allUsersResponse.json();
+
+                    // حذف کارجو خودش از لیست
+                    const userIds = allUsers
+                        .map((u) => u.id)
+                        .filter((id) => id !== user?.data?.user?.id);
+
+                    if (userIds.length > 0) {
+                        await sendNotification({
+                            user_ids: userIds,
+                            title: "Applied to a job",
+                            message: `${user?.data?.user?.name} applied to the job "${appliedJob.title}".`,
+                        });
+                    }
+                } else {
+                    console.warn("Could not fetch users for notification");
+                }
+            } catch (notifErr) {
+                console.warn("Notification error:", notifErr);
+            }
 
             onOpenChange(false);
             reset();
             setFileName("");
+            toast.success("Application submitted successfully!");
         } catch (err) {
             console.error(err);
-            toast.error("Failed to apply");
+            toast.error("You have allready applied for this job.");
         }
     };
 
