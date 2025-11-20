@@ -5,7 +5,7 @@
     flex-direction: column;
     gap: 2rem;
     font-family: "Inter", sans-serif;
-    background-color: var(--color-grey-30);
+    /* background-color: var(--color-grey-30); */
 }
 
 [data-theme="dark"] .jobdash-container {
@@ -88,10 +88,15 @@
     border-radius: 0;
 }
 /* ------------------------------
-   🎨 Box 1 – Favorite Jobs
+   🎨 Box 1 – Favorite Jobs (Primary Green)
 --------------------------------*/
 .favJobs {
     --box-color: var(--color-primary);
+    background-image: linear-gradient(
+        135deg,
+        rgba(8, 127, 91, 0.05) 0%,
+        rgba(8, 127, 91, 0.15) 100%
+    );
 }
 .favJobs::after {
     background-color: var(--color-primary);
@@ -102,26 +107,38 @@
 .favJobs .jobdash-icon-wrap {
     background-color: rgba(8, 127, 91, 0.18);
 }
+
 /* ------------------------------
-   🔵 Box 2 – Jobs Applied (Info Blue)
+   🟡 Box 2 – Jobs Applied (Pear/Light Orange)
 --------------------------------*/
 .jobsApplied {
-    --box-color: var(--color-info);
+    --box-color: #f97316; /* نارنجی/گلابی روشن */
+    background-image: linear-gradient(
+        135deg,
+        rgba(249, 115, 22, 0.05) 0%,
+        rgba(249, 115, 22, 0.15) 100%
+    );
 }
 .jobsApplied::after {
-    background-color: var(--color-info);
+    background-color: #f97316;
 }
 .jobsApplied .jobdash-icon {
-    color: var(--color-info);
+    color: #f97316;
 }
 .jobsApplied .jobdash-icon-wrap {
-    background-color: rgba(3, 105, 161, 0.18);
+    background-color: rgba(249, 115, 22, 0.18);
 }
+
 /* ------------------------------
-   🟡 Box 3 – Total Jobs Available (Warning)
+   🟡 Box 3 – Total Jobs Available (Warning Yellow)
 --------------------------------*/
 .totalJobs {
     --box-color: var(--color-warning);
+    background-image: linear-gradient(
+        135deg,
+        rgba(161, 98, 7, 0.05) 0%,
+        rgba(161, 98, 7, 0.15) 100%
+    );
 }
 .totalJobs::after {
     background-color: var(--color-warning);
@@ -134,19 +151,24 @@
 }
 
 /* ------------------------------
-   🟢 Box 4 – All Listed Jobs (Success Green)
+   🟢 Box 4 – All Listed Jobs (Pink)
 --------------------------------*/
 .allListed {
-    --box-color: var(--color-success);
+    --box-color: #ec4899; /* گلابی */
+    background-image: linear-gradient(
+        135deg,
+        rgba(236, 72, 153, 0.05) 0%,
+        rgba(236, 72, 153, 0.15) 100%
+    );
 }
 .allListed::after {
-    background-color: var(--color-success);
+    background-color: #ec4899;
 }
 .allListed .jobdash-icon {
-    color: var(--color-success);
+    color: #ec4899;
 }
 .allListed .jobdash-icon-wrap {
-    background-color: rgba(21, 128, 61, 0.18);
+    background-color: rgba(236, 72, 153, 0.18);
 }
 
 /* 🌙 Dark Mode – keep colors vibrant */

@@ -4,19 +4,11 @@ import { HiPaperAirplane } from "react-icons/hi";
 import { HiDocumentCheck } from "react-icons/hi2";
 import { MdOutlineArrowOutward, MdOutlineFavorite } from "react-icons/md";
 
-import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    ResponsiveContainer,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from "recharts";
 import { useAuth } from "../../../hook/AuthContext";
 import { getJobs } from "../../../services/apiAllJobs";
 import { getDashboardStats } from "../../../services/apiDashboard";
 
+import ApplicationsPerMonthChart from "../../../ui/ApplicationsPerMonthChart";
 import LineChart from "../../../ui/LineChart";
 import "./JobSeekerDashboard.css";
 
@@ -149,7 +141,6 @@ export default function JobSeekerDashboard() {
                 <div className="jobdash-chart-card">
                     <h2 className="jobdash-chart-title">
                         Applications per Day
-                       
                     </h2>
                     <h6>
                         <MdOutlineArrowOutward className="arrow" />
@@ -159,33 +150,18 @@ export default function JobSeekerDashboard() {
                         <LineChart />
                     </div>
                 </div>
-
                 <div className="jobdash-chart-card">
-                    <h3 className="jobdash-chart-title">
-                        <FaChartBar /> Applications per Month
-                    </h3>
+                    <h2 className="jobdash-chart-title">
+                        Applications per Month
+                    </h2>
+                    <h6>
+                        <FaChartBar className="arrow" />
+                        <span>Total applications per month</span>
+                    </h6>
                     <div className="jobdash-chart-wrapper">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart
-                                data={applicationsPerMonth}
-                                margin={{
-                                    top: 10,
-                                    right: 30,
-                                    left: 0,
-                                    bottom: 0,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="month" />
-                                <YAxis />
-                                <Tooltip />
-                                <Bar
-                                    dataKey="count"
-                                    radius={[6, 6, 0, 0]}
-                                    barSize={35}
-                                />
-                            </BarChart>
-                        </ResponsiveContainer>
+                        <ApplicationsPerMonthChart
+                            data={applicationsPerMonth}
+                        />
                     </div>
                 </div>
             </div>
