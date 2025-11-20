@@ -2,14 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import { FaChartBar, FaClipboardList } from "react-icons/fa";
 import { HiPaperAirplane } from "react-icons/hi";
 import { HiDocumentCheck } from "react-icons/hi2";
+import { MdOutlineArrowOutward, MdOutlineFavorite } from "react-icons/md";
 
-import { MdOutlineFavorite, MdQueryStats } from "react-icons/md";
 import {
     Bar,
     BarChart,
     CartesianGrid,
-    Line,
-    LineChart,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -19,6 +17,7 @@ import { useAuth } from "../../../hook/AuthContext";
 import { getJobs } from "../../../services/apiAllJobs";
 import { getDashboardStats } from "../../../services/apiDashboard";
 
+import LineChart from "../../../ui/LineChart";
 import "./JobSeekerDashboard.css";
 
 // Utility function for ordinal suffix
@@ -148,32 +147,16 @@ export default function JobSeekerDashboard() {
 
             <div className="jobdash-charts-section">
                 <div className="jobdash-chart-card">
-                    <h3 className="jobdash-chart-title">
-                        <MdQueryStats /> Applications per Day
-                    </h3>
+                    <h2 className="jobdash-chart-title">
+                        Applications per Day
+                       
+                    </h2>
+                    <h6>
+                        <MdOutlineArrowOutward className="arrow" />
+                        <span>50% more</span> in 2025
+                    </h6>
                     <div className="jobdash-chart-wrapper">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart
-                                data={applicationsPerDay}
-                                margin={{
-                                    top: 10,
-                                    right: 30,
-                                    left: 0,
-                                    bottom: 0,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" />
-                                <YAxis />
-                                <Tooltip />
-                                <Line
-                                    type="monotone"
-                                    dataKey="count"
-                                    stroke="#087f5b"
-                                    strokeWidth={3}
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
+                        <LineChart />
                     </div>
                 </div>
 

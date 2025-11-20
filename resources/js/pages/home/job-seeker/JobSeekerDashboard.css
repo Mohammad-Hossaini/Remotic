@@ -201,7 +201,7 @@
 /* =============== Charts Section =============== */
 .jobdash-charts-section {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 60rem 1fr;
     gap: 2rem;
 }
 
@@ -209,9 +209,30 @@
     background: var(--color-grey-0);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-sm);
-    padding: 2rem;
     display: flex;
     flex-direction: column;
+    max-height: 40vh;
+    background-image: linear-gradient(to right, #33375e, #141727);
+}
+.jobdash-chart-card h2 {
+    color: #fff;
+    padding-left: 10px;
+    letter-spacing: 2px;
+}
+.jobdash-chart-card h6 {
+    color: #cccccc4d;
+    padding: 20px;
+    padding-left: 10px;
+}
+.arrow {
+    color: #5fd975;
+    margin-right: 5px;
+    font-size: 20px;
+}
+.jobdash-chart-card span {
+    color: #afafbf;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .jobdash-chart-title {
@@ -220,7 +241,7 @@
     gap: 0.8rem;
     font-size: 1.8rem;
     color: var(--color-grey-900);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem 0;
 }
 
 .jobdash-chart-title svg {
@@ -243,7 +264,9 @@
 
 .jobdash-chart-wrapper {
     width: 100%;
-    height: 280px;
+    height: 260px; /* FIXED */
+    overflow: hidden;
+    /* background-image: linear-gradient(to right, #33375e, #141727); */
 }
 
 /* Responsive */
