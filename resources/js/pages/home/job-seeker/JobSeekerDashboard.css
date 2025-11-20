@@ -5,6 +5,7 @@
     flex-direction: column;
     gap: 2rem;
     font-family: "Inter", sans-serif;
+    background-color: var(--color-grey-30);
 }
 
 [data-theme="dark"] .jobdash-container {
@@ -62,31 +63,122 @@
 }
 
 .jobdash-stat-box {
+    position: relative;
+    overflow: hidden;
     flex: 1 1 220px;
     background: #fff;
     padding: 1.5rem;
-    border: 1px solid var(--color-grey-400);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 4.1rem;
+    /* background-color: red; */
+    height: 10rem;
 }
-
-.jobdash-icon {
-    font-size: 2.2rem;
+/* 🔵 General stat box accent line */
+.jobdash-stat-box::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 2px;
+    border-radius: 0;
+}
+/* ------------------------------
+   🎨 Box 1 – Favorite Jobs
+--------------------------------*/
+.favJobs {
+    --box-color: var(--color-primary);
+}
+.favJobs::after {
+    background-color: var(--color-primary);
+}
+.favJobs .jobdash-icon {
     color: var(--color-primary);
 }
+.favJobs .jobdash-icon-wrap {
+    background-color: rgba(8, 127, 91, 0.18);
+}
+/* ------------------------------
+   🔵 Box 2 – Jobs Applied (Info Blue)
+--------------------------------*/
+.jobsApplied {
+    --box-color: var(--color-info);
+}
+.jobsApplied::after {
+    background-color: var(--color-info);
+}
+.jobsApplied .jobdash-icon {
+    color: var(--color-info);
+}
+.jobsApplied .jobdash-icon-wrap {
+    background-color: rgba(3, 105, 161, 0.18);
+}
+/* ------------------------------
+   🟡 Box 3 – Total Jobs Available (Warning)
+--------------------------------*/
+.totalJobs {
+    --box-color: var(--color-warning);
+}
+.totalJobs::after {
+    background-color: var(--color-warning);
+}
+.totalJobs .jobdash-icon {
+    color: var(--color-warning);
+}
+.totalJobs .jobdash-icon-wrap {
+    background-color: rgba(161, 98, 7, 0.18);
+}
 
+/* ------------------------------
+   🟢 Box 4 – All Listed Jobs (Success Green)
+--------------------------------*/
+.allListed {
+    --box-color: var(--color-success);
+}
+.allListed::after {
+    background-color: var(--color-success);
+}
+.allListed .jobdash-icon {
+    color: var(--color-success);
+}
+.allListed .jobdash-icon-wrap {
+    background-color: rgba(21, 128, 61, 0.18);
+}
+
+/* 🌙 Dark Mode – keep colors vibrant */
+[data-theme="dark"] .jobdash-stat-box .jobdash-icon-wrap {
+    opacity: 0.9;
+}
+.jobdash-icon {
+    font-size: 2.8rem;
+    color: #34d399;
+}
+
+/* دایره واقعی با padding */
+.jobdash-icon-wrap {
+    background-color: rgba(52, 211, 153, 0.2); /* رنگ ملایم */
+    padding: 0.8rem; /* دایره درست می‌کند */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .jobdash-number {
-    font-size: 2rem;
+    font-size: 3rem;
+    line-height: 1.5;
     font-weight: 700;
     color: var(--color-grey-900);
 }
 
 .jobdash-name {
     font-size: 1.4rem;
+    font-weight: 600;
     color: var(--color-grey-600);
+    font-family: "Rubic", sans-serif;
 }
 
 [data-theme="dark"] .jobdash-stat-box {

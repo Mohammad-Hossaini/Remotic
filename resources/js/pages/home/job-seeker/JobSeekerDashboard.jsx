@@ -96,41 +96,51 @@ export default function JobSeekerDashboard() {
                 </h1>
                 <p className="jobdash-date">Today is {formattedDate}</p>
             </div>
-
             <div className="jobdash-stats-box">
-                <div className="jobdash-stat-box">
-                    {/* <GrFavorite className="jobdash-icon" /> */}
-                    <MdOutlineFavorite className="jobdash-icon" />
+                {/* Box 1 – Favorite Jobs */}
+                <div className="jobdash-stat-box favJobs">
+                    <div className="jobdash-icon-wrap">
+                        <MdOutlineFavorite className="jobdash-icon" />
+                    </div>
                     <div>
                         <p className="jobdash-number">
-                            {dashboardData?.total_favorite_jobs || 0}
+                            0{dashboardData?.total_favorite_jobs || 0}
                         </p>
                         <p className="jobdash-name">Favorite Jobs</p>
                     </div>
                 </div>
 
-                <div className="jobdash-stat-box">
-                    <HiPaperAirplane className="jobdash-icon" />
+                {/* Box 2 – Jobs Applied */}
+                <div className="jobdash-stat-box jobsApplied">
+                    <div className="jobdash-icon-wrap">
+                        <HiPaperAirplane className="jobdash-icon" />
+                    </div>
                     <div>
                         <p className="jobdash-number">
-                            {dashboardData?.total_applied_jobs || 0}
+                            0{dashboardData?.total_applied_jobs || 0}
                         </p>
                         <p className="jobdash-name">Jobs Applied</p>
                     </div>
                 </div>
 
-                <div className="jobdash-stat-box">
-                    <FaClipboardList className="jobdash-icon" />
+                {/* Box 3 – Total Jobs Available */}
+                <div className="jobdash-stat-box totalJobs">
+                    <div className="jobdash-icon-wrap">
+                        <FaClipboardList className="jobdash-icon" />
+                    </div>
                     <div>
-                        <p className="jobdash-number">{total_jobs}</p>
+                        <p className="jobdash-number">0{total_jobs}</p>
                         <p className="jobdash-name">Total Jobs Available</p>
                     </div>
                 </div>
 
-                <div className="jobdash-stat-box">
-                    <HiDocumentCheck className="jobdash-icon" />
+                {/* Box 4 – All Listed Jobs */}
+                <div className="jobdash-stat-box allListed">
+                    <div className="jobdash-icon-wrap">
+                        <HiDocumentCheck className="jobdash-icon" />
+                    </div>
                     <div>
-                        <p className="jobdash-number">{allJobs}</p>
+                        <p className="jobdash-number">0{allJobs}</p>
                         <p className="jobdash-name">All Listed Jobs</p>
                     </div>
                 </div>
