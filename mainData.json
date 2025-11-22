@@ -1,0 +1,14 @@
+[
+  { "label": "Jan", "applications_sent": 80, "rejected": 20 },
+  { "label": "Feb", "applications_sent": 95, "rejected": 25 },
+  { "label": "Mar", "applications_sent": 120, "rejected": 30 },
+  { "label": "Apr", "applications_sent": 100, "rejected": 28 },
+  { "label": "May", "applications_sent": 130, "rejected": 35 },
+  { "label": "Jun", "applications_sent": 140, "rejected": 38 },
+  { "label": "Jul", "applications_sent": 110, "rejected": 25 },
+  { "label": "Aug", "applications_sent": 150, "rejected": 40 },
+  { "label": "Sep", "applications_sent": 125, "rejected": 30 },
+  { "label": "Oct", "applications_sent": 160, "rejected": 45 },
+  { "label": "Nov", "applications_sent": 135, "rejected": 35 },
+  { "label": "Dec", "applications_sent": 170, "rejected": 50 }
+]

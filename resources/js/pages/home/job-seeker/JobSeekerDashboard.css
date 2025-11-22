@@ -15,22 +15,24 @@
 
 /* =============== Message Box =============== */
 .jobdash-message-box {
-    background: linear-gradient(90deg, #e6f2ef, #f3f4f6);
-    padding: 2.5rem 3rem;
+    /* background: linear-gradient(90deg, #e6f2ef, #f3f4f6); */
+    /* padding: 1.5rem 3rem; */
     border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-md);
+    /* box-shadow: var(--shadow-md); */
+    /* background-color: red; */
+    height: 4rem;
 }
 
-[data-theme="dark"] .jobdash-message-box {
+/* [data-theme="dark"] .jobdash-message-box {
     background: linear-gradient(90deg, #1f2937, #111827);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-}
+} */
 
 .jobdash-welcome {
     font-size: 2.4rem;
     font-weight: 700;
     color: var(--color-grey-900);
-    margin-bottom: 0.8rem;
+    /* margin-bottom: 0.8rem; */
 }
 
 .jobdash-welcome span {
@@ -74,7 +76,7 @@
     align-items: center;
     gap: 4.1rem;
     /* background-color: red; */
-    height: 10rem;
+    height: 11rem;
 }
 /* 🔵 General stat box accent line */
 .jobdash-stat-box::after {
@@ -197,10 +199,10 @@
 }
 
 .jobdash-name {
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1.6rem;
+    font-weight: 800;
     color: var(--color-grey-600);
-    font-family: "Rubic", sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 [data-theme="dark"] .jobdash-stat-box {
@@ -233,11 +235,11 @@
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    max-height: 40vh;
-    background-image: linear-gradient(to right, #33375e, #141727);
+    max-height: 53vh;
+    /* background-image: linear-gradient(to right, #33375e, #141727); */
 }
 .jobdash-chart-card h2 {
-    color: #fff;
+    /* color: #fff; */
     padding-left: 10px;
     letter-spacing: 2px;
 }
@@ -246,6 +248,13 @@
     padding: 20px;
     padding-left: 10px;
 }
+.chart-box {
+    width: 100%;
+    height: 250px; /* ارتفاع دقیق */
+    padding: 1rem; /* فاصله از لبه‌ها */
+    box-sizing: border-box;
+}
+
 .arrow {
     color: #5fd975;
     margin-right: 5px;
@@ -263,7 +272,9 @@
     gap: 0.8rem;
     font-size: 1.8rem;
     color: var(--color-grey-900);
-    margin-bottom: 1.8rem 0;
+    /* margin-bottom: 2.8rem 0.5rem; */
+    margin-top: 2rem;
+    margin-left: 1.8rem;
 }
 
 .jobdash-chart-title svg {
@@ -288,6 +299,7 @@
     width: 100%;
     height: 260px; /* FIXED */
     overflow: hidden;
+    margin-bottom: 3rem;
     /* background-image: linear-gradient(to right, #33375e, #141727); */
 }
 

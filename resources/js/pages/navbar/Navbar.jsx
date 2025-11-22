@@ -44,6 +44,21 @@ const Content = styled(RadixDialog.Content)`
     display: flex;
     flex-direction: column;
     gap: 0;
+    clip-path: polygon(
+        0%,
+        0%,
+        100%,
+        0% 100%,
+        75%,
+        75%,
+        75%,
+        75%,
+        100%,
+        50%,
+        75%,
+        0%,
+        75%
+    );
     z-index: 1000;
     /* background-color: red; */
 `;
@@ -207,77 +222,84 @@ function Navbar() {
                                 </div>
                                 <div>
                                     {isLoadingNotifications && (
-                                        <p>Loading...</p>
+                                        <p style={{ textAlign: "center" }}>
+                                            Loading...
+                                        </p>
                                     )}
+
                                     {!isLoadingNotifications &&
-                                        notificationsData.length === 1 && (
+                                        notificationsData.length === 0 && (
                                             <p style={{ textAlign: "center" }}>
                                                 No notifications
                                             </p>
                                         )}
-                                    {notificationsData.map((n) => (
-                                        <div
-                                            className={`NotificationItem ${
-                                                !n.is_read ? "unread" : ""
-                                            }`}
-                                            key={n.id}
-                                        >
-                                            <div className="notiveImage">
-                                                <img
-                                                    src="/image(7).png"
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="NotificationContent">
-                                                <strong className="company-name">
-                                                    {n.title}
-                                                </strong>
-                                                <p className="job-description">
-                                                    {formatNotificationMessage(
-                                                        n.message,
-                                                        50
-                                                    )}
-                                                </p>
-                                                <small className="notification-time">
-                                                    {new Date(
-                                                        n.created_at
-                                                    ).toLocaleString()}
-                                                </small>
-                                            </div>
-                                            <div className="NotificationActions">
-                                                <div className="dots-menu-wrapper">
-                                                    <button className="dots-btn">
-                                                        <HiDotsVertical />
-                                                    </button>
-                                                    <div className="context-menu">
-                                                        {!n.is_read && (
+
+                                    {!isLoadingNotifications &&
+                                        notificationsData.length > 0 &&
+                                        notificationsData.map((n) => (
+                                            <div
+                                                className={`NotificationItem ${
+                                                    !n.is_read ? "unread" : ""
+                                                }`}
+                                                key={n.id}
+                                            >
+                                                <div className="notiveImage">
+                                                    <img
+                                                        src="/image(7).png"
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <div className="NotificationContent">
+                                                    <strong className="company-name">
+                                                        {n.title}
+                                                    </strong>
+                                                    <p className="job-description">
+                                                        {formatNotificationMessage(
+                                                            n.message,
+                                                            50
+                                                        )}
+                                                    </p>
+                                                    <small className="notification-time">
+                                                        {new Date(
+                                                            n.created_at
+                                                        ).toLocaleString()}
+                                                    </small>
+                                                </div>
+                                                <div className="NotificationActions">
+                                                    <div className="dots-menu-wrapper">
+                                                        <button className="dots-btn">
+                                                            <HiDotsVertical />
+                                                        </button>
+                                                        <div className="context-menu">
+                                                            {!n.is_read && (
+                                                                <button
+                                                                    onClick={() =>
+                                                                        markReadMutation.mutate(
+                                                                            n.id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <FaRegCircleCheck />
+                                                                    Done
+                                                                </button>
+                                                            )}
                                                             <button
                                                                 onClick={() =>
-                                                                    markReadMutation.mutate(
+                                                                    deleteMutation.mutate(
                                                                         n.id
                                                                     )
                                                                 }
                                                             >
-                                                                <FaRegCircleCheck />
-                                                                Done
+                                                                <RiDeleteBinLine />
+                                                                Delete
                                                             </button>
-                                                        )}
-                                                        <button
-                                                            onClick={() =>
-                                                                deleteMutation.mutate(
-                                                                    n.id
-                                                                )
-                                                            }
-                                                        >
-                                                            <RiDeleteBinLine />
-                                                            Delete
-                                                        </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
                                 </div>
+
                                 {/* <div className="navFooter">
                                     <button>show all the messages</button>
                                 </div> */}
