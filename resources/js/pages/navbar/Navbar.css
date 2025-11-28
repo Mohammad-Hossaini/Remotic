@@ -204,6 +204,7 @@
     box-shadow: var(--shadow-lg);
     width: 380px;
     padding: 1rem 0;
+
     overflow: hidden;
     border: 1px solid var(--color-grey-200);
     font-family: "Inter", sans-serif;
@@ -310,13 +311,13 @@
 .dots-btn {
     background: none;
     border: none;
-    font-size: var(--font-lg);
+    font-size: var(--font-ms);
     cursor: pointer;
-    color: var(--color-primary);
+    color: var(--color-grey-700);
     outline: none;
     border: none;
     outline: none;
-    margin-top: 1.5rem;
+    margin-top: 2.8rem;
     margin-right: 1.4rem;
     &:focus {
         outline: none;
@@ -329,7 +330,7 @@
     display: none;
     position: absolute;
     top: 2rem;
-    right: 0;
+    right: 2rem;
     background: var(--color-grey-0);
     border: 1px solid var(--color-grey-200);
     border-radius: var(--radius-md);
@@ -338,9 +339,38 @@
     min-width: 12rem;
     z-index: 10;
 }
+.notiveTitile {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--color-grey-900);
+}
+.title {
+    display: flex;
+    padding: 1rem 1.2rem;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-grey-200);
+}
+.notiveIcon {
+    font-size: 2.4rem;
+    color: var(--color-primary);
+}
+.messageIcon {
+    font-size: 2.4rem;
+    color: var(--color-grey-400);
+}
+.navFooter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.8rem;
+    margin-top: 1rem;
+    color: var(--color-primary);
+}
 
 .context-menu button {
     display: flex;
+    font-size: 1.2rem;
     flex-direction: row;
     align-items: center;
     gap: 0.6rem;
@@ -542,13 +572,12 @@
     display: flex;
     align-items: flex-start;
     padding: 1rem 1.2rem;
-    margin: 0 2px;
     border-bottom: 1px solid var(--color-grey-200);
-    border-radius: var(--radius-sm);
     gap: 1rem;
     background-color: var(--color-grey-0);
     transition: all 0.3s ease;
     position: relative;
+    height: 72px;
 }
 
 .NotificationItem:hover {
@@ -558,8 +587,8 @@
 
 /* Highlight unread */
 .NotificationItem.unread {
-    border-left: 4px solid #087f5b;
-    background-color: #e6f4f1;
+    border-left: 2px solid #087f5b;
+    background-color: var(--color-grey-30);
 }
 
 .NotificationContent {

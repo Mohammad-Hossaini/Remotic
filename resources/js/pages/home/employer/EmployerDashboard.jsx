@@ -307,7 +307,6 @@ function EmployerDashboard() {
                 <PostJobButton onClick={() => setOpenModal(true)}>
                     + Post a New Job
                 </PostJobButton>
-                {/* <TestNotificationButton/> */}
             </DashboardActions>
 
             <JobModal open={openModal} onOpenChange={setOpenModal} />

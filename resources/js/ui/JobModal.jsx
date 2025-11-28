@@ -132,6 +132,7 @@ const StyledWarning = styled.div`
 // ===== Component =====
 export default function JobModal({ open, onOpenChange, job }) {
     const { user } = useAuth();
+    console.log("Company image :", user?.data?.user);
     const queryClient = useQueryClient();
 
     const isEditMode = Boolean(job);
@@ -159,6 +160,7 @@ export default function JobModal({ open, onOpenChange, job }) {
     const salaryMinValue = watch("salary_min");
 
     // ===== Job Mutation =====
+    
     const jobMutation = useMutation({
         mutationFn: async (data) =>
             isEditMode ? updateJob(job.id, data) : createJob(data),
@@ -183,7 +185,7 @@ export default function JobModal({ open, onOpenChange, job }) {
                         user?.data?.user?.company?.name || "your company"
                     }.`,
                 });
-                toast.success("Notification sent successfully!");
+                // toast.success("Notification sent successfully!");
             }
 
             reset();
