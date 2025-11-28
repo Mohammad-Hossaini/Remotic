@@ -45,5 +45,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('12345678'),
             'role' => 'job_seeker',
         ]);
+
+        // Another Job Seeker user
+         User::create([
+            'name' => 'Job Seeker2 ',
+            'email' => 'jobseeker2@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role' => 'job_seeker',
+        ]);
     }
 }

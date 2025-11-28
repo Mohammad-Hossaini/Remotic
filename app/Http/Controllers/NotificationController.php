@@ -8,16 +8,15 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    // Get all notifications for the logged-in user
+    // Get all notifications for the authenticated user
     public function index()
     {
-        $notifications = Notification::where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return response()->json($notifications);
+        return response()->json([
+            'notifications' => Notification::where('user_id', Auth::id())
+                ->latest()
+                ->get()
+        ]);
     }
-
     // Mark notification as read
     public function markAsRead($id)
     {
