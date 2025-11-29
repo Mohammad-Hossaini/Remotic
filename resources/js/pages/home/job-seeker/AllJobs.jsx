@@ -475,6 +475,7 @@ export default function AllJobs() {
         queryKey: ["jobs"],
         queryFn: getJobs,
     });
+    // console.log("The jobs to receive",jobs)
 
     // Filter + Sort
     useEffect(() => {

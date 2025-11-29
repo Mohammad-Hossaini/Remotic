@@ -25,6 +25,7 @@ import {
     defaults,
 } from "chart.js";
 
+import RecommendedJobsCard from "../../recommend/RecommendedJobsCard";
 import "./JobSeekerDashboard.css";
 
 // Register ChartJS
@@ -79,6 +80,9 @@ const getOrdinal = (n) => {
 
 export default function JobSeekerDashboard() {
     const { user } = useAuth();
+
+    // console.log("Users skills :", userSkills);
+    console.log("Information about user:", user);
     const token = user?.token;
 
     const now = new Date();
@@ -100,6 +104,53 @@ export default function JobSeekerDashboard() {
         queryKey: ["jobs"],
         queryFn: getJobs,
     });
+    const rawUserSkills = user?.data?.user?.profile?.skills ?? []; // ممکن است آرایه یا رشته باشد
+
+    // normalize کردن اسکیل‌های کاربر -> همیشه آرایه از رشته‌ها
+    const userSkills = Array.isArray(rawUserSkills)
+        ? rawUserSkills.map((s) => String(s).trim().toLowerCase())
+        : typeof rawUserSkills === "string"
+        ? rawUserSkills.split(",").map((s) => s.trim().toLowerCase())
+        : [];
+
+    // اطمینان از اینکه all_jobs همیشه آرایه است (اگر هنوز لود نشده باشد -> [])
+    const jobsArray = Array.isArray(all_jobs)
+        ? all_jobs
+        : all_jobs
+        ? Object.values(all_jobs)
+        : [];
+
+    // فیلتر ایمن
+    const recommendedJobs = jobsArray.filter((job) => {
+        if (!job || !job.requirements) return false;
+
+        const jobSkills = String(job.requirements)
+            .split(",")
+            .map((s) => s.trim().toLowerCase())
+            .filter(Boolean); // حذف رشته‌های خالی
+
+        // اگر کاربر اصلاً اسکیلی ندارد، می‌خواهیم چه کنیم؟ اینجا با false برمی‌گردیم.
+        if (!userSkills.length) return false;
+
+        // حداقل یک مهارت مشترک باشد
+        return userSkills.some((skill) => jobSkills.includes(skill));
+    });
+
+    // برای دیباگ (اختیاری)
+    console.log("all_jobs raw:", all_jobs);
+    console.log("normalized userSkills:", userSkills);
+    console.log("recommendedJobs:", recommendedJobs);
+
+    // ======= در JSX برای رندر کردن =======
+    // دقت کن از arrow implicit return یا return صریح استفاده کنی.
+    // (قبلاً داخل map از {} استفاده کرده بودی ولی چیزی return نمی‌شد)
+    {
+        recommendedJobs.map((job) => (
+            <RecommendedJobsCard job={job} key={job.id} />
+        ));
+    }
+
+    console.log("All the recommended  jobs", all_jobs);
 
     const allJobs = all_jobs ? all_jobs.length : 0;
 
@@ -337,6 +388,15 @@ export default function JobSeekerDashboard() {
                             options={doughnutOptions}
                         />
                     </div>
+                </div>
+            </div>
+            {/* Recommened cards */}
+            <div className="rec-container">
+                <p className="rec-title">Recommended jobs</p>
+                <div className="rec-cards">
+                    {recommendedJobs.map((job) => (
+                        <RecommendedJobsCard job={job} key={job.id} />
+                    ))}
                 </div>
             </div>
         </div>

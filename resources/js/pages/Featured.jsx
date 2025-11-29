@@ -16,7 +16,7 @@ const FeaturedSection = styled.section`
     justify-content: center;
     align-items: center;
     border-top: 1px solid
-        ${({ theme }) => (theme.mode === "dark" ? "#2d2d2d" : "#e5e7eb")};
+        ${({ theme }) => (theme.mode === "dark" ? "#2d2d2d" : "#2d2d2d")};
 `;
 
 // Inner container for centering content

@@ -1,0 +1,87 @@
+.card {
+    height: 200px;
+    width: 200px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-grey-0);
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid transparent;
+}
+
+[data-theme="dark"] .card {
+    border: 1px solid var(--color-grey-200);
+}
+
+.image-wrapper {
+    height: 50px;
+    width: 50px;
+    background-color: var(--color-grey-30);
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.comp-image {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.title-job {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--color-grey-900);
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.details {
+    margin-top: 11.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+}
+
+.font-size {
+    font-size: var(--font-xs);
+    font-weight: 600;
+    color: var(--color-grey-500);
+    line-height: 1.5;
+}
+
+.salaryColor-number {
+    color: var(--color-primary); 
+    font-weight: 700;
+}
+
+.salaryColor-dollar {
+    color: var(--color-grey-800);
+    font-weight: 600;
+}
+
+.view-button {
+    background-color: var(--color-grey-50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-xs);
+    margin: 1.4rem 1.2rem;
+    padding: 1.2rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.view-button:hover {
+    background-color: var(--color-grey-100);
+}

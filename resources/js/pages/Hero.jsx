@@ -8,7 +8,7 @@ const SectionHero = styled.section`
     padding: 7.2rem 0 4.4rem 0;
     background-color: #e6f2ef;
     font-family: "Rubik", sans-serif;
-    height: 100vh;
+    height: 80vh;
 
     /* ===== 🌙 Dark Mode ===== */
     [data-theme="dark"] & {

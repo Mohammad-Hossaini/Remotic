@@ -225,7 +225,7 @@
 /* =============== Charts Section =============== */
 .jobdash-charts-section {
     display: grid;
-    grid-template-columns: 60rem 1fr;
+    grid-template-columns: 60% 40%;
     gap: 2rem;
 }
 
@@ -235,8 +235,10 @@
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    max-height: 53vh;
+    max-height: 43vh;
+    /* background: linear-gradient(135deg, #e8fff4 0%, #d9fbe9 50%, #f0fffa 100%); */
     /* background-image: linear-gradient(to right, #33375e, #141727); */
+    margin-right: 1.2rem;
 }
 .jobdash-chart-card h2 {
     /* color: #fff; */
@@ -301,6 +303,111 @@
     overflow: hidden;
     margin-bottom: 3rem;
     /* background-image: linear-gradient(to right, #33375e, #141727); */
+}
+.rec-container {
+    /* background-color: var(--color-grey-300); */
+    height: 100%;
+    text-align: center;
+}
+.rec-cards {
+    display: flex;
+    gap: 1.2rem;
+    padding: 0 1.2rem;
+}
+.rec-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.card {
+    height: 200px;
+    width: 200px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-grey-0); /* auto light/dark */
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid transparent;
+}
+[data-theme="dark"] .card {
+    border: 1px solid var(--color-grey-200);
+}
+
+/* دایره‌ی تصویر */
+.image-wrapper {
+    height: 50px;
+    width: 50px;
+    background-color: var(--color-grey-30); /* auto light/dark */
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* خود تصویر */
+.comp-image {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* عنوان شغل */
+.title-job {
+    font-weight: 800;
+    width: 100%;
+    font-size: 1.2rem;
+    color: var(--color-grey-900); /* auto light/dark */
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+/* سه‌ تا جزئیات */
+.details {
+    margin-top: 11.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+}
+
+/* تکست جزئیات */
+.font-size {
+    font-size: var(--font-xs);
+    font-weight: 600;
+    color: var(--color-grey-500); /* auto light/dark */
+    line-height: 1.5;
+}
+
+/* دکمه View & Apply */
+.view-button {
+    background-color: var(--color-grey-50); /* auto light/dark */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-xs);
+    margin: 1.4rem 1.2rem;
+    padding: 1.2rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    color: var(--color-primary);
+    font-weight: 500;
+}
+[data-theme="dark"] .view-button {
+    background-color: var(--color-grey-100);
+    color: var(--color-grey-50);
+}
+
+.view-button:hover {
+    background-color: var(--color-grey-100); /* auto light/dark */
 }
 
 /* Responsive */

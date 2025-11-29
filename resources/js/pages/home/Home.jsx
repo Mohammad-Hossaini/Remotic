@@ -15,7 +15,7 @@ function Home() {
         <>
             <Header heroRef={heroRef} />
             <HeroSection id="home" ref={heroRef} />
-            <Featured id="featured" />
+            {/* <Featured id="featured" /> */}
             <Features id="sit-features" />
             <Testimonial id="testimonial" />
             <Pricing id="pricing" />

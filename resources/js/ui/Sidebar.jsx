@@ -6,7 +6,7 @@ import MainNav from "./Mainnav";
 const StyledSidebar = styled.div`
     position: relative;
     padding: 0;
-    border: 1px solid var(--color-grey-100);
+    /* border: 1px solid var(--color-grey-100); */
     grid-row: 1 / -1;
     display: flex;
     flex-direction: column;
@@ -14,6 +14,7 @@ const StyledSidebar = styled.div`
     width: ${(props) => (props.isOpen ? "26rem" : "6rem")};
     transition: width 0.3s ease;
     overflow: hidden;
+    height: 200%;
 `;
 
 const MenuButton = styled.button`

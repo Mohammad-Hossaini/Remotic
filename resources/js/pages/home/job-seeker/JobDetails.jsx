@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdContentCopy } from "react-icons/md";
+import { TiDocumentText } from "react-icons/ti";
 import { useParams } from "react-router-dom";
 import Loader from "../../../components/loader/Loader";
 import "./JobDetails.css";
@@ -122,6 +123,23 @@ function JobDetails() {
                 <div className="right-container-side">
                     <div className="sharedButton">
                         {/* WhatsApp */}
+                        {/* apply button */}
+
+                        <button
+                            className="sharedBtn"
+                            onClick={() =>
+                                window.open(
+                                    `https://wa.me/?text=Check%20out%20this%20job:%20${encodeURIComponent(
+                                        jobUrl
+                                    )}`,
+                                    "_blank"
+                                )
+                            }
+                        >
+                            <TiDocumentText />
+                            Apply For this job
+                        </button>
+
                         <button
                             className="sharedBtn"
                             onClick={() =>
