@@ -1,6 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import "./RecommendedJobsCard.css";
 
 function RecommendedJobsCard({ job }) {
+    const navigate = useNavigate();
+
+    const handleViewApply = () => {
+        navigate(`/jobDetails/${job.id}`);
+    };
+
     return (
         <div className="card">
             <div className="image-wrapper">
@@ -24,13 +31,16 @@ function RecommendedJobsCard({ job }) {
                 <p className="font-size">
                     <span className="salaryColor-number">{job.salary_min}</span>
                     <span className="salaryColor-dollar">$</span>
-                    {"-"}
+                    {" - "}
                     <span className="salaryColor-number">{job.salary_max}</span>
                     <span className="salaryColor-dollar">$</span>
                 </p>
             </div>
 
-            <div className="view-button">View & Apply</div>
+            {/* لینک یا دکمه برای رفتن به جزییات جاب */}
+            <div className="view-button" onClick={handleViewApply}>
+                View & Apply
+            </div>
         </div>
     );
 }
