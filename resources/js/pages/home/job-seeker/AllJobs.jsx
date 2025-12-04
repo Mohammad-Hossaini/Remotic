@@ -463,8 +463,6 @@ export default function AllJobs() {
     const [currentJob, setCurrentJob] = useState(null);
 
     const { user } = useAuth();
-    // console.log("User in AllJobs:", user?.data?.user?.profile?.resume);
-    // const location = useLocation();
     const queryClient = useQueryClient();
     const isHomePage = location.pathname === "/";
     const {
@@ -475,7 +473,6 @@ export default function AllJobs() {
         queryKey: ["jobs"],
         queryFn: getJobs,
     });
-    // console.log("The jobs to receive",jobs)
 
     // Filter + Sort
     useEffect(() => {
