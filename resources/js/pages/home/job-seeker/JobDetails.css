@@ -386,7 +386,15 @@
     background-color: var(--color-primary);
     color: #fff;
 }
-
+.applyButton {
+    height: 5rem;
+    background-color: var(--color-primary-light);
+    color: #fff;
+}
+.applyIcon {
+    width: 2rem;
+    height: 2rem;
+}
 /* ===== Skills ===== */
 .skillBtn {
     border: 2px solid var(--color-primary);

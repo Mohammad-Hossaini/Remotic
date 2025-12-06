@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { HiOutlineArrowTopRightOnSquare } from "react-icons/hi2";
 import { MdContentCopy } from "react-icons/md";
-import { TiDocumentText } from "react-icons/ti";
 import { Navigate, useParams } from "react-router-dom";
 import Loader from "../../../components/loader/Loader";
 import { useAuth } from "../../../hook/AuthContext";
@@ -137,7 +137,7 @@ function JobDetails() {
                     <div className="sharedButton">
                         {/* ===== Apply Button (Activated) ===== */}
                         <button
-                            className="sharedBtn applyBtn"
+                            className="sharedBtn applyButton"
                             onClick={() => {
                                 if (!user) {
                                     toast.error("Please log in to apply");
@@ -147,7 +147,7 @@ function JobDetails() {
                                 }
                             }}
                         >
-                            <TiDocumentText />
+                            <HiOutlineArrowTopRightOnSquare className="applyIcon" />
                             Apply For this job
                         </button>
 
