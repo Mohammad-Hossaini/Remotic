@@ -63,6 +63,55 @@
     font-size: var(--font-base);
     background: transparent;
 }
+/* Search Dropdown */
+.search-dropdown {
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    transform: translateX(0%);
+    width: 900%; 
+    max-width: 500px;
+    background-color: var(--color-grey-0);
+    border: 1px solid var(--color-grey-300);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dropdown Item (JobItem) */
+.JobItem {
+    padding: 1rem 1.2rem; 
+    margin: 0.2rem 0.5rem; 
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.JobItem:hover {
+    background-color: #e6f2ef;
+}
+
+/* Job title and description */
+.job-title {
+    font-weight: 600;
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
+}
+
+.job-description {
+    font-size: 1.2rem;
+    color: var(--color-grey-700);
+    margin-bottom: 0.2rem;
+}
+
+.job-location {
+    font-size: 1rem;
+    color: var(--color-grey-500);
+}
 
 /* Right icons and avatar */
 .right {
