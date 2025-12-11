@@ -409,8 +409,8 @@ const FancyButton = styled(Button)`
 
     /* 🌙 Dark mode hover fix */
     [data-theme="dark"] & {
-        background-color: var(--color-grey-900);
-        color: var(--color-grey-100);
+        background-color: var(--color-grey-300);
+        color: var(--color-grey-0);
         border: 1px solid var(--color-primary);
 
         &:hover {
